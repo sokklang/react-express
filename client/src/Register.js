@@ -36,7 +36,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" data-bs-theme="dark">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
@@ -49,6 +49,7 @@ const Register = () => {
                   </label>
                   <input
                     type="text"
+                    placeholder="Enter Username"
                     className="form-control"
                     id="username"
                     value={username}
@@ -61,6 +62,7 @@ const Register = () => {
                   </label>
                   <input
                     type="email"
+                    placeholder="Enter Email"
                     className="form-control"
                     id="email"
                     value={email}
@@ -73,6 +75,7 @@ const Register = () => {
                   </label>
                   <input
                     type="password"
+                    placeholder="Enter Password"
                     className="form-control"
                     id="password"
                     value={password}

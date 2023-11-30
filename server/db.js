@@ -14,16 +14,6 @@ db.run(`
   )
 `);
 
-// Function to add a new user
-function addUser(username, password, email) {
-  db.run(
-    "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
-    username,
-    password,
-    email
-  );
-}
-
 // Example: Adding a user
 
 // Function to retrieve all users

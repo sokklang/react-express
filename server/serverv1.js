@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,7 +30,7 @@ app.use((req, res, next) => {
 // Middleware for session handling
 app.use(
   session({
-    secret: "MySecretKey123!@#Secret",
+    secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
     store: new SQLiteStore({ db: "sessions.db", concurrentDB: true }),
@@ -89,7 +90,7 @@ app.post("/api/login", async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign(
           { username: user.username },
-          "MySecretKey123!@#Secret",
+          process.env.JWT_SECRET,
           {
             expiresIn: "1h", // Token expiration time
           }

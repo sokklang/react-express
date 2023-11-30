@@ -14,10 +14,10 @@ const Home = ({ username, loggedIn, onLogout }) => {
   return (
     <div>
       {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
           <Link className="navbar-brand" to="/home">
-            Task Mgmt
+            Home
           </Link>
           <div className="ml-auto">
             <ul className="navbar-nav">

@@ -65,7 +65,7 @@ const Login = ({ onLogin, onLogout }) => {
   }, [onLogin, onLogout, navigate]);
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" data-bs-theme="dark">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
@@ -78,6 +78,7 @@ const Login = ({ onLogin, onLogout }) => {
                   </label>
                   <input
                     type="text"
+                    placeholder="Enter username"
                     className="form-control"
                     id="username"
                     value={username}
@@ -91,6 +92,7 @@ const Login = ({ onLogin, onLogout }) => {
                   </label>
                   <input
                     type="password"
+                    placeholder="Enter Password"
                     className="form-control"
                     id="password"
                     value={password}
