@@ -15,19 +15,39 @@ const Home = ({ username, loggedIn, onLogout }) => {
   return (
     <div>
       {/* Navigation Bar */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
+      <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div className="container-fluid">
           <Link className="navbar-brand" to="/home">
             Home
           </Link>
-          <div className="ml-auto">
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapsibleNavbar"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="collapsibleNavbar">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <p className="navbar-text mr-3">Welcome, {username}!</p>
+                <Link className="nav-link" to="/task">
+                  Task
+                </Link>
               </li>
               <li className="nav-item">
-                <button className="btn btn-danger" onClick={onLogout}>
-                  Logout
+                <Link className="nav-link" to="/approval">
+                  Approval
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/usermgmt">
+                  User Mgmt
+                </Link>
+              </li>
+              <li className="nav-item">
+                <button className="nav-link" onClick={onLogout}>
+                  Log Out
                 </button>
               </li>
             </ul>

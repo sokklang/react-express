@@ -1,6 +1,6 @@
 // Login.js
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -8,9 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 const Login = ({ onLogin, onLogout }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -26,46 +24,44 @@ const Login = ({ onLogin, onLogout }) => {
       );
 
       const { username: loggedInUsername, companyName, token } = response.data;
-      console.log('companyName in Login:', companyName); // Add this line
+      console.log("companyName in Login:", companyName);
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("companyName", companyName);
 
-      onLogin(loggedInUsername,companyName); // Notify parent component about login
-      navigate("/home");
+      onLogin(loggedInUsername, companyName);
     } catch (error) {
       console.error("Login failed:", error.response.data.message);
       setErrorMessage("Invalid username or password");
     }
   };
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/check-login",
-          { withCredentials: true }
-        );
-        const { loggedIn, user } = response.data;
+  const checkLoginStatus = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/check-login",
+        { withCredentials: true }
+      );
+      const { loggedIn, user } = response.data;
 
-        if (loggedIn) {
-          onLogin(user.username);
-          navigate("/home");
-        } else {
-          onLogout();
-        }
-      } catch (error) {
-        console.error(
-          "Error checking login status:",
-          error.response.data.message
-        );
+      if (loggedIn) {
+        onLogin(user.username);
+      } else {
+        onLogout();
       }
-    };
+    } catch (error) {
+      console.error(
+        "Error checking login status:",
+        error.response.data.message
+      );
+    }
+  }, [onLogin, onLogout]);
 
+  useEffect(() => {
     // Check login status when the component mounts
     checkLoginStatus();
-  }, [onLogin, onLogout, navigate]);
+  }, [checkLoginStatus]);
 
   return (
     <div className="container mt-5" data-bs-theme="dark">

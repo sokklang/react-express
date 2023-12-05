@@ -1,22 +1,30 @@
 // App.js
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
+import Task from "./Task";
 import axios from "axios";
+import Nopage from "./Nopage";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [companyName, setCompanyName] = useState("");
-  
-  const handleLogin = async (loggedInUsername, LoggedInCompanyName) => { // Added navigate as a parameter
-    
+
+  const handleLogin = async (loggedInUsername, LoggedInCompanyName) => {
+    // Added navigate as a parameter
+
     setUsername(loggedInUsername);
     setLoggedIn(true);
     setCompanyName(LoggedInCompanyName);
-  }
+  };
 
   const handleLogout = () => {
     axios
@@ -64,6 +72,8 @@ const App = () => {
             )
           }
         />
+        <Route path="/task" element={<Task loggedIn={loggedIn} />} />
+        <Route path="*" element={<Nopage />} />
       </Routes>
     </Router>
   );
