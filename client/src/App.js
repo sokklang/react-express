@@ -1,11 +1,6 @@
 // App.js
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
@@ -14,11 +9,14 @@ import axios from "axios";
 const App = () => {
   const [username, setUsername] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
-  const handleLogin = (loggedInUsername) => {
+  const [companyName, setCompanyName] = useState("");
+  
+  const handleLogin = async (loggedInUsername, LoggedInCompanyName) => { // Added navigate as a parameter
+    
     setUsername(loggedInUsername);
     setLoggedIn(true);
-  };
+    setCompanyName(LoggedInCompanyName);
+  }
 
   const handleLogout = () => {
     axios
@@ -27,6 +25,7 @@ const App = () => {
         if (response.data.success) {
           setLoggedIn(false);
           setUsername("");
+          setCompanyName("");
         }
       })
       .catch((error) => {
@@ -57,6 +56,7 @@ const App = () => {
               <Home
                 username={username}
                 loggedIn={loggedIn}
+                companyName={companyName}
                 onLogout={handleLogout}
               />
             ) : (

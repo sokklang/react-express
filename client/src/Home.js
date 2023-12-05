@@ -1,11 +1,12 @@
 // Home.js
-import React from "react";
 import { Navigate, Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Home = ({ username, loggedIn, onLogout }) => {
+  const companyName = localStorage.getItem("companyName");
+
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
@@ -44,7 +45,7 @@ const Home = ({ username, loggedIn, onLogout }) => {
               </div>
               <div className="card-body">
                 <p className="card-text">
-                  Hello, {username}! Welcome back to the home page.
+                  Hello, {username}! Welcome back to {companyName}.
                 </p>
                 {/* You can add the content of your home page here */}
               </div>

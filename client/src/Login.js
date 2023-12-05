@@ -8,6 +8,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 const Login = ({ onLogin, onLogout }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -24,12 +25,14 @@ const Login = ({ onLogin, onLogout }) => {
         { withCredentials: true }
       );
 
-      const { username: loggedInUsername, token } = response.data;
+      const { username: loggedInUsername, companyName, token } = response.data;
+      console.log('companyName in Login:', companyName); // Add this line
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("companyName", companyName);
 
-      onLogin(loggedInUsername); // Notify parent component about login
+      onLogin(loggedInUsername,companyName); // Notify parent component about login
       navigate("/home");
     } catch (error) {
       console.error("Login failed:", error.response.data.message);

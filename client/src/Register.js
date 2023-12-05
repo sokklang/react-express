@@ -8,6 +8,12 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [companyname, setCompanyname] = useState("");
+  const [companyaddress, setCompanyaddress] = useState("");
+  const [industry, setIndustry] = useState("")
+
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -23,8 +29,13 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/register", {
         username,
-        email,
+        firstname,
+        lastname,
         password,
+        companyname,
+        companyaddress,
+        industry,
+        email,
       });
 
       setSuccessMessage(response.data.message);
@@ -57,18 +68,32 @@ const Register = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
+                  <label htmlFor="firstname" className="form-label">
+                    firstname
                   </label>
                   <input
-                    type="email"
-                    placeholder="Enter Email"
+                    type="text"
+                    placeholder="Enter firstname"
                     className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="firstname"
+                    value={firstname}
+                    onChange={(e) => setFirstname(e.target.value)}
                   />
                 </div>
+                <div className="mb-3">
+                  <label htmlFor="lastname" className="form-label">
+                    lastname
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Lastname"
+                    className="form-control"
+                    id="lastname"
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
+                  />
+                </div>
+
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
                     Password
@@ -82,6 +107,61 @@ const Register = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
+
+                <div className="mb-3">
+                  <label htmlFor="Company" className="form-label">
+                    Company Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Company Name"
+                    className="form-control"
+                    id="company"
+                    value={companyname}
+                    onChange={(e) => setCompanyname(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="Company Address" className="form-label">
+                    Company Address
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Company Address"
+                    className="form-control"
+                    id="companyaddress"
+                    value={companyaddress}
+                    onChange={(e) => setCompanyaddress(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="Company Industry" className="form-label">
+                    Company Industry
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Company Industry"
+                    className="form-control"
+                    id="companyindustry"
+                    value={industry}
+                    onChange={(e) => setIndustry(e.target.value)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    className="form-control"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                
                 <div className="mb-3">
                   <button type="submit" className="btn btn-primary">
                     Register

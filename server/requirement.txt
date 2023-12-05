@@ -1,0 +1,8 @@
+Task Management System:
+1. only admin user can create standard user.
+2. only admin user can create task directly without approval, standard user need approval from admin.
+3. admin user created with company info (company info must not duplicate).
+4. Must have audit logs for all user action like create,edit,delete, tasks with time stamp.
+5. Only admin user in Company can view audit logs for all users.
+6. when deleted user anything reference to that user also delete
+
