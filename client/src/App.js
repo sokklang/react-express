@@ -6,6 +6,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import Navbar from "./Navbar";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
@@ -43,6 +44,7 @@ const App = () => {
 
   return (
     <Router>
+      <Navbar isLoggedIn={loggedIn} onLogout={handleLogout} />
       <Routes>
         <Route
           path="/"
