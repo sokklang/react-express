@@ -10,6 +10,8 @@ import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
 import Task from "./Task";
+import Approval from "./Approval";
+import Usermgmt from "./Usermgmt";
 import axios from "axios";
 import Nopage from "./Nopage";
 
@@ -75,6 +77,9 @@ const App = () => {
           }
         />
         <Route path="/task" element={<Task loggedIn={loggedIn} />} />
+        <Route path="/usermgmt" element={<Usermgmt loggedIn={loggedIn} />} />
+        <Route path="/Approval" element={<Approval loggedIn={loggedIn} />} />
+
         <Route path="*" element={<Nopage />} />
       </Routes>
     </Router>
