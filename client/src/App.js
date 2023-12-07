@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -19,33 +18,35 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [companyName, setCompanyName] = useState("");
 
-  const handleLogin = async (loggedInUsername, LoggedInCompanyName) => {
-    // Added navigate as a parameter
-
+  const handleLogin = (loggedInUsername, LoggedInCompanyName) => {
     setUsername(loggedInUsername);
     setLoggedIn(true);
     setCompanyName(LoggedInCompanyName);
   };
 
-  const handleLogout = () => {
-    axios
-      .post("http://localhost:5000/api/logout", {}, { withCredentials: true })
-      .then((response) => {
-        if (response.data.success) {
-          setLoggedIn(false);
-          setUsername("");
-          setCompanyName("");
-        }
-      })
-      .catch((error) => {
-        console.error("Error logging out:", error);
-      });
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setLoggedIn(false);
+        setUsername("");
+        setCompanyName("");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
 
   return (
     <Router>
-      <Navbar isLoggedIn={loggedIn} onLogout={handleLogout} />
+      {loggedIn && <Navbar isLoggedIn={loggedIn} onLogout={handleLogout} />}
       <Routes>
+        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={
@@ -58,7 +59,6 @@ const App = () => {
             loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />
           }
         />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/home"
           element={

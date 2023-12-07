@@ -1,6 +1,5 @@
-// Login.js
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -9,6 +8,7 @@ const Login = ({ onLogin, onLogout }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const location = useLocation();
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -24,7 +24,6 @@ const Login = ({ onLogin, onLogout }) => {
       );
 
       const { username: loggedInUsername, companyName, token } = response.data;
-      console.log("companyName in Login:", companyName);
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
@@ -38,6 +37,7 @@ const Login = ({ onLogin, onLogout }) => {
   };
 
   const checkLoginStatus = useCallback(async () => {
+    console.log("Running checkLoginStatus");
     try {
       const response = await axios.get(
         "http://localhost:5000/api/check-login",
@@ -59,9 +59,12 @@ const Login = ({ onLogin, onLogout }) => {
   }, [onLogin, onLogout]);
 
   useEffect(() => {
+    console.log("Running useEffect");
     // Check login status when the component mounts
-    checkLoginStatus();
-  }, [checkLoginStatus]);
+    if (location.pathname !== "/register") {
+      checkLoginStatus();
+    }
+  }, [checkLoginStatus, location.pathname]);
 
   return (
     <div className="container mt-5" data-bs-theme="dark">
