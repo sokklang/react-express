@@ -192,9 +192,51 @@ function logoutUser(req, res) {
   });
 }
 
+async function getUserData(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  const requestingUserRole = req.session.user.RoleType; // Assuming you have the role in the session
+  const requestingUserId = req.session.user.UserID; // Assuming user data is stored in the session
+
+  // Check if the requesting user is an admin
+  if (requestingUserRole === "Admin User") {
+    // Fetch user data for all users within the same company as the admin
+    db.all(
+      "SELECT User.*, Company.CompanyName FROM User JOIN Company ON User.CompanyID = Company.CompanyID WHERE User.CompanyID = (SELECT CompanyID FROM User WHERE UserID = ?);",
+      [requestingUserId],
+      (error, usersData) => {
+        if (error) {
+          console.error(error);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        // Omit sensitive information like password hash before sending the response
+        const sanitizedUsersData = usersData.map((user) => ({
+          UserID: user.UserID,
+          Username: user.username,
+          FirstName: user.FirstName,
+          LastName: user.LastName,
+          Email: user.Email,
+          UserRoleId: user.UserRoleId,
+          CompanyName: user.CompanyName,
+          CompanyID: user.CompanyID,
+          ParentUserID: user.ParentUserID,
+          RoleType: user.RoleType,
+          // Add other fields as needed
+        }));
+
+        res.status(200).json(sanitizedUsersData);
+      }
+    );
+  } else {
+    // If not an admin, deny access
+    res.status(403).json({ error: "Access forbidden" });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   checkLoginStatus,
   logoutUser,
+  getUserData,
 };

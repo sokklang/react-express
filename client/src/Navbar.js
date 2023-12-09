@@ -33,11 +33,13 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                   Task
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/approval">
-                  Approval
-                </Link>
-              </li>
+              {UserRoleId === "2" && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/approval">
+                    Approval
+                  </Link>
+                </li>
+              )}
               {UserRoleId === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/usermgmt">
