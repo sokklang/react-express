@@ -18,12 +18,24 @@ import Nopage from "./Nopage";
 const App = () => {
   const [username, setUsername] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userid, setUserId] = useState("");
+  const [userroletype, setUserRoleType] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [UserRoleId, setUserRoleId] = useState("");
 
-  const handleLogin = (loggedInUsername, LoggedInCompanyName) => {
+  const handleLogin = (
+    loggedInUsername,
+    LoggedInUserId,
+    loggedInUserRoleType,
+    LoggedInCompanyName,
+    LoggedInUserRoleId
+  ) => {
     setUsername(loggedInUsername);
+    setUserId(LoggedInUserId);
+    setUserRoleType(loggedInUserRoleType);
     setLoggedIn(true);
     setCompanyName(LoggedInCompanyName);
+    setUserRoleId(LoggedInUserRoleId);
   };
 
   const handleLogout = async () => {
@@ -37,7 +49,10 @@ const App = () => {
       if (response.data.success) {
         setLoggedIn(false);
         setUsername("");
+        setUserId("");
         setCompanyName("");
+        setUserRoleType("");
+        setUserRoleId("");
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -46,7 +61,13 @@ const App = () => {
 
   return (
     <Router>
-      {loggedIn && <Navbar isLoggedIn={loggedIn} onLogout={handleLogout} />}
+      {loggedIn && (
+        <Navbar
+          isLoggedIn={loggedIn}
+          onLogout={handleLogout}
+          isUserAdmin={userroletype === "Admin User"}
+        />
+      )}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route
@@ -70,6 +91,9 @@ const App = () => {
                 loggedIn={loggedIn}
                 companyName={companyName}
                 onLogout={handleLogout}
+                UserRoleId={UserRoleId}
+                userid={userid}
+                userroletype={userroletype}
               />
             ) : (
               <Navigate to="/login" />

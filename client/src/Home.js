@@ -5,7 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Home = ({ username, loggedIn }) => {
+  const userid = localStorage.getItem("userid");
+  const userroletype = localStorage.getItem("userroletype");
   const companyName = localStorage.getItem("companyName");
+  const UserRoleId = localStorage.getItem("UserRoleId");
 
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
@@ -24,7 +27,9 @@ const Home = ({ username, loggedIn }) => {
               </div>
               <div className="card-body">
                 <p className="card-text">
-                  Hello, {username}! Welcome back to {companyName}.
+                  Hello, {username}! Your UserId is {userid} and RoleType is{" "}
+                  {userroletype} . Welcome back to {companyName}. UserRoleId ={" "}
+                  {UserRoleId}.
                 </p>
                 {/* You can add the content of your home page here */}
               </div>

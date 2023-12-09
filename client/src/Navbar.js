@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Navbar = ({ isLoggedIn, onLogout }) => {
+  const UserRoleId = localStorage.getItem("UserRoleId");
+
   if (!isLoggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
@@ -36,11 +38,13 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                   Approval
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/usermgmt">
-                  User Mgmt
-                </Link>
-              </li>
+              {UserRoleId === "2" && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/usermgmt">
+                    User Mgmt
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <button className="nav-link" onClick={onLogout}>
                   Log Out

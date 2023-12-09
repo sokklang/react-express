@@ -121,7 +121,7 @@ async function loginUser(req, res) {
   const { username, password } = req.body;
 
   db.get(
-    "SELECT User.*, Company.CompanyName FROM User JOIN Company ON User.CompanyID = Company.CompanyID WHERE User.username = ?",
+    "SELECT User.*, Company.* FROM User JOIN Company ON User.CompanyID = Company.CompanyID WHERE User.username = ?",
     [username],
     async (err, user) => {
       if (err) {
@@ -155,8 +155,11 @@ async function loginUser(req, res) {
 
         const responseData = {
           token: token,
-          username: user.username,
+          userid: user.UserID,
           companyName: user.CompanyName,
+          username: user.username,
+          UserRoleId: user.UserRoleId,
+          userroletype: user.RoleType,
         };
 
         res.status(200).json(responseData);

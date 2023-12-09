@@ -22,13 +22,23 @@ const Login = ({ onLogin, onLogout }) => {
         { withCredentials: true }
       );
 
-      const { username: loggedInUsername, companyName, token } = response.data;
+      const {
+        username: loggedInUsername,
+        companyName,
+        userid,
+        UserRoleId,
+        userroletype,
+        token,
+      } = response.data;
 
       // Save the token to localStorage
       localStorage.setItem("token", token);
+      localStorage.setItem("userid", userid);
+      localStorage.setItem("userroletype", userroletype);
       localStorage.setItem("companyName", companyName);
+      localStorage.setItem("UserRoleId", UserRoleId);
 
-      onLogin(loggedInUsername, companyName);
+      onLogin(loggedInUsername, userid, companyName, UserRoleId, userroletype);
     } catch (error) {
       console.error("Login failed:", error.response.data.message);
       setErrorMessage("Invalid username or password");
