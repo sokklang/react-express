@@ -146,7 +146,14 @@ async function loginUser(req, res) {
 
         // Generate a JWT token
         const token = jwtUtils.generateToken(
-          { username: user.username },
+          {
+            username: user.username,
+            userid: user.UserID,
+            companyName: user.CompanyName,
+            UserRoleId: user.UserRoleId,
+            userroletype: user.RoleType,
+          },
+
           process.env.JWT_SECRET,
           {
             expiresIn: "1h", // Token expiration time

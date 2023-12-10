@@ -4,11 +4,18 @@ import { Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const Home = ({ username, loggedIn }) => {
-  const userid = localStorage.getItem("userid");
-  const userroletype = localStorage.getItem("userroletype");
-  const companyName = localStorage.getItem("companyName");
-  const UserRoleId = localStorage.getItem("UserRoleId");
+const Home = ({
+  username,
+  userid,
+  userroletype,
+  UserRoleId,
+  companyName,
+  loggedIn,
+}) => {
+  //const userid = localStorage.getItem("userid");
+  //const userroletype = localStorage.getItem("userroletype");
+  //const companyName = localStorage.getItem("companyName");
+  //const UserRoleId = localStorage.getItem("UserRoleId");
 
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page

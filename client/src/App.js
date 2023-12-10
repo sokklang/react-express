@@ -49,11 +49,12 @@ const App = () => {
       );
 
       if (response.data.success) {
-        setLoggedIn(false);
+        localStorage.removeItem("token");
         setUsername("");
         setUserId("");
-        setCompanyName("");
         setUserRoleType("");
+        setLoggedIn(false);
+        setCompanyName("");
         setUserRoleId("");
       }
     } catch (error) {
@@ -67,7 +68,7 @@ const App = () => {
         <Navbar
           isLoggedIn={loggedIn}
           onLogout={handleLogout}
-          isUserAdmin={userroletype === "Admin User"}
+          UserRoleId={UserRoleId}
         />
       )}
       <Routes>
@@ -102,9 +103,25 @@ const App = () => {
             )
           }
         />
-        <Route path="/task" element={<Task loggedIn={loggedIn} />} />
-        <Route path="/usermgmt" element={<Usermgmt loggedIn={loggedIn} />} />
-        <Route path="/Approval" element={<Approval loggedIn={loggedIn} />} />
+        <Route
+          path="/task"
+          element={<Task loggedIn={loggedIn} onLogout={handleLogout} />}
+        />
+        <Route
+          path="/usermgmt"
+          element={
+            <Usermgmt
+              loggedIn={loggedIn}
+              UserRoleId={UserRoleId}
+              companyName={companyName}
+              onLogout={handleLogout}
+            />
+          }
+        />
+        <Route
+          path="/Approval"
+          element={<Approval loggedIn={loggedIn} onLogout={handleLogout} />}
+        />
 
         <Route path="*" element={<Nopage />} />
       </Routes>
