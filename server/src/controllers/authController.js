@@ -1,6 +1,6 @@
 const db = require("../models/database");
 const bcryptUtils = require("../models/bcryptUtils");
-const jwtUtils = require("../utils/jwtUtils");
+//const jwtUtils = require("../utils/jwtUtils");
 
 async function registerUser(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
@@ -144,24 +144,7 @@ async function loginUser(req, res) {
         // Set the session variable
         req.session.user = user;
 
-        // Generate a JWT token
-        const token = jwtUtils.generateToken(
-          {
-            username: user.username,
-            userid: user.UserID,
-            companyName: user.CompanyName,
-            UserRoleId: user.UserRoleId,
-            userroletype: user.RoleType,
-          },
-
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "1h", // Token expiration time
-          }
-        );
-
         const responseData = {
-          token: token,
           userid: user.UserID,
           companyName: user.CompanyName,
           username: user.username,

@@ -49,7 +49,6 @@ const App = () => {
       );
 
       if (response.data.success) {
-        localStorage.removeItem("token");
         setUsername("");
         setUserId("");
         setUserRoleType("");

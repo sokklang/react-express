@@ -23,7 +23,6 @@ const Login = ({ onLogin, onLogout }) => {
       );
 
       const {
-        token,
         userid,
         companyName,
         username: loggedInUsername,
@@ -32,7 +31,7 @@ const Login = ({ onLogin, onLogout }) => {
       } = response.data;
 
       // Save the token to localStorage
-      localStorage.setItem("token", token);
+      //localStorage.setItem("token", token);
       //localStorage.setItem("userid", userid);
       //localStorage.setItem("userroletype", userroletype);
       //localStorage.setItem("companyName", companyName);
