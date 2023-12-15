@@ -1,17 +1,13 @@
 // Home.js
 import { Navigate } from "react-router-dom";
-
+import { useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { AuthContext } from "./AuthContext";
 
-const Home = ({
-  username,
-  userid,
-  userroletype,
-  UserRoleId,
-  companyName,
-  loggedIn,
-}) => {
+const Home = () => {
+  const { username, loggedIn, userid, userroletype, companyName, UserRoleId } =
+    useContext(AuthContext);
   //const userid = localStorage.getItem("userid");
   //const userroletype = localStorage.getItem("userroletype");
   //const companyName = localStorage.getItem("companyName");

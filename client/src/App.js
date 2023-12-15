@@ -1,6 +1,6 @@
-//app.js
-
-import React, { useState } from "react";
+import React from "react";
+import { AuthContext } from "./AuthContext";
+import { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,113 +14,31 @@ import Home from "./Home";
 import Task from "./Task";
 import Approval from "./Approval";
 import Usermgmt from "./Usermgmt";
-import axios from "axios";
 import Nopage from "./Nopage";
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userid, setUserId] = useState("");
-  const [userroletype, setUserRoleType] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [UserRoleId, setUserRoleId] = useState("");
-
-  const handleLogin = (
-    loggedInUsername,
-    LoggedInUserId,
-    loggedInUserRoleType,
-    LoggedInCompanyName,
-    LoggedInUserRoleId
-  ) => {
-    setUsername(loggedInUsername);
-    setUserId(LoggedInUserId);
-    setUserRoleType(loggedInUserRoleType);
-    setLoggedIn(true);
-    setCompanyName(LoggedInCompanyName);
-    setUserRoleId(LoggedInUserRoleId);
-  };
-
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/logout",
-        {},
-        { withCredentials: true }
-      );
-
-      if (response.data.success) {
-        setUsername("");
-        setUserId("");
-        setUserRoleType("");
-        setLoggedIn(false);
-        setCompanyName("");
-        setUserRoleId("");
-      }
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  const { loggedIn } = useContext(AuthContext);
 
   return (
     <Router>
-      {loggedIn && (
-        <Navbar
-          isLoggedIn={loggedIn}
-          onLogout={handleLogout}
-          UserRoleId={UserRoleId}
-        />
-      )}
+      {loggedIn && <Navbar />}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route
           path="/"
-          element={
-            loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />
-          }
+          element={loggedIn ? <Navigate to="/home" /> : <Login />}
         />
         <Route
           path="/login"
-          element={
-            loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />
-          }
+          element={loggedIn ? <Navigate to="/home" /> : <Login />}
         />
         <Route
           path="/home"
-          element={
-            loggedIn ? (
-              <Home
-                username={username}
-                loggedIn={loggedIn}
-                companyName={companyName}
-                onLogout={handleLogout}
-                UserRoleId={UserRoleId}
-                userid={userid}
-                userroletype={userroletype}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={loggedIn ? <Home /> : <Navigate to="/login" />}
         />
-        <Route
-          path="/task"
-          element={<Task loggedIn={loggedIn} onLogout={handleLogout} />}
-        />
-        <Route
-          path="/usermgmt"
-          element={
-            <Usermgmt
-              loggedIn={loggedIn}
-              UserRoleId={UserRoleId}
-              companyName={companyName}
-              onLogout={handleLogout}
-            />
-          }
-        />
-        <Route
-          path="/Approval"
-          element={<Approval loggedIn={loggedIn} onLogout={handleLogout} />}
-        />
+        <Route path="/task" element={<Task />} />
+        <Route path="/usermgmt" element={<Usermgmt />} />
+        <Route path="/Approval" element={<Approval />} />
 
         <Route path="*" element={<Nopage />} />
       </Routes>

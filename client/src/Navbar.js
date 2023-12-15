@@ -1,11 +1,14 @@
 import React from "react";
 import { Navigate, Link } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import { useContext } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const Navbar = ({ isLoggedIn, UserRoleId, onLogout }) => {
-  if (!isLoggedIn) {
+const Navbar = () => {
+  const { loggedIn, UserRoleId, handleLogout } = useContext(AuthContext);
+  if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
   }
@@ -46,7 +49,7 @@ const Navbar = ({ isLoggedIn, UserRoleId, onLogout }) => {
                 </li>
               )}
               <li className="nav-item">
-                <button className="nav-link" onClick={onLogout}>
+                <button className="nav-link" onClick={handleLogout}>
                   Log Out
                 </button>
               </li>

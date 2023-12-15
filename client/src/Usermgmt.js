@@ -2,11 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { AuthContext } from "./AuthContext";
+import { useContext } from "react";
+
 import { Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const Usermgmt = ({ loggedIn, companyName }) => {
+const Usermgmt = () => {
+  const { loggedIn, companyName } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {

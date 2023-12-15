@@ -1,15 +1,52 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "./AuthContext"; // Import AuthContext
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const Login = ({ onLogin, onLogout }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+  // Use the AuthContext
+  const { handleLogin, handleLogout } = useContext(AuthContext);
 
-  const handleLogin = async () => {
+  const checkLoginStatus = useCallback(async () => {
+    console.log("Running checkLoginStatus");
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/check-login",
+        { withCredentials: true }
+      );
+      const { loggedIn, user } = response.data;
+
+      if (loggedIn) {
+        handleLogin(
+          user.username,
+          user.UserRoleId,
+          user.RoleType,
+          user.CompanyName,
+          user.UserRoleId
+        );
+      } else {
+        handleLogout();
+      }
+    } catch (error) {
+      console.error(
+        "Error checking login status:",
+        error.response.data.message
+      );
+    }
+  }, [handleLogin, handleLogout]);
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus]);
+
+  const checkLogininput = async () => {
     if (!username || !password) {
       setErrorMessage("Username and password are required");
       return;
@@ -37,44 +74,19 @@ const Login = ({ onLogin, onLogout }) => {
       //localStorage.setItem("companyName", companyName);
       //localStorage.setItem("UserRoleId", UserRoleId);
 
-      onLogin(loggedInUsername, userid, userroletype, companyName, UserRoleId);
+      handleLogin(
+        loggedInUsername,
+        userid,
+        userroletype,
+        companyName,
+        UserRoleId
+      );
+      navigate("/home");
     } catch (error) {
       console.error("Login failed:", error.response.data.message);
       setErrorMessage("Invalid username or password");
     }
   };
-
-  const checkLoginStatus = useCallback(async () => {
-    console.log("Running checkLoginStatus");
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/api/check-login",
-        { withCredentials: true }
-      );
-      const { loggedIn, user } = response.data;
-
-      if (loggedIn) {
-        onLogin(
-          user.username,
-          user.UserRoleId,
-          user.RoleType,
-          user.CompanyName,
-          user.UserRoleId
-        );
-      } else {
-        onLogout();
-      }
-    } catch (error) {
-      console.error(
-        "Error checking login status:",
-        error.response.data.message
-      );
-    }
-  }, [onLogin, onLogout]);
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, [checkLoginStatus]);
 
   return (
     <div className="container mt-5" data-bs-theme="dark">
@@ -121,7 +133,7 @@ const Login = ({ onLogin, onLogout }) => {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={handleLogin}
+                    onClick={checkLogininput}
                   >
                     Login
                   </button>

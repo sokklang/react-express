@@ -1,7 +1,11 @@
 import React from "react";
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
-const Task = ({ loggedIn }) => {
+const Task = () => {
+  const { loggedIn } = useContext(AuthContext);
+
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
