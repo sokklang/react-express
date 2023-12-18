@@ -44,7 +44,7 @@ const Usermgmt = (handleDelete, handleEdit) => {
   return (
     <div>
       <center>
-        <h1>{companyName}</h1>
+        <h1><i className="fa fa-building" aria-hidden="true"></i>{companyName}</h1>
       </center>
       <table className="table table-dark table-striped table-hover table-bordered">
         <thead>

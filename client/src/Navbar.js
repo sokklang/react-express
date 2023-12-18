@@ -5,6 +5,7 @@ import { useContext } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "font-awesome/css/font-awesome.min.css";
 
 const Navbar = () => {
   const { loggedIn, UserRoleId, username, handleLogout } =
@@ -18,7 +19,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/home">
-            Home
+          <i className="fa fa-home"></i> Home
           </Link>
           <button
             className="navbar-toggler"
@@ -32,20 +33,20 @@ const Navbar = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link" to="/task">
-                  Task
+                <i class="fa fa-tasks"></i>Task
                 </Link>
               </li>
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/approval">
-                    Approval
+                  <i class="fa fa-check"></i>Approval
                   </Link>
                 </li>
               )}
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/usermgmt">
-                    User Mgmt
+                  <i className="fa fa-users"></i>User Mgmt
                   </Link>
                 </li>
               )}
@@ -60,24 +61,24 @@ const Navbar = () => {
                   aria-expanded="false"
                   style={{ marginRight: "10px" }}
                 >
-                  {username}
+                  <i className="fa fa-user-circle-o"></i> {username}
                 </button>
                 <div
                   className="dropdown-menu dropdown-menu-end"
                   aria-labelledby="dropdownMenuButton"
                 >
                   <Link className="dropdown-item" to="/profile">
-                    Profile
+                  <i className="fa fa-address-card"></i>Profile
                   </Link>
                   <Link className="dropdown-item" to="/settings">
-                    Settings
+                  <i className="fa fa-cog"></i>Settings
                   </Link>
                   <div className="dropdown-divider"></div>
                   <button
                     className="dropdown-item btn btn-danger"
                     onClick={handleLogout}
                   >
-                    Logout
+                    <i className="fa fa-sign-out "></i>Logout
                   </button>
                 </div>
               </li>
