@@ -7,7 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Navbar = () => {
-  const { loggedIn, UserRoleId, handleLogout } = useContext(AuthContext);
+  const { loggedIn, UserRoleId, username, handleLogout } =
+    useContext(AuthContext);
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
@@ -27,7 +28,7 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="collapsibleNavbar">
+          <div className="collapse navbar-collapse " id="collapsibleNavbar">
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link" to="/task">
@@ -48,10 +49,37 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              <li className="nav-item">
-                <button className="nav-link" onClick={handleLogout}>
-                  Log Out
+            </ul>
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item dropdown">
+                <button
+                  className="nav-link btn btn-secondary dropdown-toggle"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  style={{ marginRight: "10px" }}
+                >
+                  {username}
                 </button>
+                <div
+                  className="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <Link className="dropdown-item" to="/profile">
+                    Profile
+                  </Link>
+                  <Link className="dropdown-item" to="/settings">
+                    Settings
+                  </Link>
+                  <div className="dropdown-divider"></div>
+                  <button
+                    className="dropdown-item btn btn-danger"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
               </li>
             </ul>
           </div>

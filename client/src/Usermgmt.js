@@ -8,8 +8,9 @@ import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "font-awesome/css/font-awesome.min.css";
 
-const Usermgmt = () => {
+const Usermgmt = (handleDelete, handleEdit) => {
   const { loggedIn, companyName } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
@@ -42,9 +43,10 @@ const Usermgmt = () => {
 
   return (
     <div>
-      <h1>User Management</h1>
-      <h2>User List for {companyName}</h2>
-      <table className="table">
+      <center>
+        <h1>{companyName}</h1>
+      </center>
+      <table className="table table-dark table-striped table-hover table-bordered">
         <thead>
           <tr>
             <th>User ID</th>
@@ -54,6 +56,7 @@ const Usermgmt = () => {
             <th>Email</th>
             <th>Company</th>
             <th>UserRole</th>
+            <th className="text-center">Action</th>
             {/* Add more fields as needed */}
           </tr>
         </thead>
@@ -67,7 +70,20 @@ const Usermgmt = () => {
               <td>{user.Email}</td>
               <td>{user.CompanyName}</td>
               <td>{user.RoleType}</td>
-
+              <td className="text-center">
+                <button
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => handleEdit(user.UserID)}
+                >
+                  <i className="fa fa-pencil" aria-hidden="true"></i> Edit
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDelete(user.UserID)}
+                >
+                  <i className="fa fa-trash" aria-hidden="true"></i> Delete
+                </button>
+              </td>
               {/* Add more fields as needed */}
             </tr>
           ))}
