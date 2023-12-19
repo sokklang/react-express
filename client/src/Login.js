@@ -26,7 +26,7 @@ const Login = () => {
       if (loggedIn) {
         handleLogin(
           user.username,
-          user.UserRoleId,
+          user.UserID,
           user.RoleType,
           user.CompanyName,
           user.UserRoleId
