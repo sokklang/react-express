@@ -6,8 +6,19 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { AuthContext } from "./AuthContext";
 
 const Home = () => {
-  const { username, loggedIn, userid, userroletype, companyName, UserRoleId } =
-    useContext(AuthContext);
+  const {
+    username,
+    firstname,
+    lastname,
+    email,
+    loggedIn,
+    userid,
+    userroletype,
+    companyName,
+    companyAddress,
+    companyindustry,
+    UserRoleId,
+  } = useContext(AuthContext);
   //const userid = localStorage.getItem("userid");
   //const userroletype = localStorage.getItem("userroletype");
   //const companyName = localStorage.getItem("companyName");
@@ -30,9 +41,11 @@ const Home = () => {
               </div>
               <div className="card-body">
                 <p className="card-text">
-                  Hello, {username}! Your UserId is {userid} and RoleType is{" "}
-                  {userroletype} . Welcome back to {companyName}. UserRoleId ={" "}
-                  {UserRoleId}.
+                  Hello, username: {username} firstname: {firstname} lastname:{" "}
+                  {lastname} email : {email} ! Your UserId is {userid} and
+                  RoleType is {userroletype} . Welcome back to companyname :
+                  {companyName} companyAddress :{companyAddress} and
+                  companyindustry {companyindustry}. UserRoleId = {UserRoleId}.
                 </p>
                 {/* You can add the content of your home page here */}
               </div>

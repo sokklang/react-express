@@ -146,10 +146,15 @@ async function loginUser(req, res) {
 
         const responseData = {
           userid: user.UserID,
-          companyName: user.CompanyName,
           username: user.username,
-          UserRoleId: user.UserRoleId,
+          firstname: user.FirstName,
+          lastname: user.LastName,
+          userroleid: user.UserRoleId,
           userroletype: user.RoleType,
+          email: user.Email,
+          companyaddress: user.Address,
+          companyindustry: user.Industry,
+          companyname: user.CompanyName,
         };
 
         res.status(200).json(responseData);

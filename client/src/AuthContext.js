@@ -5,25 +5,40 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [userid, setUserId] = useState("");
   const [userroletype, setUserRoleType] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [companyAddress, setCompanyAddress] = useState("");
+  const [companyindustry, setCompanyIndustry] = useState("");
   const [UserRoleId, setUserRoleId] = useState("");
 
   const handleLogin = (
     loggedInUsername,
-    LoggedInUserId,
+    loggedInFirstname,
+    loggedInLastname,
+    loggedInEmail,
+    loggedInUserId,
     loggedInUserRoleType,
-    LoggedInCompanyName,
-    LoggedInUserRoleId
+    loggedInCompanyName,
+    loggedInCompanyAddress,
+    loggedInCompanyIndustry,
+    loggedInUserRoleId
   ) => {
     setUsername(loggedInUsername);
-    setUserId(LoggedInUserId);
+    setFirstname(loggedInFirstname);
+    setLastname(loggedInLastname);
+    setEmail(loggedInEmail);
+    setUserId(loggedInUserId);
     setUserRoleType(loggedInUserRoleType);
     setLoggedIn(true);
-    setCompanyName(LoggedInCompanyName);
-    setUserRoleId(LoggedInUserRoleId);
+    setCompanyName(loggedInCompanyName);
+    setCompanyAddress(loggedInCompanyAddress);
+    setCompanyIndustry(loggedInCompanyIndustry);
+    setUserRoleId(loggedInUserRoleId);
   };
 
   const handleLogout = async () => {
@@ -36,10 +51,15 @@ export const AuthProvider = ({ children }) => {
 
       if (response.data.success) {
         setUsername("");
+        setFirstname("");
+        setLastname("");
+        setEmail("");
         setUserId("");
         setUserRoleType("");
         setLoggedIn(false);
         setCompanyName("");
+        setCompanyAddress("");
+        setCompanyIndustry("");
         setUserRoleId("");
       }
     } catch (error) {
@@ -51,10 +71,15 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         username,
+        firstname,
+        lastname,
+        email,
         loggedIn,
         userid,
         userroletype,
         companyName,
+        companyAddress,
+        companyindustry,
         UserRoleId,
         handleLogin,
         handleLogout,

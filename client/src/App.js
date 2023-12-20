@@ -16,6 +16,7 @@ import Approval from "./Approval";
 import Usermgmt from "./Usermgmt";
 import Profile from "./Profile";
 import Settings from "./Settings";
+import Notification from "./Notification";
 import Nopage from "./Nopage";
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/Approval" element={<Approval />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Settings" element={<Settings />} />
+        <Route path="/Notification" element={<Notification />} />
         <Route path="*" element={<Nopage />} />
       </Routes>
     </Router>

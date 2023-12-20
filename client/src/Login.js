@@ -26,9 +26,14 @@ const Login = () => {
       if (loggedIn) {
         handleLogin(
           user.username,
+          user.FirstName,
+          user.LastName,
+          user.Email,
           user.UserID,
           user.RoleType,
           user.CompanyName,
+          user.Address,
+          user.Industry,
           user.UserRoleId
         );
       } else {
@@ -60,11 +65,16 @@ const Login = () => {
       );
 
       const {
-        userid,
-        companyName,
         username: loggedInUsername,
-        UserRoleId,
+        firstname,
+        lastname,
+        email,
+        userid,
         userroletype,
+        companyname,
+        companyaddress,
+        companyindustry,
+        userroleid,
       } = response.data;
 
       // Save the token to localStorage
@@ -76,10 +86,15 @@ const Login = () => {
 
       handleLogin(
         loggedInUsername,
+        firstname,
+        lastname,
+        email,
         userid,
         userroletype,
-        companyName,
-        UserRoleId
+        companyname,
+        companyaddress,
+        companyindustry,
+        userroleid
       );
       navigate("/home");
     } catch (error) {
@@ -135,7 +150,7 @@ const Login = () => {
                     className="btn btn-primary"
                     onClick={checkLogininput}
                   >
-                    Login
+                    <i className="fa fa-sign-in fa-fw me-2"></i>Login
                   </button>
                   <Link to="/register" className="btn btn-link">
                     Register
