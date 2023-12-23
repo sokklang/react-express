@@ -9,28 +9,66 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
-const Usermgmt = (handleDelete, handleEdit, handleDetail, handleCreateUser) => {
-  const { loggedIn, companyName } = useContext(AuthContext);
+const Usermgmt = (handleDelete, handleEdit, handleDetail) => {
+  const { loggedIn, companyName, companyAddress, companyindustry } =
+    useContext(AuthContext);
+
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/getuserdata",
-          { withCredentials: true }
-        );
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [password, setPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-        if (response.status === 200) {
-          setUsers(response.data);
-          console.log("Fetched user data:", response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/getuserdata",
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        setUsers(response.data);
+        console.log("Fetched user data:", response.data);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
+  const handleCreateUser = async () => {
+    if (!username || !email || !password) {
+      setErrorMessage("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/register", {
+        username,
+        firstname,
+        lastname,
+        password,
+        companyname: companyName,
+        companyaddress: companyAddress,
+        industry: companyindustry,
+        email,
+      });
+
+      setSuccessMessage(response.data.message);
+      setErrorMessage(""); // Clear any previous error message
+      // Trigger useEffect by calling fetchUserData
+      fetchUserData();
+    } catch (error) {
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
     if (loggedIn) {
       fetchUserData();
     }
@@ -65,11 +103,124 @@ const Usermgmt = (handleDelete, handleEdit, handleDetail, handleCreateUser) => {
             className="form-control me-2"
           />
           <button
-            className="btn btn-primary"
-            onClick={() => handleCreateUser()}
+            type="button"
+            className="btn btn-primary text-nowrap"
+            data-bs-toggle="modal"
+            data-bs-target="#userModal"
           >
-            <i className="fa fa-plus" aria-hidden="true"></i> Create User
+            <i className="fa fa-plus me-2" aria-hidden="true"></i> Add User
           </button>
+          <div
+            className="modal fade"
+            id="userModal"
+            tabIndex="-1"
+            role="dialog"
+            aria-labelledby="userModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="userModalLabel">
+                    Add User
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <i className="fa fa-window-close" aria-hidden="true"></i>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label htmlFor="username">Username</label>
+                      <input
+                        type="text"
+                        placeholder="Enter Username"
+                        className="form-control"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="firstname">First Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter Firstname"
+                        className="form-control"
+                        id="firstname"
+                        value={firstname}
+                        onChange={(e) => setFirstname(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lastname">Last Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter Lastname"
+                        className="form-control"
+                        id="lastname"
+                        value={lastname}
+                        onChange={(e) => setLastname(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="password">Password</label>
+                      <input
+                        type="password"
+                        placeholder="Enter Password"
+                        className="form-control"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email">Email</label>
+                      <input
+                        type="email"
+                        placeholder="Enter Email"
+                        className="form-control"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                    {successMessage && (
+                      <div className="alert alert-success" role="alert">
+                        {successMessage}
+                      </div>
+                    )}
+                    {errorMessage && (
+                      <div className="alert alert-danger" role="alert">
+                        {errorMessage}
+                      </div>
+                    )}
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => handleCreateUser()}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
