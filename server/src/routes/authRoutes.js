@@ -16,4 +16,10 @@ router.get(
   authController.getUserData
 );
 
+router.delete(
+  "/deleteuser/:userIdToDelete", // Add the userId parameter to the route
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  authController.deleteUserData
+);
 module.exports = router;

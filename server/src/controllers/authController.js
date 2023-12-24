@@ -228,10 +228,49 @@ async function getUserData(req, res) {
   }
 }
 
+async function deleteUserData(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  const { userIdToDelete } = req.params; // Assuming the userIdToDelete is passed as a URL parameter
+  const loggedInUserId = req.session.user.UserID; // Assuming the user ID is stored in the session
+
+  // Check if the user to be deleted is the same as the logged-in user
+  if (parseInt(userIdToDelete, 10) === loggedInUserId) {
+    return res.status(403).json({ error: "User cannot delete their own account" });
+  }
+
+  // Disable foreign key constraints
+  db.run("PRAGMA foreign_keys = '0';");
+
+  // Proceed with the deletion
+  db.run("DELETE FROM User WHERE UserID = ?", [userIdToDelete], function (
+    error
+  ) {
+    if (error) {
+      console.error(error);
+      // Re-enable foreign key constraints
+      db.run("PRAGMA foreign_keys = '1';");
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (this.changes === 0) {
+      // Re-enable foreign key constraints
+      db.run("PRAGMA foreign_keys = '1';");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Re-enable foreign key constraints
+    db.run("PRAGMA foreign_keys = '1';");
+
+    res.status(200).json({ message: "User deleted successfully" });
+  });
+}
+
+
 module.exports = {
   registerUser,
   loginUser,
   checkLoginStatus,
   logoutUser,
   getUserData,
+  deleteUserData,
 };

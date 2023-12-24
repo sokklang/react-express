@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
-const Usermgmt = (handleDelete, handleEdit, handleDetail) => {
+const Usermgmt = ( handleEdit, handleDetail) => {
   const { loggedIn, companyName, companyAddress, companyindustry } =
     useContext(AuthContext);
 
@@ -65,6 +65,26 @@ const Usermgmt = (handleDelete, handleEdit, handleDetail) => {
     } catch (error) {
       setSuccessMessage("");
       setErrorMessage(error.response.data.message);
+    }
+  };
+
+  const handleDelete = async (userIdToDelete) => {
+    console.log(userIdToDelete)
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/deleteuser/${userIdToDelete}`,
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        setSuccessMessage(response.data.message);
+        setErrorMessage("");
+        // Trigger useEffect by calling fetchUserData
+        fetchUserData();
+      }
+    } catch (error) {
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.error);
     }
   };
 

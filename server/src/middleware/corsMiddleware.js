@@ -5,8 +5,15 @@ function corsMiddleware(req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
-  console.log(`Received ${req.method} request for ${req.url}`);
-  next();
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE"); // Include allowed methods
+
+  // Check if it's an OPTIONS request (preflight)
+  if (req.method === 'OPTIONS') {
+    res.status(200).end(); // Respond with a 200 status for preflight requests
+  } else {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    next();
+  }
 }
 
 module.exports = corsMiddleware;
