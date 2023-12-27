@@ -19,6 +19,9 @@ import Settings from "./Settings";
 import Notification from "./Notification";
 import Nopage from "./Nopage";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+
 const App = () => {
   const { loggedIn } = useContext(AuthContext);
 

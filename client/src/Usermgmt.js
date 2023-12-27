@@ -1,26 +1,28 @@
 // Usermgmt.js
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "font-awesome/css/font-awesome.min.css";
 
-const Usermgmt = ( handleEdit, handleDetail) => {
-  const { loggedIn, companyName, companyAddress, companyindustry } =
-    useContext(AuthContext);
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "font-awesome/css/font-awesome.min.css";
+import UserModal from "./Addusermodal";
+
+const Usermgmt = () => {
+  const {
+    loggedIn,
+    companyName,
+    companyAddress,
+    companyindustry,
+    handleDetail,
+    handleEdit,
+  } = useContext(AuthContext);
 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [password, setPassword] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -40,22 +42,23 @@ const Usermgmt = ( handleEdit, handleDetail) => {
     }
   };
 
-  const handleCreateUser = async () => {
-    if (!username || !email || !password) {
+  const handleCreateUser = async (userData) => {
+    if (!userData.username || !userData.email || !userData.password) {
+      // Add validation for other fields if needed
       setErrorMessage("Please fill in all fields.");
       return;
     }
 
     try {
       const response = await axios.post("http://localhost:5000/api/register", {
-        username,
-        firstname,
-        lastname,
-        password,
+        username: userData.username,
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        password: userData.password,
         companyname: companyName,
         companyaddress: companyAddress,
         industry: companyindustry,
-        email,
+        email: userData.email,
       });
 
       setSuccessMessage(response.data.message);
@@ -69,7 +72,6 @@ const Usermgmt = ( handleEdit, handleDetail) => {
   };
 
   const handleDelete = async (userIdToDelete) => {
-    console.log(userIdToDelete)
     try {
       const response = await axios.delete(
         `http://localhost:5000/api/deleteuser/${userIdToDelete}`,
@@ -77,14 +79,12 @@ const Usermgmt = ( handleEdit, handleDetail) => {
       );
 
       if (response.status === 200) {
-        setSuccessMessage(response.data.message);
-        setErrorMessage("");
+        console.log(response.data.message);
         // Trigger useEffect by calling fetchUserData
         fetchUserData();
       }
     } catch (error) {
-      setSuccessMessage("");
-      setErrorMessage(error.response.data.error);
+      console.error(error.response.data.error);
     }
   };
 
@@ -125,122 +125,21 @@ const Usermgmt = ( handleEdit, handleDetail) => {
           <button
             type="button"
             className="btn btn-primary text-nowrap"
-            data-bs-toggle="modal"
-            data-bs-target="#userModal"
+            onClick={() => setShowModal(true)}
           >
             <i className="fa fa-plus me-2" aria-hidden="true"></i> Add User
           </button>
-          <div
-            className="modal fade"
-            id="userModal"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="userModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="userModalLabel">
-                    Add User
-                  </h5>
-                  <button
-                    type="button"
-                    className="close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <i className="fa fa-window-close" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <form>
-                    <div className="form-group">
-                      <label htmlFor="username">Username</label>
-                      <input
-                        type="text"
-                        placeholder="Enter Username"
-                        className="form-control"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="firstname">First Name</label>
-                      <input
-                        type="text"
-                        placeholder="Enter Firstname"
-                        className="form-control"
-                        id="firstname"
-                        value={firstname}
-                        onChange={(e) => setFirstname(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="lastname">Last Name</label>
-                      <input
-                        type="text"
-                        placeholder="Enter Lastname"
-                        className="form-control"
-                        id="lastname"
-                        value={lastname}
-                        onChange={(e) => setLastname(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="password">Password</label>
-                      <input
-                        type="password"
-                        placeholder="Enter Password"
-                        className="form-control"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="email">Email</label>
-                      <input
-                        type="email"
-                        placeholder="Enter Email"
-                        className="form-control"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </div>
-                    {successMessage && (
-                      <div className="alert alert-success" role="alert">
-                        {successMessage}
-                      </div>
-                    )}
-                    {errorMessage && (
-                      <div className="alert alert-danger" role="alert">
-                        {errorMessage}
-                      </div>
-                    )}
-                  </form>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-bs-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => handleCreateUser()}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <UserModal
+            showModal={showModal}
+            handleClose={() => {
+              setShowModal(false);
+              setErrorMessage(""); // Clear error message
+              setSuccessMessage("");
+            }}
+            handleCreateUser={handleCreateUser}
+            successMessage={successMessage}
+            errorMessage={errorMessage}
+          />
         </div>
       </div>
 

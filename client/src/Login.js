@@ -4,7 +4,7 @@ import axios from "axios";
 import { AuthContext } from "./AuthContext"; // Import AuthContext
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 const Login = () => {
   const [username, setUsername] = useState("");

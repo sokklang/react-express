@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +12,7 @@ const Register = () => {
   const [lastname, setLastname] = useState("");
   const [companyname, setCompanyname] = useState("");
   const [companyaddress, setCompanyaddress] = useState("");
-  const [industry, setIndustry] = useState("")
+  const [industry, setIndustry] = useState("");
 
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -161,7 +161,7 @@ const Register = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="mb-3">
                   <button type="submit" className="btn btn-primary">
                     Register

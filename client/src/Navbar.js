@@ -4,7 +4,7 @@ import { AuthContext } from "./AuthContext";
 import { useContext } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
 const Navbar = () => {
@@ -34,26 +34,26 @@ const Navbar = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link className="nav-link" to="/task">
-                  <i className="fa fa-tasks fa-fw"></i>Task
+                  <i className="fa fa-tasks fa-fw me-1"></i>Task
                 </Link>
               </li>
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/approval">
-                    <i className="fa fa-check fa-fw"></i>Approval
+                    <i className="fa fa-check fa-fw me-1"></i>Approval
                   </Link>
                 </li>
               )}
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/usermgmt">
-                    <i className="fa fa-users fa-fw"></i>User Mgmt
+                    <i className="fa fa-users fa-fw me-1"></i>User Mgmt
                   </Link>
                 </li>
               )}
               <li className="nav-item">
                 <Link className="nav-link" to="/notification">
-                  <i className="fa fa-bell fa-fw"></i>Notification{" "}
+                  <i className="fa fa-bell fa-fw me-1"></i>Notification{" "}
                   {notificationCount > 0 && (
                     <span className="badge bg-danger">{notificationCount}</span>
                   )}
@@ -70,24 +70,24 @@ const Navbar = () => {
                   aria-expanded="false"
                   style={{ marginRight: "10px" }}
                 >
-                  <i className="fa fa-user-circle-o fa-fw"></i> {username}
+                  <i className="fa fa-user-circle-o fa-fw "></i> {username}
                 </button>
                 <div
-                  className="dropdown-menu dropdown-menu-end"
+                  className="dropdown-menu dropdown-menu-dark dropdown-menu-end"
                   aria-labelledby="dropdownMenuButton"
                 >
                   <Link className="dropdown-item" to="/profile">
-                    <i className="fa fa-address-card fa-fw"></i>Profile
+                    <i className="fa fa-address-card fa-fw me-2"></i>Profile
                   </Link>
                   <Link className="dropdown-item" to="/settings">
-                    <i className="fa fa-cog fa-fw"></i>Settings
+                    <i className="fa fa-cog fa-fw me-2 "></i>Settings
                   </Link>
                   <div className="dropdown-divider"></div>
                   <button
                     className="dropdown-item btn btn-danger"
                     onClick={handleLogout}
                   >
-                    <i className="fa fa-sign-out fa-fw "></i>Logout
+                    <i className="fa fa-sign-out fa-fw me-2 "></i>Logout
                   </button>
                 </div>
               </li>
