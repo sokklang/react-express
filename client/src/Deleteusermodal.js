@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+//Deleteusermodal.js
 
-const DeleteModal = ({ onDelete, onClose }) => {
-  const [show, setShow] = useState(true);
-
-  const handleClose = () => {
-    setShow(false);
-    onClose();
-  };
-
-  const handleDelete = () => {
-    onDelete();
+const DeleteModal = ({
+  showModal,
+  handleClose,
+  handleDelete,
+  selectDeleteId,
+}) => {
+  const onDelete = async () => {
+    handleDelete(selectDeleteId);
     handleClose();
   };
 
   return (
     <div
-      className={`modal fade ${show ? "show" : ""}`}
-      tabIndex="-1"
-      role="dialog"
-      style={{ display: show ? "block" : "none" }}
+      className={`modal fade ${showModal ? "show" : ""}`}
+      style={{ display: showModal ? "block" : "none" }}
+      data-bs-theme="dark"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
@@ -32,7 +29,7 @@ const DeleteModal = ({ onDelete, onClose }) => {
             ></button>
           </div>
           <div className="modal-body">
-            <p>Are you sure you want to delete?</p>
+            <p>Confirm Delete User ID : {selectDeleteId} ?</p>
           </div>
           <div className="modal-footer">
             <button
@@ -42,11 +39,7 @@ const DeleteModal = ({ onDelete, onClose }) => {
             >
               Cancel
             </button>
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={handleDelete}
-            >
+            <button type="button" className="btn btn-danger" onClick={onDelete}>
               Delete
             </button>
           </div>

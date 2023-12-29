@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 import UserModal from "./Addusermodal";
+import DeleteModal from "./Deleteusermodal";
 
 const Usermgmt = () => {
   const {
@@ -22,7 +23,9 @@ const Usermgmt = () => {
 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
+  const [selectDeleteId, setSelectDeleteId] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -125,14 +128,14 @@ const Usermgmt = () => {
           <button
             type="button"
             className="btn btn-primary text-nowrap"
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowUserModal(true)}
           >
             <i className="fa fa-plus me-2" aria-hidden="true"></i> Add User
           </button>
           <UserModal
-            showModal={showModal}
+            showModal={showUserModal}
             handleClose={() => {
-              setShowModal(false);
+              setShowUserModal(false);
               setErrorMessage(""); // Clear error message
               setSuccessMessage("");
             }}
@@ -183,10 +186,23 @@ const Usermgmt = () => {
                   </button>
                   <button
                     className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(user.UserID)}
+                    onClick={() => {
+                      setShowDeleteUserModal(true);
+                      setSelectDeleteId(user.UserID);
+                    }}
                   >
                     <i className="fa fa-trash" aria-hidden="true"></i> Delete
                   </button>
+                  <DeleteModal
+                    showModal={showDeleteUserModal}
+                    handleClose={() => {
+                      setShowDeleteUserModal(false);
+                      setSelectDeleteId("");
+                    }}
+                    handleDelete={handleDelete}
+                    selectDeleteId={selectDeleteId}
+                    //userIdToDelete={user.UserID}
+                  />
                 </td>
                 {/* Add more fields as needed */}
               </tr>
