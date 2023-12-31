@@ -10,6 +10,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 import UserModal from "./Addusermodal";
 import DeleteModal from "./Deleteusermodal";
+import Detailusermodal from "./Detailusermodal";
 
 const Usermgmt = () => {
   const {
@@ -17,7 +18,7 @@ const Usermgmt = () => {
     companyName,
     companyAddress,
     companyindustry,
-    handleDetail,
+    
     handleEdit,
   } = useContext(AuthContext);
 
@@ -25,9 +26,15 @@ const Usermgmt = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showUserModal, setShowUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
+  const [showDetailUserModal, setShowDetailUserModal]= useState(false);
   const [selectDeleteId, setSelectDeleteId] = useState("");
+  const [selectDeleteUsername, setSelectDeleteUsername] = useState("");
+  const [selectDetailUser, setSelectDetailUser] = useState("");
+
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  
 
   const fetchUserData = async () => {
     try {
@@ -152,10 +159,7 @@ const Usermgmt = () => {
             <tr>
               <th>User ID</th>
               <th>Username</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Company</th>
+                            
               <th>UserRole</th>
               <th className="text-center">Action</th>
               {/* Add more fields as needed */}
@@ -166,21 +170,31 @@ const Usermgmt = () => {
               <tr key={user.UserID}>
                 <td>{user.UserID}</td>
                 <td>{user.Username}</td>
-                <td>{user.FirstName}</td>
-                <td>{user.LastName}</td>
-                <td>{user.Email}</td>
-                <td>{user.CompanyName}</td>
+                            
                 <td>{user.RoleType}</td>
                 <td className="text-center">
                   <button
                     className="btn btn-success btn-sm me-2"
-                    onClick={() => handleDetail(user.UserID)}
+                    onClick={() => {
+                      setShowDetailUserModal(true);
+                      setSelectDetailUser(user);
+                      
+                    }}
                   >
                     <i className="fa fa-eye" aria-hidden="true"></i> Detail
                   </button>
+                  <Detailusermodal 
+                  showModal={showDetailUserModal}
+                  selectDetailUser = {selectDetailUser}
+                  handleClose={() => {
+                    setShowDetailUserModal(false);
+                    setSelectDetailUser("");
+                    
+                  }}
+                  />
                   <button
                     className="btn btn-warning btn-sm me-2"
-                    onClick={() => handleEdit(user.UserID)}
+                    onClick={handleEdit}
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                   </button>
@@ -189,6 +203,7 @@ const Usermgmt = () => {
                     onClick={() => {
                       setShowDeleteUserModal(true);
                       setSelectDeleteId(user.UserID);
+                      setSelectDeleteUsername(user.Username);
                     }}
                   >
                     <i className="fa fa-trash" aria-hidden="true"></i> Delete
@@ -198,10 +213,12 @@ const Usermgmt = () => {
                     handleClose={() => {
                       setShowDeleteUserModal(false);
                       setSelectDeleteId("");
+                      setSelectDeleteUsername("");
                     }}
                     handleDelete={handleDelete}
                     selectDeleteId={selectDeleteId}
-                    //userIdToDelete={user.UserID}
+                    selectDeleteUsername={selectDeleteUsername}
+                   
                   />
                 </td>
                 {/* Add more fields as needed */}

@@ -5,6 +5,7 @@ const DeleteModal = ({
   handleClose,
   handleDelete,
   selectDeleteId,
+  selectDeleteUsername,
 }) => {
   const onDelete = async () => {
     handleDelete(selectDeleteId);
@@ -20,7 +21,7 @@ const DeleteModal = ({
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Warning!</h5>
+            <h5 className="modal-title"><i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!</h5>
             <button
               type="button"
               className="btn-close"
@@ -29,7 +30,7 @@ const DeleteModal = ({
             ></button>
           </div>
           <div className="modal-body">
-            <p>Confirm Delete User ID : {selectDeleteId} ?</p>
+            <p>Confirm Delete Username : {selectDeleteUsername} with User ID : {selectDeleteId} ?</p>
           </div>
           <div className="modal-footer">
             <button
