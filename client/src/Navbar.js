@@ -30,9 +30,9 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse " id="collapsibleNavbar">
+          <div className="collapse navbar-collapse text-nowrap" id="collapsibleNavbar">
             <ul className="navbar-nav">
-              <li className="nav-item">
+              <li className="nav-item ">
                 <Link className="nav-link" to="/task">
                   <i className="fa fa-tasks fa-fw me-1"></i>Task
                 </Link>

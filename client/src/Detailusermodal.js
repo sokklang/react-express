@@ -11,7 +11,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title"><i className="fa fa-info fa-fw me-2"></i>User Details: {selectDetailUser.Username}</h5>
+            <h5 className="modal-title"><i className="fa fa-info fa-fw"></i>User Details : {selectDetailUser.Username}</h5>
             <button
               type="button"
               className="btn-close"

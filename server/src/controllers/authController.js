@@ -265,6 +265,50 @@ async function deleteUserData(req, res) {
   });
 }
 
+async function updateUserData(req, res) {
+  const requestingUserRole = req.session.user.RoleType;
+
+  // Check if the requesting user is an admin
+  if (requestingUserRole !== "Admin User") {
+    return res.status(403).json({ message: "Forbidden: Admin access required" });
+  }
+
+  const userIdToUpdate = req.params.userIdToUpdate; // Corrected parameter name
+
+  // Fetch user data for the specified user
+  db.get("SELECT * FROM User WHERE UserID = ?", [userIdToUpdate], (err, user) => {
+    if (err) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Extract and validate update data from the request body
+    const { FirstName, LastName, Email, RoleType } = req.body;
+
+    if (!FirstName || !LastName || !Email || !RoleType) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Map RoleType to RoleId
+    const roleId = RoleType === 'Admin User' ? 2 : 1;
+
+    // Update the user information in the database
+    db.run(
+      "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=? WHERE UserID=?",
+      [FirstName, LastName, Email, roleId, RoleType, userIdToUpdate],
+      (updateErr) => {
+        if (updateErr) {
+          return res.status(500).json({ message: "Internal Server Error" });
+        }
+
+        return res.json({ message: "User information updated successfully" });
+      }
+    );
+  });
+}
 
 module.exports = {
   registerUser,
@@ -273,4 +317,5 @@ module.exports = {
   logoutUser,
   getUserData,
   deleteUserData,
+  updateUserData,
 };

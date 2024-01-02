@@ -21,5 +21,10 @@ router.delete(
   middleware.checkLoggedIn,
   middleware.isAdmin,
   authController.deleteUserData
+
 );
+
+router.put("/updateuserdata/:userIdToUpdate", middleware.checkLoggedIn, middleware.isAdmin, authController.updateUserData);
+
 module.exports = router;
+

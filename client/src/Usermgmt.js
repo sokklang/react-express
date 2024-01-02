@@ -11,6 +11,7 @@ import "font-awesome/css/font-awesome.min.css";
 import UserModal from "./Addusermodal";
 import DeleteModal from "./Deleteusermodal";
 import Detailusermodal from "./Detailusermodal";
+import Editusermodal from "./Editusermodal";
 
 const Usermgmt = () => {
   const {
@@ -19,7 +20,6 @@ const Usermgmt = () => {
     companyAddress,
     companyindustry,
     
-    handleEdit,
   } = useContext(AuthContext);
 
   const [users, setUsers] = useState([]);
@@ -27,10 +27,11 @@ const Usermgmt = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
   const [showDetailUserModal, setShowDetailUserModal]= useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [selectDeleteId, setSelectDeleteId] = useState("");
   const [selectDeleteUsername, setSelectDeleteUsername] = useState("");
   const [selectDetailUser, setSelectDetailUser] = useState("");
-
+  const [selectEditUser, setSelectEditUser]= useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -97,6 +98,30 @@ const Usermgmt = () => {
       console.error(error.response.data.error);
     }
   };
+
+  const handleUpdate = async (updatedUserData) => {
+    const userIdToUpdate = selectEditUser.UserID;
+  
+    try {
+      console.log(updatedUserData);
+      console.log(userIdToUpdate);
+      const response = await axios.put(
+        `http://localhost:5000/api/updateuserdata/${userIdToUpdate}`,
+        updatedUserData,
+        { withCredentials: true }
+      );
+  
+      if (response.status === 200) {
+        console.log(response.data.message);
+        fetchUserData();
+        setShowEditUserModal(false); // Close the modal after a successful update
+      }
+    } catch (error) {
+      console.error(error.response.data.error);
+    }
+  };
+
+
 
   useEffect(() => {
     if (loggedIn) {
@@ -194,10 +219,28 @@ const Usermgmt = () => {
                   />
                   <button
                     className="btn btn-warning btn-sm me-2"
-                    onClick={handleEdit}
+                    onClick={() => {setShowEditUserModal(true);
+                    setSelectEditUser(user);
+
+                    }}
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                   </button>
+                  <Editusermodal showModal={showEditUserModal}
+                  selectEditUser = {selectEditUser}
+                  handleUpdate = {handleUpdate}
+                  handleClose = {() => {
+                    setShowEditUserModal(false);
+                    setSelectEditUser("");
+                    
+
+                  }}
+
+                 
+
+                  />
+
+
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => {
