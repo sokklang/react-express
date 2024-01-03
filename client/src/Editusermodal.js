@@ -1,26 +1,36 @@
 // EdituserModal.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
-const Editusermodal = ({ showModal, handleClose, handleUpdate
-  , selectEditUser }) => {
+const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, handleUpdate, selectEditUser }) => {
   
   const [updatedUserData, setUpdatedUserData] = useState({
     FirstName: selectEditUser?.FirstName || "",
     LastName: selectEditUser?.LastName || "",
     RoleType: selectEditUser?.RoleType || "",
     Email: selectEditUser?.Email || "",
-    
   });
-  
+
+  const [roleOptions] = useState(["Admin User", "Standard User"]);
+
+  useEffect(() => {
+    if (selectEditUser) {
+      setUpdatedUserData({
+        FirstName: selectEditUser.FirstName || "",
+        LastName: selectEditUser.LastName || "",
+        RoleType: selectEditUser.RoleType || "",
+        Email: selectEditUser.Email || "",
+      });
+    }
+  }, [selectEditUser]);
+
   const handleEdit = () => {
-    console.log(updatedUserData)
+    console.log(updatedUserData);
     // Call the handleUpdateUser function with the updatedUserData
     handleUpdate(updatedUserData);
-    
   };
 
   return (
@@ -86,16 +96,29 @@ const Editusermodal = ({ showModal, handleClose, handleUpdate
                 <label htmlFor="formEditRoleType" className="form-label">
                   RoleType
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
+                <select
+                  className="form-select"
                   id="formEditRoleType"
-                  placeholder="Enter RoleType"
                   value={updatedUserData.RoleType}
                   onChange={(e) => setUpdatedUserData({ ...updatedUserData, RoleType: e.target.value })}
-                />
+                >
+                  {roleOptions.map((role, index) => (
+                    <option key={index} value={role}>
+                      {role}
+                    </option>
+                  ))}
+                </select>
               </div>
               {/* Add more fields for editing, if necessary */}
+              {errorMessage ? (
+                <div className="alert alert-danger mt-3" role="alert">
+                  {errorMessage}
+                </div>
+              ) : successMessage ? (
+                <div className="alert alert-success mt-3" role="alert">
+                  {successMessage}
+                </div>
+              ) : null}
             </form>
           </div>
           <div className="modal-footer">

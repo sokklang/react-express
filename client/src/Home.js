@@ -20,10 +20,8 @@ const Home = () => {
     companyindustry,
     UserRoleId,
   } = useContext(AuthContext);
-  //const userid = localStorage.getItem("userid");
-  //const userroletype = localStorage.getItem("userroletype");
-  //const companyName = localStorage.getItem("companyName");
-  //const UserRoleId = localStorage.getItem("UserRoleId");
+
+  
 
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page

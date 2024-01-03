@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [companyAddress, setCompanyAddress] = useState("");
   const [companyindustry, setCompanyIndustry] = useState("");
   const [UserRoleId, setUserRoleId] = useState("");
+  
 
   const handleLogin = (
     loggedInUsername,

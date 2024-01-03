@@ -146,7 +146,7 @@ async function loginUser(req, res) {
 
         const responseData = {
           userid: user.UserID,
-          username: user.username,
+          username: user.Username,
           firstname: user.FirstName,
           lastname: user.LastName,
           userroleid: user.UserRoleId,
@@ -207,7 +207,7 @@ async function getUserData(req, res) {
         // Omit sensitive information like password hash before sending the response
         const sanitizedUsersData = usersData.map((user) => ({
           UserID: user.UserID,
-          Username: user.username,
+          Username: user.Username,
           FirstName: user.FirstName,
           LastName: user.LastName,
           Email: user.Email,

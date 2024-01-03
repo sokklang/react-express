@@ -112,12 +112,14 @@ const Usermgmt = () => {
       );
   
       if (response.status === 200) {
-        console.log(response.data.message);
+        setSuccessMessage(response.data.message);
+        setErrorMessage("");
         fetchUserData();
-        setShowEditUserModal(false); // Close the modal after a successful update
+        
       }
     } catch (error) {
-      console.error(error.response.data.error);
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.message);
     }
   };
 
@@ -134,9 +136,15 @@ const Usermgmt = () => {
     return <Navigate to="/login" />;
   }
 
+  console.log("User Objects:", users);
+  
   const filteredUsers = users.filter((user) =>
-    user.Username.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  user && user.Username && user.Username.toLowerCase().includes(searchTerm.toLowerCase())
+);
+console.log("Filtered Users:", filteredUsers);
+console.log("Search Term:", searchTerm);
+console.log("Search Term:", searchTerm.trim());
+
 
   return (
     <div className="container-fluid mt-5 p-3 border">
@@ -232,15 +240,13 @@ const Usermgmt = () => {
                   handleClose = {() => {
                     setShowEditUserModal(false);
                     setSelectEditUser("");
-                    
-
+                    setErrorMessage(""); // Clear error message
+                    setSuccessMessage("");
+            
                   }}
-
-                 
-
+                  successMessage={successMessage}
+                  errorMessage={errorMessage}  
                   />
-
-
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => {
