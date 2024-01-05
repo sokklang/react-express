@@ -14,28 +14,21 @@ import Detailusermodal from "./Detailusermodal";
 import Editusermodal from "./Editusermodal";
 
 const Usermgmt = () => {
-  const {
-    loggedIn,
-    companyName,
-    companyAddress,
-    companyindustry,
-    
-  } = useContext(AuthContext);
+  const { loggedIn, companyName, companyAddress, companyindustry } =
+    useContext(AuthContext);
 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showUserModal, setShowUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
-  const [showDetailUserModal, setShowDetailUserModal]= useState(false);
+  const [showDetailUserModal, setShowDetailUserModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
   const [selectDeleteId, setSelectDeleteId] = useState("");
   const [selectDeleteUsername, setSelectDeleteUsername] = useState("");
   const [selectDetailUser, setSelectDetailUser] = useState("");
-  const [selectEditUser, setSelectEditUser]= useState(null);
+  const [selectEditUser, setSelectEditUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  
 
   const fetchUserData = async () => {
     try {
@@ -101,29 +94,24 @@ const Usermgmt = () => {
 
   const handleUpdate = async (updatedUserData) => {
     const userIdToUpdate = selectEditUser.UserID;
-  
+
     try {
-      console.log(updatedUserData);
-      console.log(userIdToUpdate);
       const response = await axios.put(
         `http://localhost:5000/api/updateuserdata/${userIdToUpdate}`,
         updatedUserData,
         { withCredentials: true }
       );
-  
+
       if (response.status === 200) {
         setSuccessMessage(response.data.message);
         setErrorMessage("");
         fetchUserData();
-        
       }
     } catch (error) {
       setSuccessMessage("");
       setErrorMessage(error.response.data.message);
     }
   };
-
-
 
   useEffect(() => {
     if (loggedIn) {
@@ -136,15 +124,12 @@ const Usermgmt = () => {
     return <Navigate to="/login" />;
   }
 
-  console.log("User Objects:", users);
-  
-  const filteredUsers = users.filter((user) =>
-  user && user.Username && user.Username.toLowerCase().includes(searchTerm.toLowerCase())
-);
-console.log("Filtered Users:", filteredUsers);
-console.log("Search Term:", searchTerm);
-console.log("Search Term:", searchTerm.trim());
-
+  const filteredUsers = users.filter(
+    (user) =>
+      user &&
+      user.Username &&
+      user.Username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="container-fluid mt-5 p-3 border">
@@ -192,7 +177,7 @@ console.log("Search Term:", searchTerm.trim());
             <tr>
               <th>User ID</th>
               <th>Username</th>
-                            
+
               <th>UserRole</th>
               <th className="text-center">Action</th>
               {/* Add more fields as needed */}
@@ -203,7 +188,7 @@ console.log("Search Term:", searchTerm.trim());
               <tr key={user.UserID}>
                 <td>{user.UserID}</td>
                 <td>{user.Username}</td>
-                            
+
                 <td>{user.RoleType}</td>
                 <td className="text-center">
                   <button
@@ -211,41 +196,39 @@ console.log("Search Term:", searchTerm.trim());
                     onClick={() => {
                       setShowDetailUserModal(true);
                       setSelectDetailUser(user);
-                      
                     }}
                   >
                     <i className="fa fa-eye" aria-hidden="true"></i> Detail
                   </button>
-                  <Detailusermodal 
-                  showModal={showDetailUserModal}
-                  selectDetailUser = {selectDetailUser}
-                  handleClose={() => {
-                    setShowDetailUserModal(false);
-                    setSelectDetailUser("");
-                    
-                  }}
+                  <Detailusermodal
+                    showModal={showDetailUserModal}
+                    selectDetailUser={selectDetailUser}
+                    handleClose={() => {
+                      setShowDetailUserModal(false);
+                      setSelectDetailUser("");
+                    }}
                   />
                   <button
                     className="btn btn-warning btn-sm me-2"
-                    onClick={() => {setShowEditUserModal(true);
-                    setSelectEditUser(user);
-
+                    onClick={() => {
+                      setShowEditUserModal(true);
+                      setSelectEditUser(user);
                     }}
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                   </button>
-                  <Editusermodal showModal={showEditUserModal}
-                  selectEditUser = {selectEditUser}
-                  handleUpdate = {handleUpdate}
-                  handleClose = {() => {
-                    setShowEditUserModal(false);
-                    setSelectEditUser("");
-                    setErrorMessage(""); // Clear error message
-                    setSuccessMessage("");
-            
-                  }}
-                  successMessage={successMessage}
-                  errorMessage={errorMessage}  
+                  <Editusermodal
+                    showModal={showEditUserModal}
+                    selectEditUser={selectEditUser}
+                    handleUpdate={handleUpdate}
+                    handleClose={() => {
+                      setShowEditUserModal(false);
+                      setSelectEditUser("");
+                      setErrorMessage(""); // Clear error message
+                      setSuccessMessage("");
+                    }}
+                    successMessage={successMessage}
+                    errorMessage={errorMessage}
                   />
                   <button
                     className="btn btn-danger btn-sm"
@@ -267,7 +250,6 @@ console.log("Search Term:", searchTerm.trim());
                     handleDelete={handleDelete}
                     selectDeleteId={selectDeleteId}
                     selectDeleteUsername={selectDeleteUsername}
-                   
                   />
                 </td>
                 {/* Add more fields as needed */}

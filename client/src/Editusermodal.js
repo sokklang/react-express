@@ -5,8 +5,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
-const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, handleUpdate, selectEditUser }) => {
-  
+const Editusermodal = ({
+  showModal,
+  errorMessage,
+  successMessage,
+  handleClose,
+  handleUpdate,
+  selectEditUser,
+}) => {
   const [updatedUserData, setUpdatedUserData] = useState({
     FirstName: selectEditUser?.FirstName || "",
     LastName: selectEditUser?.LastName || "",
@@ -27,7 +33,8 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
     }
   }, [selectEditUser]);
 
-  const handleEdit = () => {
+  const handleEdit = async (e) => {
+    e.preventDefault();
     console.log(updatedUserData);
     // Call the handleUpdateUser function with the updatedUserData
     handleUpdate(updatedUserData);
@@ -51,8 +58,8 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
               onClick={handleClose}
             ></button>
           </div>
-          <div className="modal-body text-white">
-            <form>
+          <div className="modal-body text-white text-start">
+            <form onSubmit={handleEdit}>
               <div className="mb-3">
                 <label htmlFor="formEditFirstName" className="form-label">
                   First Name
@@ -63,7 +70,12 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
                   id="formEditFirstName"
                   placeholder="Enter Firstname"
                   value={updatedUserData.FirstName}
-                  onChange={(e) => setUpdatedUserData({ ...updatedUserData, FirstName: e.target.value })}
+                  onChange={(e) =>
+                    setUpdatedUserData({
+                      ...updatedUserData,
+                      FirstName: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -76,7 +88,12 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
                   id="formEditLastName"
                   placeholder="Enter Lastname"
                   value={updatedUserData.LastName}
-                  onChange={(e) => setUpdatedUserData({ ...updatedUserData, LastName: e.target.value })}
+                  onChange={(e) =>
+                    setUpdatedUserData({
+                      ...updatedUserData,
+                      LastName: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -89,7 +106,12 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
                   id="formEditEmail"
                   placeholder="Enter Email"
                   value={updatedUserData.Email}
-                  onChange={(e) => setUpdatedUserData({ ...updatedUserData, Email: e.target.value })}
+                  onChange={(e) =>
+                    setUpdatedUserData({
+                      ...updatedUserData,
+                      Email: e.target.value,
+                    })
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -100,7 +122,12 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
                   className="form-select"
                   id="formEditRoleType"
                   value={updatedUserData.RoleType}
-                  onChange={(e) => setUpdatedUserData({ ...updatedUserData, RoleType: e.target.value })}
+                  onChange={(e) =>
+                    setUpdatedUserData({
+                      ...updatedUserData,
+                      RoleType: e.target.value,
+                    })
+                  }
                 >
                   {roleOptions.map((role, index) => (
                     <option key={index} value={role}>
@@ -119,23 +146,23 @@ const Editusermodal = ({ showModal, errorMessage, successMessage, handleClose, h
                   {successMessage}
                 </div>
               ) : null}
+              <div className="modal-footer">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  //onClick={handleEdit}
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleClose}
+                >
+                  Close
+                </button>
+              </div>
             </form>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleEdit}
-            >
-              Submit
-            </button>
           </div>
         </div>
       </div>

@@ -45,14 +45,15 @@ const UserModal = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title text-white">
-              <i className="fa fa-user-plus fa-fw me-2"></i>Add User</h5>
+              <i className="fa fa-user-plus fa-fw me-2"></i>Add User
+            </h5>
             <button
               type="button"
               className="btn-close"
               onClick={handleClose}
             ></button>
           </div>
-          <div className="modal-body text-white">
+          <div className="modal-body text-white text-start">
             <form>
               <div className="mb-3">
                 <label htmlFor="formUsername" className="form-label ">
