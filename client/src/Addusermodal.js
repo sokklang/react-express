@@ -17,7 +17,8 @@ const UserModal = ({
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleCreate = () => {
+  const handleCreate = async (e) => {
+    e.preventDefault();
     // Validate input fields if needed
     // Perform necessary checks before calling handleCreateUser
     handleCreateUser({
@@ -54,7 +55,7 @@ const UserModal = ({
             ></button>
           </div>
           <div className="modal-body text-white text-start">
-            <form>
+            <form onSubmit={handleCreate}>
               <div className="mb-3">
                 <label htmlFor="formUsername" className="form-label ">
                   Username
@@ -129,23 +130,24 @@ const UserModal = ({
                   {successMessage}
                 </div>
               ) : null}
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleClose}
+                >
+                  Close
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  //onClick={handleCreate}
+                >
+                  Submit
+                </button>
+              </div>
             </form>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleCreate}
-            >
-              Submit
-            </button>
           </div>
         </div>
       </div>

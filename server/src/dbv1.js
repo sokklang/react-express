@@ -93,7 +93,12 @@ CREATE TABLE AdminCompany (
     FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID)
 );
 
-
+-- Create ImageProfile table
+CREATE TABLE ImageProfile (
+    UserID INTEGER PRIMARY KEY,
+    ImageData BLOB,
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
+);
 
 
 

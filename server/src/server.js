@@ -11,6 +11,7 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(express.raw({ type: "application/octet-stream", limit: "10mb" }));
 app.use(bodyParser.json());
 app.use(corsMiddleware);
 

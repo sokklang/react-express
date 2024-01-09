@@ -235,34 +235,38 @@ async function deleteUserData(req, res) {
 
   // Check if the user to be deleted is the same as the logged-in user
   if (parseInt(userIdToDelete, 10) === loggedInUserId) {
-    return res.status(403).json({ error: "User cannot delete their own account" });
+    return res
+      .status(403)
+      .json({ error: "User cannot delete their own account" });
   }
 
   // Disable foreign key constraints
   db.run("PRAGMA foreign_keys = '0';");
 
   // Proceed with the deletion
-  db.run("DELETE FROM User WHERE UserID = ?", [userIdToDelete], function (
-    error
-  ) {
-    if (error) {
-      console.error(error);
+  db.run(
+    "DELETE FROM User WHERE UserID = ?",
+    [userIdToDelete],
+    function (error) {
+      if (error) {
+        console.error(error);
+        // Re-enable foreign key constraints
+        db.run("PRAGMA foreign_keys = '1';");
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      if (this.changes === 0) {
+        // Re-enable foreign key constraints
+        db.run("PRAGMA foreign_keys = '1';");
+        return res.status(404).json({ error: "User not found" });
+      }
+
       // Re-enable foreign key constraints
       db.run("PRAGMA foreign_keys = '1';");
-      return res.status(500).json({ error: "Internal Server Error" });
+
+      res.status(200).json({ message: "User deleted successfully" });
     }
-
-    if (this.changes === 0) {
-      // Re-enable foreign key constraints
-      db.run("PRAGMA foreign_keys = '1';");
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    // Re-enable foreign key constraints
-    db.run("PRAGMA foreign_keys = '1';");
-
-    res.status(200).json({ message: "User deleted successfully" });
-  });
+  );
 }
 
 async function updateUserData(req, res) {
@@ -270,44 +274,97 @@ async function updateUserData(req, res) {
 
   // Check if the requesting user is an admin
   if (requestingUserRole !== "Admin User") {
-    return res.status(403).json({ message: "Forbidden: Admin access required" });
+    return res
+      .status(403)
+      .json({ message: "Forbidden: Admin access required" });
   }
 
   const userIdToUpdate = req.params.userIdToUpdate; // Corrected parameter name
 
   // Fetch user data for the specified user
-  db.get("SELECT * FROM User WHERE UserID = ?", [userIdToUpdate], (err, user) => {
-    if (err) {
-      return res.status(500).json({ message: "Internal Server Error" });
-    }
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Extract and validate update data from the request body
-    const { FirstName, LastName, Email, RoleType } = req.body;
-
-    if (!FirstName || !LastName || !Email || !RoleType) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    // Map RoleType to RoleId
-    const roleId = RoleType === 'Admin User' ? 2 : 1;
-
-    // Update the user information in the database
-    db.run(
-      "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=? WHERE UserID=?",
-      [FirstName, LastName, Email, roleId, RoleType, userIdToUpdate],
-      (updateErr) => {
-        if (updateErr) {
-          return res.status(500).json({ message: "Internal Server Error" });
-        }
-
-        return res.json({ message: "User information updated successfully" });
+  db.get(
+    "SELECT * FROM User WHERE UserID = ?",
+    [userIdToUpdate],
+    (err, user) => {
+      if (err) {
+        return res.status(500).json({ message: "Internal Server Error" });
       }
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Extract and validate update data from the request body
+      const { FirstName, LastName, Email, RoleType } = req.body;
+
+      if (!FirstName || !LastName || !Email || !RoleType) {
+        return res.status(400).json({ message: "All fields are required" });
+      }
+
+      // Map RoleType to RoleId
+      const roleId = RoleType === "Admin User" ? 2 : 1;
+
+      // Update the user information in the database
+      db.run(
+        "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=? WHERE UserID=?",
+        [FirstName, LastName, Email, roleId, RoleType, userIdToUpdate],
+        (updateErr) => {
+          if (updateErr) {
+            return res.status(500).json({ message: "Internal Server Error" });
+          }
+
+          return res.json({ message: "User information updated successfully" });
+        }
+      );
+    }
+  );
+}
+
+async function GetUserProfile(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    const userId = req.session.user.UserID;
+
+    const userProfileImage = db.get(
+      "SELECT ImageData FROM ImageProfile WHERE UserID = ?",
+      [userId]
     );
-  });
+
+    if (!userProfileImage) {
+      return res.status(404).json({ error: "User profile image not found" });
+    }
+
+    res.status(200).json({ ImageData: userProfileImage.ImageData });
+  } catch (error) {
+    console.error("Error in GetUserProfile:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function UpdateUserProfile(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    const userId = req.session.user.UserID;
+
+    // Access the binary data from the request body
+    const imageData = req.body;
+    console.log("Received image data:", imageData);
+
+    // Convert the ArrayBuffer to a Buffer
+    const buffer = Buffer.from(imageData);
+    console.log("buffer", buffer);
+
+    // Your database logic here
+    db.run(
+      "INSERT OR REPLACE INTO ImageProfile (UserID, ImageData) VALUES (?, ?)",
+      [userId, buffer]
+    );
+
+    res.status(200).json({ message: "Image profile updated successfully" });
+  } catch (error) {
+    console.error("Error in UpdateUserProfile:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 }
 
 module.exports = {
@@ -318,4 +375,6 @@ module.exports = {
   getUserData,
   deleteUserData,
   updateUserData,
+  GetUserProfile,
+  UpdateUserProfile,
 };
