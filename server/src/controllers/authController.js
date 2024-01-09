@@ -320,21 +320,32 @@ async function updateUserData(req, res) {
   );
 }
 
-async function GetUserProfile(req, res) {
+function GetUserProfile(req, res) {
   try {
     console.log(`Received ${req.method} request for ${req.url}`);
     const userId = req.session.user.UserID;
 
-    const userProfileImage = db.get(
+    db.get(
       "SELECT ImageData FROM ImageProfile WHERE UserID = ?",
-      [userId]
+      [userId],
+      (error, userProfileImageResult) => {
+        if (error) {
+          console.error("Error in GetUserProfile:", error.message);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        if (!userProfileImageResult) {
+          return res
+            .status(404)
+            .json({ error: "User profile image not found" });
+        }
+
+        console.log(userProfileImageResult.ImageData.length);
+
+        // Send the ArrayBuffer as the response
+        res.status(200).send(userProfileImageResult.ImageData);
+      }
     );
-
-    if (!userProfileImage) {
-      return res.status(404).json({ error: "User profile image not found" });
-    }
-
-    res.status(200).json({ ImageData: userProfileImage.ImageData });
   } catch (error) {
     console.error("Error in GetUserProfile:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

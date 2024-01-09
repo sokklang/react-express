@@ -34,6 +34,7 @@ const Profile = () => {
       if (response.status === 200) {
         // Access the binary data from the response
         const imageData = response.data;
+        console.log("imagedata", imageData);
 
         // Convert the ArrayBuffer to a Blob
         const blob = new Blob([imageData], { type: "image/jpeg" }); // Replace 'image/jpeg' with the actual MIME type of your images

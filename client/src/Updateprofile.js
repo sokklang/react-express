@@ -9,7 +9,7 @@ const Updateprofile = ({
   updateUserProfile,
 }) => {
   const [selectedFile, setSelectedFile] = useState();
-  const [imagePreview, SetImagePreview] = useState();
+  const [imagePreview, SetImagePreview] = useState(profileImage);
   function handleChange(e) {
     console.log(e.target.files);
     setSelectedFile(e.target.files[0]);
@@ -59,7 +59,7 @@ const Updateprofile = ({
                 className="profile-image-label"
               >
                 <img
-                  src={imagePreview || "https://placekitten.com/200/200"}
+                  src={imagePreview}
                   alt="Profile"
                   className="img-fluid rounded-circle profile-image"
                   style={{ width: "200px", height: "200px" }}
