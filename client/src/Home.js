@@ -1,7 +1,7 @@
 // Home.js
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./context/AuthContext";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -20,8 +20,6 @@ const Home = () => {
     companyindustry,
     UserRoleId,
   } = useContext(AuthContext);
-
-  
 
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page

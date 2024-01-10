@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Link } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,7 +30,10 @@ const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse text-nowrap" id="collapsibleNavbar">
+          <div
+            className="collapse navbar-collapse text-nowrap"
+            id="collapsibleNavbar"
+          >
             <ul className="navbar-nav">
               <li className="nav-item ">
                 <Link className="nav-link" to="/task">

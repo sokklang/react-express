@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -13,8 +13,8 @@ import Register from "./Register";
 import Home from "./Home";
 import Task from "./Task";
 import Approval from "./Approval";
-import Usermgmt from "./Usermgmt";
-import Profile from "./Profile";
+import Usermgmt from "./usermgmt/Usermgmt";
+import Profile from "./profile/Profile";
 import Settings from "./Settings";
 import Notification from "./Notification";
 import Nopage from "./Nopage";
