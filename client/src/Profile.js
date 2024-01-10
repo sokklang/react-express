@@ -118,7 +118,11 @@ const Profile = () => {
               src={profileImage}
               alt="Profile"
               className="img-fluid rounded-circle"
-              style={{ width: "200px", height: "200px" }}
+              style={{
+                width: "200px",
+                height: "200px",
+                border: "2px solid #000",
+              }}
             />
           </div>
           <h2 className="text-center mb-0">{username}</h2>

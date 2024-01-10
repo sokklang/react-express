@@ -320,32 +320,34 @@ async function updateUserData(req, res) {
   );
 }
 
-function GetUserProfile(req, res) {
+async function GetUserProfile(req, res) {
   try {
     console.log(`Received ${req.method} request for ${req.url}`);
     const userId = req.session.user.UserID;
 
-    db.get(
-      "SELECT ImageData FROM ImageProfile WHERE UserID = ?",
-      [userId],
-      (error, userProfileImageResult) => {
-        if (error) {
-          console.error("Error in GetUserProfile:", error.message);
-          return res.status(500).json({ error: "Internal Server Error" });
+    // Using Promises with SQLite3
+    const userProfileImageResult = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT ImageData FROM ImageProfile WHERE UserID = ?",
+        [userId],
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
         }
+      );
+    });
 
-        if (!userProfileImageResult) {
-          return res
-            .status(404)
-            .json({ error: "User profile image not found" });
-        }
+    if (!userProfileImageResult) {
+      return res.status(404).json({ error: "User profile image not found" });
+    }
 
-        console.log(userProfileImageResult.ImageData.length);
+    console.log(userProfileImageResult.ImageData.length);
 
-        // Send the ArrayBuffer as the response
-        res.status(200).send(userProfileImageResult.ImageData);
-      }
-    );
+    // Send the ArrayBuffer as the response
+    res.status(200).send(userProfileImageResult.ImageData);
   } catch (error) {
     console.error("Error in GetUserProfile:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

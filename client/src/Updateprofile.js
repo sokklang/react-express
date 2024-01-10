@@ -1,21 +1,33 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Updateprofile = ({
   showModal,
   handleClose,
   profileImage,
-
   updateUserProfile,
 }) => {
   const [selectedFile, setSelectedFile] = useState();
   const [imagePreview, SetImagePreview] = useState(profileImage);
+
+  useEffect(() => {
+    SetImagePreview(profileImage);
+  }, [profileImage]);
+
   function handleChange(e) {
     console.log(e.target.files);
-    setSelectedFile(e.target.files[0]);
-    SetImagePreview(URL.createObjectURL(e.target.files[0]));
-  }
+    const file = e.target.files[0];
 
+    if (file) {
+      setSelectedFile(file);
+
+      // Create a Blob from the ArrayBuffer
+      const blob = new Blob([file], { type: file.type });
+
+      // Use createObjectURL with the Blob
+      SetImagePreview(URL.createObjectURL(blob));
+    }
+  }
   const handleUpdateImage = async () => {
     try {
       if (selectedFile) {
@@ -36,6 +48,11 @@ const Updateprofile = ({
     }
   };
 
+  const onClose = async () => {
+    SetImagePreview(profileImage);
+    handleClose();
+  };
+
   return (
     <div
       className={`modal fade ${showModal ? "show" : ""}`}
@@ -49,7 +66,7 @@ const Updateprofile = ({
             <button
               type="button"
               className="btn-close"
-              onClick={handleClose}
+              onClick={onClose}
             ></button>
           </div>
           <div className="modal-body text-center">
@@ -62,10 +79,14 @@ const Updateprofile = ({
                   src={imagePreview}
                   alt="Profile"
                   className="img-fluid rounded-circle profile-image"
-                  style={{ width: "200px", height: "200px" }}
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                    border: "2px solid #000",
+                  }}
                 />
                 <div className="overlay">
-                  <i className="fa fa-upload fa-fw"></i>
+                  <i className="fa fa-upload fa-fw me-2"></i>Upload
                   <input
                     type="file"
                     id="profileImageInput"
@@ -80,7 +101,7 @@ const Updateprofile = ({
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={handleClose}
+              onClick={onClose}
             >
               Close
             </button>
