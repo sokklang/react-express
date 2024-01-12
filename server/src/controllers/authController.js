@@ -1,5 +1,7 @@
 const db = require("../models/database");
 const bcryptUtils = require("../models/bcryptUtils");
+const sqlite3 = require("sqlite3").verbose();
+const sessionDB = new sqlite3.Database("sessions.db");
 //const jwtUtils = require("../utils/jwtUtils");
 
 async function registerUser(req, res) {
@@ -263,6 +265,29 @@ async function deleteUserData(req, res) {
 
       // Re-enable foreign key constraints
       db.run("PRAGMA foreign_keys = '1';");
+
+      const userIdToDeleteInt = parseInt(userIdToDelete, 10);
+
+      sessionDB.run(
+        `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
+        [userIdToDeleteInt],
+
+        function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+
+          console.log(`Row(s) deleted ${this.changes}`);
+
+          // Close the database connection
+          sessionDB.close((err) => {
+            if (err) {
+              return console.error(err.message);
+            }
+            console.log("Close the database connection.");
+          });
+        }
+      );
 
       res.status(200).json({ message: "User deleted successfully" });
     }
