@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import Updateprofile from "./Updateprofile";
+import Updateinfo from "./Updateinfo";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -22,6 +23,7 @@ const Profile = () => {
   } = useContext(AuthContext);
 
   const [showUpdateProfileModal, setShowUpdateProfileModal] = useState(false);
+  const [showUpdateInfoModal, setShowUpdateInfoModal] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
 
   const fetchUserProfile = async () => {
@@ -92,14 +94,45 @@ const Profile = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-auto">
         <h2>Profile Page</h2>
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setShowUpdateProfileModal(true);
-          }}
-        >
-          <i className="fa fa-edit fa-fw me-1"></i>Update
-        </button>
+        <div className="dropdown">
+          <button
+            className="btn btn-primary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i className="fa fa-edit fa-fw me-1"></i>Update
+          </button>
+          <ul
+            className="dropdown-menu"
+            aria-labelledby="dropdownUpdateMenuButton"
+          >
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => {
+                  setShowUpdateProfileModal(true);
+                }}
+              >
+                Update Profile
+              </button>
+            </li>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => {
+                  setShowUpdateInfoModal(true);
+                }}
+              >
+                Update Info
+              </button>
+            </li>
+          </ul>
+        </div>
+
         <Updateprofile
           showModal={showUpdateProfileModal}
           profileImage={profileImage}
@@ -110,6 +143,12 @@ const Profile = () => {
         />
       </div>
 
+      <Updateinfo
+        showModal={showUpdateInfoModal}
+        handleClose={() => {
+          setShowUpdateInfoModal(false);
+        }}
+      />
       <div className="card position-relative">
         <div className="card-body">
           <div className="text-center position-relative">

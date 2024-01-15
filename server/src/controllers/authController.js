@@ -294,6 +294,35 @@ async function deleteUserData(req, res) {
   );
 }
 
+async function selfUpdateData(req, res) {
+  const selfIdToUpdate = req.session.user.UserID;
+  console.log(selfIdToUpdate);
+
+  // Extract and validate update data from the request body
+  const { FirstName, LastName, Email } = req.body;
+
+  if (!FirstName || !LastName || !Email) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  db.run(
+    "UPDATE User SET FirstName=?, LastName=?, Email=? WHERE UserID=?",
+    [FirstName, LastName, Email, selfIdToUpdate],
+    (updateErr) => {
+      if (updateErr) {
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+
+      // Update the user information in the session
+      req.session.user.FirstName = FirstName;
+      req.session.user.LastName = LastName;
+      req.session.user.Email = Email;
+
+      return res.json({ message: "User information updated successfully" });
+    }
+  );
+}
+
 async function updateUserData(req, res) {
   const requestingUserRole = req.session.user.RoleType;
 
@@ -337,10 +366,33 @@ async function updateUserData(req, res) {
           if (updateErr) {
             return res.status(500).json({ message: "Internal Server Error" });
           }
+          // Update the user information in the session
 
           return res.json({ message: "User information updated successfully" });
         }
       );
+    }
+  );
+
+  const userIdToDeleteInt = parseInt(userIdToUpdate, 10);
+
+  sessionDB.run(
+    `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
+    [userIdToDeleteInt],
+    function (err) {
+      if (err) {
+        return console.error(err.message);
+      }
+
+      console.log(`Row(s) deleted ${this.changes}`);
+
+      // Now that the DELETE operation is complete, close the database connection
+      sessionDB.close((err) => {
+        if (err) {
+          return console.error(err.message);
+        }
+        console.log("Close the database connection.");
+      });
     }
   );
 }
@@ -412,6 +464,7 @@ module.exports = {
   logoutUser,
   getUserData,
   deleteUserData,
+  selfUpdateData,
   updateUserData,
   GetUserProfile,
   UpdateUserProfile,

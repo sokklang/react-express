@@ -24,6 +24,12 @@ router.delete(
 );
 
 router.put(
+  "/selfupdatedata",
+  middleware.checkLoggedIn,
+  authController.selfUpdateData
+);
+
+router.put(
   "/updateuserdata/:userIdToUpdate",
   middleware.checkLoggedIn,
   middleware.isAdmin,
