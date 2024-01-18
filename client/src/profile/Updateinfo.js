@@ -39,6 +39,12 @@ const Updateinfo = ({ showModal, handleClose }) => {
     }
   };
 
+  const onClose = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+    handleClose();
+  };
+
   return (
     <div
       className={`modal fade ${showModal ? "show" : ""}`}
@@ -54,7 +60,7 @@ const Updateinfo = ({ showModal, handleClose }) => {
             <button
               type="button"
               className="btn-close"
-              onClick={handleClose}
+              onClick={onClose}
             ></button>
           </div>
           <div className="modal-body text-white text-start">
@@ -120,7 +126,7 @@ const Updateinfo = ({ showModal, handleClose }) => {
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  onClick={handleClose}
+                  onClick={onClose}
                 >
                   Close
                 </button>

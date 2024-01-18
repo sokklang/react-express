@@ -385,14 +385,6 @@ async function updateUserData(req, res) {
       }
 
       console.log(`Row(s) deleted ${this.changes}`);
-
-      // Now that the DELETE operation is complete, close the database connection
-      sessionDB.close((err) => {
-        if (err) {
-          return console.error(err.message);
-        }
-        console.log("Close the database connection.");
-      });
     }
   );
 }
@@ -425,6 +417,45 @@ async function GetUserProfile(req, res) {
 
     // Send the ArrayBuffer as the response
     res.status(200).send(userProfileImageResult.ImageData);
+  } catch (error) {
+    console.error("Error in GetUserProfile:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function GetUserProfileAdmin(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    const requestingUserRole = req.session.user.RoleType; // Assuming you have the role in the session
+
+    const userid = req.params.userid;
+
+    // Check if the requesting user is an admin
+    if (requestingUserRole === "Admin User") {
+      const userProfileImageResult = await new Promise((resolve, reject) => {
+        db.get(
+          "SELECT ImageData FROM ImageProfile WHERE UserID = ?",
+          [userid],
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+      });
+
+      if (!userProfileImageResult) {
+        return res.status(404).json({ error: "User profile image not found" });
+      }
+
+      // Send the image data for admin users
+      res.status(200).send(userProfileImageResult.ImageData);
+    } else {
+      // Handle the case where the requesting user is not an admin
+      res.status(403).json({ error: "Permission denied" });
+    }
   } catch (error) {
     console.error("Error in GetUserProfile:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -467,5 +498,6 @@ module.exports = {
   selfUpdateData,
   updateUserData,
   GetUserProfile,
+  GetUserProfileAdmin,
   UpdateUserProfile,
 };

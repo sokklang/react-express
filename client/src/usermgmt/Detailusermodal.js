@@ -1,17 +1,57 @@
-import React from 'react';
-import "font-awesome/css/font-awesome.min.css";
+import React from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
+  const [profileImage, setProfileImage] = useState(null);
+  const fetchUserProfile = async (userid) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/getuserprofileadmin/${userid}`, // Update the URL based on your backend route
+        { withCredentials: true, responseType: "arraybuffer" } // Set the responseType to 'arraybuffer' to receive the data as an ArrayBuffer
+      );
+
+      if (response.status === 200) {
+        // Access the binary data from the response
+        const imageData = response.data;
+        console.log("imagedata", imageData);
+
+        // Convert the ArrayBuffer to a Blob
+        const blob = new Blob([imageData], { type: "image/jpeg" }); // Replace 'image/jpeg' with the actual MIME type of your images
+
+        // Create a Blob URL from the Blob
+        const blobUrl = URL.createObjectURL(blob);
+
+        setProfileImage(blobUrl);
+        console.log("Fetched user profile image data:", blobUrl);
+
+        // Update your UI or perform other actions with the fetched data
+      }
+    } catch (error) {
+      console.error("Error fetching user profile data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (showModal && selectDetailUser) {
+      // Fetch user profile when the modal is shown and there is a selected user
+      fetchUserProfile(selectDetailUser.UserID);
+    }
+  }, [showModal, selectDetailUser]);
+
   return (
     <div
-      className={`modal fade ${showModal ? 'show' : ''}`}
-      style={{ display: showModal ? 'block' : 'none' }}
+      className={`modal fade ${showModal ? "show" : ""}`}
+      style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title"><i className="fa fa-info fa-fw"></i>User Details : {selectDetailUser.Username}</h5>
+            <h5 className="modal-title">
+              <i className="fa fa-info fa-fw"></i>User Details :{" "}
+              {selectDetailUser.Username}
+            </h5>
             <button
               type="button"
               className="btn-close"
@@ -20,6 +60,27 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
             ></button>
           </div>
           <div className="modal-body">
+            <div className="position-relative">
+              <label
+                htmlFor="profileImageInput"
+                className="profile-image-label"
+              >
+                <img
+                  src={
+                    profileImage ||
+                    "https://avatars.githubusercontent.com/u/72866532?v=4"
+                  }
+                  alt="Profile"
+                  className="img-fluid rounded-circle profile-image"
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                    border: "2px solid #000",
+                  }}
+                />
+              </label>
+            </div>
+
             <div className="row mb-3">
               <div className="col-md-6">
                 <label>User ID:</label>

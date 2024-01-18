@@ -94,7 +94,7 @@ const Profile = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-auto">
         <h2>Profile Page</h2>
-        <div className="dropdown">
+        <div className="dropdown" data-bs-theme="dark">
           <button
             className="btn btn-primary dropdown-toggle"
             type="button"

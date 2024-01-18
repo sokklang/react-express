@@ -43,6 +43,13 @@ router.put(
 );
 
 router.get(
+  "/getuserprofileadmin/:userid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  authController.GetUserProfileAdmin
+);
+
+router.get(
   "/getuserprofile",
   middleware.checkLoggedIn,
   authController.GetUserProfile
