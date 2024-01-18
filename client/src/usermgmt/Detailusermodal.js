@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import defaultProfileImage from "../profile/profile.jpg";
 
 const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
   const [profileImage, setProfileImage] = useState(null);
@@ -39,6 +40,11 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
     }
   }, [showModal, selectDetailUser]);
 
+  const onClose = async () => {
+    setProfileImage("");
+    handleClose();
+  };
+
   return (
     <div
       className={`modal fade ${showModal ? "show" : ""}`}
@@ -56,7 +62,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
               type="button"
               className="btn-close"
               aria-label="Close"
-              onClick={handleClose}
+              onClick={onClose}
             ></button>
           </div>
           <div className="modal-body">
@@ -66,10 +72,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
                 className="profile-image-label"
               >
                 <img
-                  src={
-                    profileImage ||
-                    "https://avatars.githubusercontent.com/u/72866532?v=4"
-                  }
+                  src={profileImage || defaultProfileImage}
                   alt="Profile"
                   className="img-fluid rounded-circle profile-image"
                   style={{
@@ -126,7 +129,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={handleClose}
+              onClick={onClose}
             >
               Close
             </button>

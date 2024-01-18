@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import defaultProfileImage from "./profile.jpg";
 
 const Updateprofile = ({
   showModal,
@@ -76,7 +77,7 @@ const Updateprofile = ({
                 className="profile-image-label"
               >
                 <img
-                  src={imagePreview}
+                  src={imagePreview || defaultProfileImage}
                   alt="Profile"
                   className="img-fluid rounded-circle profile-image"
                   style={{

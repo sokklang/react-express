@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import Updateprofile from "./Updateprofile";
 import Updateinfo from "./Updateinfo";
+import defaultProfileImage from "./profile.jpg";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -154,7 +155,7 @@ const Profile = () => {
           <div className="text-center position-relative">
             {/* Display Profile Image */}
             <img
-              src={profileImage}
+              src={profileImage || defaultProfileImage}
               alt="Profile"
               className="img-fluid rounded-circle"
               style={{
