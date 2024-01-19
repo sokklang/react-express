@@ -7,11 +7,11 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "./navbar/Navbar";
 import Login from "./Login";
 import Register from "./Register";
-import Home from "./Home";
-import Task from "./Task";
+import Home from "./home/Home";
+import Task from "./task/Task";
 import Approval from "./Approval";
 import Usermgmt from "./usermgmt/Usermgmt";
 import Profile from "./profile/Profile";

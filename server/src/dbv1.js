@@ -100,7 +100,12 @@ CREATE TABLE ImageProfile (
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
-
+CREATE TRIGGER delete_image_profile
+AFTER DELETE ON User
+FOR EACH ROW
+BEGIN
+    DELETE FROM ImageProfile WHERE UserID = OLD.UserID;
+END;
 
 `;
 

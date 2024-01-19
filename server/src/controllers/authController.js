@@ -271,21 +271,12 @@ async function deleteUserData(req, res) {
       sessionDB.run(
         `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
         [userIdToDeleteInt],
-
         function (err) {
           if (err) {
             return console.error(err.message);
           }
 
           console.log(`Row(s) deleted ${this.changes}`);
-
-          // Close the database connection
-          sessionDB.close((err) => {
-            if (err) {
-              return console.error(err.message);
-            }
-            console.log("Close the database connection.");
-          });
         }
       );
 
