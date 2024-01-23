@@ -230,61 +230,6 @@ async function getUserData(req, res) {
   }
 }
 
-async function deleteUserData(req, res) {
-  console.log(`Received ${req.method} request for ${req.url}`);
-  const { userIdToDelete } = req.params; // Assuming the userIdToDelete is passed as a URL parameter
-  const loggedInUserId = req.session.user.UserID; // Assuming the user ID is stored in the session
-
-  // Check if the user to be deleted is the same as the logged-in user
-  if (parseInt(userIdToDelete, 10) === loggedInUserId) {
-    return res
-      .status(403)
-      .json({ error: "User cannot delete their own account" });
-  }
-
-  // Disable foreign key constraints
-  db.run("PRAGMA foreign_keys = '0';");
-
-  // Proceed with the deletion
-  db.run(
-    "DELETE FROM User WHERE UserID = ?",
-    [userIdToDelete],
-    function (error) {
-      if (error) {
-        console.error(error);
-        // Re-enable foreign key constraints
-        db.run("PRAGMA foreign_keys = '1';");
-        return res.status(500).json({ error: "Internal Server Error" });
-      }
-
-      if (this.changes === 0) {
-        // Re-enable foreign key constraints
-        db.run("PRAGMA foreign_keys = '1';");
-        return res.status(404).json({ error: "User not found" });
-      }
-
-      // Re-enable foreign key constraints
-      db.run("PRAGMA foreign_keys = '1';");
-
-      const userIdToDeleteInt = parseInt(userIdToDelete, 10);
-
-      sessionDB.run(
-        `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
-        [userIdToDeleteInt],
-        function (err) {
-          if (err) {
-            return console.error(err.message);
-          }
-
-          console.log(`Row(s) deleted ${this.changes}`);
-        }
-      );
-
-      res.status(200).json({ message: "User deleted successfully" });
-    }
-  );
-}
-
 async function selfUpdateData(req, res) {
   const selfIdToUpdate = req.session.user.UserID;
   console.log(selfIdToUpdate);
@@ -314,17 +259,68 @@ async function selfUpdateData(req, res) {
   );
 }
 
-async function updateUserData(req, res) {
-  const requestingUserRole = req.session.user.RoleType;
+async function deleteUserData(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  const { userIdToDelete } = req.params;
+  const loggedInUserId = req.session.user.UserID;
 
-  // Check if the requesting user is an admin
-  if (requestingUserRole !== "Admin User") {
+  console.log("User to delete:", userIdToDelete);
+  console.log("Logged-in user:", loggedInUserId);
+
+  // Check if the user to be deleted is the same as the logged-in user
+  if (parseInt(userIdToDelete, 10) === loggedInUserId) {
     return res
       .status(403)
-      .json({ message: "Forbidden: Admin access required" });
+      .json({ error: "User cannot delete their own account" });
   }
 
-  const userIdToUpdate = req.params.userIdToUpdate; // Corrected parameter name
+  // Disable foreign key constraints
+  db.run("PRAGMA foreign_keys = '0';");
+
+  // Proceed with the deletion
+  db.run(
+    "DELETE FROM User WHERE UserID = ?",
+    [userIdToDelete],
+    function (error) {
+      // Re-enable foreign key constraints
+      db.run("PRAGMA foreign_keys = '1';");
+
+      if (error) {
+        console.error("Error deleting user:", error.message);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      if (this.changes === 0) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      db.run("PRAGMA foreign_keys = '1';");
+
+      const userIdToDeleteInt = parseInt(userIdToDelete, 10);
+
+      sessionDB.run(
+        `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
+        [userIdToDeleteInt],
+        function (err) {
+          if (err) {
+            return console.error(err.message);
+          }
+
+          console.log(`Row(s) deleted ${this.changes}`);
+        }
+      );
+
+      res.status(200).json({ message: "User deleted successfully" });
+    }
+  );
+}
+
+async function updateUserData(req, res) {
+  const requestingUserRole = req.session.user.RoleType;
+  const userIdToUpdate = req.params.userIdToUpdate;
+
+  console.log("Requesting user role:", requestingUserRole);
+  console.log("User to update:", userIdToUpdate);
 
   // Fetch user data for the specified user
   db.get(
@@ -332,6 +328,7 @@ async function updateUserData(req, res) {
     [userIdToUpdate],
     (err, user) => {
       if (err) {
+        console.error("Error fetching user data:", err.message);
         return res.status(500).json({ message: "Internal Server Error" });
       }
 
@@ -342,6 +339,9 @@ async function updateUserData(req, res) {
       // Extract and validate update data from the request body
       const { FirstName, LastName, Email, RoleType } = req.body;
 
+      //console.log("User data to update:", user);
+      console.log("Update data:", { FirstName, LastName, Email, RoleType });
+
       if (!FirstName || !LastName || !Email || !RoleType) {
         return res.status(400).json({ message: "All fields are required" });
       }
@@ -349,22 +349,30 @@ async function updateUserData(req, res) {
       // Map RoleType to RoleId
       const roleId = RoleType === "Admin User" ? 2 : 1;
 
+      // Disable foreign key constraints
+      db.run("PRAGMA foreign_keys = '0';");
+
       // Update the user information in the database
       db.run(
         "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=? WHERE UserID=?",
         [FirstName, LastName, Email, roleId, RoleType, userIdToUpdate],
         (updateErr) => {
+          // Re-enable foreign key constraints
+          db.run("PRAGMA foreign_keys = '1';");
+
           if (updateErr) {
+            console.error(
+              "Error updating user information:",
+              updateErr.message
+            );
             return res.status(500).json({ message: "Internal Server Error" });
           }
-          // Update the user information in the session
 
-          return res.json({ message: "User information updated successfully" });
+          res.json({ message: "User information updated successfully" });
         }
       );
     }
   );
-
   const userIdToDeleteInt = parseInt(userIdToUpdate, 10);
 
   sessionDB.run(

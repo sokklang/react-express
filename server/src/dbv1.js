@@ -55,7 +55,8 @@ CREATE TABLE Task (
     ApproverUserID INTEGER,
     Status VARCHAR(50),
     DependentTaskID INTEGER,
-    FOREIGN KEY (UserID, UserRoleID) REFERENCES User(UserID, UserRoleId),
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (UserRoleID) REFERENCES UserRole(UserRoleID) ON DELETE CASCADE,
     FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
     FOREIGN KEY (DependentTaskID) REFERENCES Task(TaskID),
     FOREIGN KEY (ApproverUserID) REFERENCES User(UserID)
@@ -70,7 +71,8 @@ CREATE TABLE UserTaskNotify (
     TaskState VARCHAR(50),
     NotificationTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE,
-    FOREIGN KEY (UserID, CompanyID) REFERENCES User(UserID, CompanyID) ON DELETE CASCADE
+    FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (CompanyID) REFERENCES User(CompanyID) ON DELETE CASCADE
 );
 
 -- Create AuditTrail table

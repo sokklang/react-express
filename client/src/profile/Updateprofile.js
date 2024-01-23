@@ -79,13 +79,14 @@ const Updateprofile = ({
                 <img
                   src={imagePreview || defaultProfileImage}
                   alt="Profile"
-                  className="img-fluid rounded-circle profile-image"
+                  className="img-fluid rounded-circle profile-image mb-3"
                   style={{
                     width: "200px",
                     height: "200px",
                     border: "2px solid #000",
                   }}
                 />
+
                 <div className="overlay">
                   <i className="fa fa-upload fa-fw me-2"></i>Upload
                   <input

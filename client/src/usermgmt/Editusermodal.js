@@ -67,7 +67,6 @@ const Editusermodal = ({
                 <input
                   type="text"
                   className="form-control"
-                  id="formEditFirstName"
                   placeholder="Enter Firstname"
                   value={updatedUserData.FirstName}
                   onChange={(e) =>
@@ -85,7 +84,6 @@ const Editusermodal = ({
                 <input
                   type="text"
                   className="form-control"
-                  id="formEditLastName"
                   placeholder="Enter Lastname"
                   value={updatedUserData.LastName}
                   onChange={(e) =>
@@ -103,7 +101,6 @@ const Editusermodal = ({
                 <input
                   type="email"
                   className="form-control"
-                  id="formEditEmail"
                   placeholder="Enter Email"
                   value={updatedUserData.Email}
                   onChange={(e) =>
@@ -120,7 +117,6 @@ const Editusermodal = ({
                 </label>
                 <select
                   className="form-select"
-                  id="formEditRoleType"
                   value={updatedUserData.RoleType}
                   onChange={(e) =>
                     setUpdatedUserData({
