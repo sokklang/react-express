@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import Updateprofile from "./Updateprofile";
 import Updateinfo from "./Updateinfo";
+import Updatepassword from "./Updatepassword";
 import defaultProfileImage from "./profile.jpg";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,6 +26,7 @@ const Profile = () => {
 
   const [showUpdateProfileModal, setShowUpdateProfileModal] = useState(false);
   const [showUpdateInfoModal, setShowUpdateInfoModal] = useState(false);
+  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
 
   const fetchUserProfile = async () => {
@@ -131,25 +133,42 @@ const Profile = () => {
                 Update Info
               </button>
             </li>
+            <li>
+              <button
+                className="dropdown-item"
+                type="button"
+                onClick={() => {
+                  setShowUpdatePasswordModal(true);
+                }}
+              >
+                Update Password
+              </button>
+            </li>
           </ul>
         </div>
-
-        <Updateprofile
-          showModal={showUpdateProfileModal}
-          profileImage={profileImage}
-          updateUserProfile={updateUserProfile}
-          handleClose={() => {
-            setShowUpdateProfileModal(false);
-          }}
-        />
       </div>
-
+      <Updateprofile
+        showModal={showUpdateProfileModal}
+        profileImage={profileImage}
+        updateUserProfile={updateUserProfile}
+        handleClose={() => {
+          setShowUpdateProfileModal(false);
+        }}
+      />
       <Updateinfo
         showModal={showUpdateInfoModal}
         handleClose={() => {
           setShowUpdateInfoModal(false);
         }}
       />
+
+      <Updatepassword
+        showModal={showUpdatePasswordModal}
+        handleClose={() => {
+          setShowUpdatePasswordModal(false);
+        }}
+      />
+
       <div className="card position-relative">
         <div className="card-body">
           <div className="text-center position-relative">

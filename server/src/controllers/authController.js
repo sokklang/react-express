@@ -259,6 +259,26 @@ async function selfUpdateData(req, res) {
   );
 }
 
+async function updatePassword(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+
+  const { password } = req.body;
+  const userpasswordupdateid = req.session.user.UserID;
+  const hashedPassword = await bcryptUtils.hashPassword(password);
+
+  db.run(
+    "UPDATE User SET PasswordHash=? WHERE UserID=?",
+    [hashedPassword, userpasswordupdateid],
+    (updateErr) => {
+      if (updateErr) {
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+
+      return res.json({ message: "User Password updated successfully" });
+    }
+  );
+}
+
 async function deleteUserData(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   const { userIdToDelete } = req.params;
@@ -495,6 +515,7 @@ module.exports = {
   getUserData,
   deleteUserData,
   selfUpdateData,
+  updatePassword,
   updateUserData,
   GetUserProfile,
   GetUserProfileAdmin,

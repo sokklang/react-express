@@ -30,6 +30,12 @@ router.put(
 );
 
 router.put(
+  "/updatepassword",
+  middleware.checkLoggedIn,
+  authController.updatePassword
+);
+
+router.put(
   "/updateuserdata/:userIdToUpdate",
   middleware.checkLoggedIn,
   middleware.isAdmin,
