@@ -1,10 +1,12 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
+
 import defaultProfileImage from "../profile/profile.jpg";
 
 const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
   const [profileImage, setProfileImage] = useState(null);
+
   const fetchUserProfile = async (userid) => {
     try {
       const response = await axios.get(

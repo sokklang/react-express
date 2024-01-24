@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
+const companyController = require("../controllers/companyController");
 const middleware = require("../middleware/authMiddleware"); // Use a different name for the middleware module
 
 router.post("/register", authController.registerUser);
@@ -59,6 +60,19 @@ router.get(
   "/getuserprofile",
   middleware.checkLoggedIn,
   authController.GetUserProfile
+);
+
+router.put(
+  "/updatecompanylogo",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  companyController.updateCompanyLogo
+);
+
+router.get(
+  "/getcompanylogo",
+  middleware.checkLoggedIn,
+  companyController.getCompanyLogo
 );
 
 module.exports = router;

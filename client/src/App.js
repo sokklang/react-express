@@ -1,5 +1,6 @@
 import React from "react";
 import { AuthContext } from "./context/AuthContext";
+
 import { useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -15,6 +16,7 @@ import Task from "./task/Task";
 import Approval from "./Approval";
 import Usermgmt from "./usermgmt/Usermgmt";
 import Profile from "./profile/Profile";
+import Company from "./company/Company";
 import Settings from "./Settings";
 import Notification from "./Notification";
 import Nopage from "./Nopage";
@@ -46,6 +48,9 @@ const App = () => {
         <Route path="/usermgmt" element={<Usermgmt />} />
         <Route path="/Approval" element={<Approval />} />
         <Route path="/Profile" element={<Profile />} />
+
+        <Route path="/Company" element={<Company />} />
+
         <Route path="/Settings" element={<Settings />} />
         <Route path="/Notification" element={<Notification />} />
         <Route path="*" element={<Nopage />} />

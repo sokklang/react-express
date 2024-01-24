@@ -102,6 +102,13 @@ CREATE TABLE ImageProfile (
     FOREIGN KEY (UserID) REFERENCES User(UserID) ON DELETE CASCADE
 );
 
+-- Create Company Logo table
+CREATE TABLE CompanyLogo (
+    CompanyID INTEGER PRIMARY KEY,
+    LogoData BLOB,
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE CASCADE
+);
+
 CREATE TRIGGER delete_image_profile
 AFTER DELETE ON User
 FOR EACH ROW

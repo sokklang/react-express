@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { CompanyContext } from "../context/CompanyContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -13,9 +14,12 @@ import DeleteModal from "./Deleteusermodal";
 import Detailusermodal from "./Detailusermodal";
 import Editusermodal from "./Editusermodal";
 
+import defaultCompanyLogo from "../company/defaultlogo.png";
+
 const Usermgmt = () => {
   const { loggedIn, companyName, companyAddress, companyindustry } =
     useContext(AuthContext);
+  const { companyLogo, getCompanyLogo } = useContext(CompanyContext);
 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,6 +120,7 @@ const Usermgmt = () => {
   useEffect(() => {
     if (loggedIn) {
       fetchUserData();
+      getCompanyLogo();
     }
   }, [loggedIn]);
 
@@ -137,7 +142,15 @@ const Usermgmt = () => {
         <div>
           <center>
             <h1>
-              <i className="fa fa-building" aria-hidden="true"></i>
+              <img
+                src={companyLogo || defaultCompanyLogo}
+                className="img-fluid rounded-circle company-logo mb-3"
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  border: "2px solid #000",
+                }}
+              />
               {companyName}
             </h1>
           </center>

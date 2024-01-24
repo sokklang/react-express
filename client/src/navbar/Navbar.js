@@ -82,6 +82,11 @@ const Navbar = () => {
                   <Link className="dropdown-item" to="/profile">
                     <i className="fa fa-address-card fa-fw me-2"></i>Profile
                   </Link>
+                  {String(UserRoleId) === "2" && (
+                    <Link className="dropdown-item" to="/company">
+                      <i className="fa fa-building fa-fw me-2"></i>Company
+                    </Link>
+                  )}
                   <Link className="dropdown-item" to="/settings">
                     <i className="fa fa-cog fa-fw me-2 "></i>Settings
                   </Link>

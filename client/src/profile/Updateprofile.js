@@ -63,7 +63,9 @@ const Updateprofile = ({
       <div className="modal-dialog" role="document">
         <div className="modal-content text-white">
           <div className="modal-header">
-            <h5 className="modal-title">Update Profile</h5>
+            <h5 className="modal-title">
+              <i className="fa fa-user-circle fa-fw me-2"></i>Update Profile
+            </h5>
             <button
               type="button"
               className="btn-close"
@@ -112,7 +114,7 @@ const Updateprofile = ({
               className="btn btn-primary"
               onClick={handleUpdateImage}
             >
-              Save changes
+              Submit
             </button>
           </div>
         </div>
