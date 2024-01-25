@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
-import { CompanyContext } from "../context/CompanyContext";
+
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -19,7 +19,6 @@ import defaultCompanyLogo from "../company/defaultlogo.png";
 const Usermgmt = () => {
   const { loggedIn, companyName, companyAddress, companyindustry } =
     useContext(AuthContext);
-  const { companyLogo, getCompanyLogo } = useContext(CompanyContext);
 
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,6 +30,7 @@ const Usermgmt = () => {
   const [selectDeleteUsername, setSelectDeleteUsername] = useState("");
   const [selectDetailUser, setSelectDetailUser] = useState("");
   const [selectEditUser, setSelectEditUser] = useState(null);
+  const [imageLogo, setImageLogo] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -117,6 +117,34 @@ const Usermgmt = () => {
     }
   };
 
+  const getCompanyLogo = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/getcompanylogo", // Update the URL based on your backend route
+        { withCredentials: true, responseType: "arraybuffer" } // Set the responseType to 'arraybuffer' to receive the data as an ArrayBuffer
+      );
+
+      if (response.status === 200) {
+        // Access the binary data from the response
+        const LogoData = response.data;
+        console.log("imagedata", LogoData);
+
+        // Convert the ArrayBuffer to a Blob
+        const blob = new Blob([LogoData], { type: "image/jpeg" }); // Replace 'image/jpeg' with the actual MIME type of your images
+
+        // Create a Blob URL from the Blob
+        const blobUrl = URL.createObjectURL(blob);
+
+        setImageLogo(blobUrl);
+        console.log("Fetched Company Logo data:", blobUrl);
+
+        // Update your UI or perform other actions with the fetched data
+      }
+    } catch (error) {
+      console.error("Error fetching Company Logo data:", error);
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) {
       fetchUserData();
@@ -143,12 +171,14 @@ const Usermgmt = () => {
           <center>
             <h1>
               <img
-                src={companyLogo || defaultCompanyLogo}
-                className="img-fluid rounded-circle company-logo mb-3"
+                alt=""
+                src={imageLogo || defaultCompanyLogo}
+                className="img-fluid rounded-circle company-logo mb-2"
                 style={{
                   width: "50px",
                   height: "50px",
                   border: "2px solid #000",
+                  marginRight: "10px",
                 }}
               />
               {companyName}
