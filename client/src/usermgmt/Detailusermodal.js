@@ -125,6 +125,10 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
                 <label>User Parent ID:</label>
                 <p>{selectDetailUser.ParentUserID}</p>
               </div>
+              <div className="col-md-6">
+                <label>User Status: </label>
+                <p>{selectDetailUser.IsActive === 1 ? "Active" : "Inactive"}</p>
+              </div>
             </div>
           </div>
           <div className="modal-footer">

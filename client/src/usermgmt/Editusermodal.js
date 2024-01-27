@@ -18,9 +18,11 @@ const Editusermodal = ({
     LastName: selectEditUser?.LastName || "",
     RoleType: selectEditUser?.RoleType || "",
     Email: selectEditUser?.Email || "",
+    IsActive: selectEditUser?.IsActive || "",
   });
 
   const [roleOptions] = useState(["Admin User", "Standard User"]);
+  const [userStatus] = useState(["Active", "Inactive"]);
 
   useEffect(() => {
     if (selectEditUser) {
@@ -29,6 +31,7 @@ const Editusermodal = ({
         LastName: selectEditUser.LastName || "",
         RoleType: selectEditUser.RoleType || "",
         Email: selectEditUser.Email || "",
+        IsActive: selectEditUser.IsActive || "",
       });
     }
   }, [selectEditUser]);
@@ -128,6 +131,27 @@ const Editusermodal = ({
                   {roleOptions.map((role, index) => (
                     <option key={index} value={role}>
                       {role}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="formEditUserStatus" className="form-label">
+                  User Status
+                </label>
+                <select
+                  className="form-select"
+                  value={updatedUserData.IsActive === 1 ? "Active" : "Inactive"}
+                  onChange={(e) =>
+                    setUpdatedUserData({
+                      ...updatedUserData,
+                      IsActive: e.target.value === "Active" ? 1 : 0,
+                    })
+                  }
+                >
+                  {userStatus.map((status, index) => (
+                    <option key={index} value={status}>
+                      {status}
                     </option>
                   ))}
                 </select>

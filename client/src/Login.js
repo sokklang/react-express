@@ -98,8 +98,7 @@ const Login = () => {
       );
       navigate("/home");
     } catch (error) {
-      console.error("Login failed:", error.response.data.message);
-      setErrorMessage("Invalid username or password");
+      setErrorMessage(error.response.data.message);
     }
   };
 

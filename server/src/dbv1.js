@@ -24,7 +24,7 @@ CREATE TABLE Company (
 -- Create User table
 CREATE TABLE User (
     UserID INTEGER PRIMARY KEY,
-    Username VARCHAR(255) NOT NULL,
+    Username VARCHAR(255) NOT NULL UNIQUE,
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
     Email VARCHAR(255) NOT NULL,
@@ -33,6 +33,7 @@ CREATE TABLE User (
     CompanyID INTEGER,
     ParentUserID INTEGER,
     RoleType VARCHAR(50) NOT NULL,
+    IsActive BOOLEAN DEFAULT 1,
     FOREIGN KEY (UserRoleId) REFERENCES UserRole(UserRoleID),
     FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE CASCADE,
     FOREIGN KEY (ParentUserID) REFERENCES User(UserID) ON DELETE CASCADE

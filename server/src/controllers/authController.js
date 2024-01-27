@@ -46,7 +46,7 @@ async function registerUser(req, res) {
 
             // Insert the new user as an admin user for the newly created company
             db.run(
-              "INSERT INTO User (Username, FirstName, LastName, Email, PasswordHash, UserRoleId, CompanyID, RoleType) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+              "INSERT INTO User (Username, FirstName, LastName, Email, PasswordHash, UserRoleId, CompanyID, RoleType, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
               [
                 username,
                 firstname,
@@ -56,6 +56,7 @@ async function registerUser(req, res) {
                 2,
                 companyId,
                 "Admin User",
+                1,
               ],
               function (userInsertError) {
                 if (userInsertError) {
@@ -93,7 +94,7 @@ async function registerUser(req, res) {
 
         // Insert the new user as a standard user for an existing company
         db.run(
-          "INSERT INTO User (Username, FirstName, LastName, Email, PasswordHash, UserRoleId, CompanyID, RoleType) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+          "INSERT INTO User (Username, FirstName, LastName, Email, PasswordHash, UserRoleId, CompanyID, RoleType, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [
             username,
             firstname,
@@ -103,6 +104,7 @@ async function registerUser(req, res) {
             1,
             companyId,
             "Standard User",
+            0,
           ],
           function (userInsertError) {
             if (userInsertError) {
@@ -142,7 +144,10 @@ async function loginUser(req, res) {
         user.PasswordHash
       );
 
-      if (passwordMatch) {
+      console.log("passwordMatch:", passwordMatch);
+      console.log("IsActive:", user.IsActive);
+
+      if (passwordMatch && user.IsActive === 1) {
         // Set the session variable
         req.session.user = user;
 
@@ -159,9 +164,15 @@ async function loginUser(req, res) {
           companyname: user.CompanyName,
         };
 
-        res.status(200).json(responseData);
+        return res.status(200).json(responseData);
+      } else if (passwordMatch && user.IsActive === 0) {
+        return res.status(403).json({
+          message: `Account is disabled! Please contact ${user.CompanyName} Administrator`,
+        });
       } else {
-        res.status(401).json({ message: "Invalid username or password" });
+        return res
+          .status(401)
+          .json({ message: "Invalid username or password" });
       }
     }
   );
@@ -218,6 +229,7 @@ async function getUserData(req, res) {
           CompanyID: user.CompanyID,
           ParentUserID: user.ParentUserID,
           RoleType: user.RoleType,
+          IsActive: user.IsActive,
           // Add other fields as needed
         }));
 
@@ -357,10 +369,16 @@ async function updateUserData(req, res) {
       }
 
       // Extract and validate update data from the request body
-      const { FirstName, LastName, Email, RoleType } = req.body;
+      const { FirstName, LastName, Email, RoleType, IsActive } = req.body;
 
       //console.log("User data to update:", user);
-      console.log("Update data:", { FirstName, LastName, Email, RoleType });
+      console.log("Update data:", {
+        FirstName,
+        LastName,
+        Email,
+        RoleType,
+        IsActive,
+      });
 
       if (!FirstName || !LastName || !Email || !RoleType) {
         return res.status(400).json({ message: "All fields are required" });
@@ -374,8 +392,16 @@ async function updateUserData(req, res) {
 
       // Update the user information in the database
       db.run(
-        "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=? WHERE UserID=?",
-        [FirstName, LastName, Email, roleId, RoleType, userIdToUpdate],
+        "UPDATE User SET FirstName=?, LastName=?, Email=?, UserRoleId=?, RoleType=?, IsActive=? WHERE UserID=?",
+        [
+          FirstName,
+          LastName,
+          Email,
+          roleId,
+          RoleType,
+          IsActive,
+          userIdToUpdate,
+        ],
         (updateErr) => {
           // Re-enable foreign key constraints
           db.run("PRAGMA foreign_keys = '1';");
