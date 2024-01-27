@@ -42,7 +42,7 @@ const Register = () => {
       setErrorMessage(""); // Clear any previous error message
     } catch (error) {
       setSuccessMessage("");
-      setErrorMessage(error.response.data.message);
+      setErrorMessage(error.response.data.error);
     }
   };
 

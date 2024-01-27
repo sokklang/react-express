@@ -75,7 +75,8 @@ const Usermgmt = () => {
       fetchUserData();
     } catch (error) {
       setSuccessMessage("");
-      setErrorMessage(error.response.data.message);
+
+      setErrorMessage(error.response.data.error);
     }
   };
 
