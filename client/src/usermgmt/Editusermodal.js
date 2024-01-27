@@ -72,7 +72,7 @@ const Editusermodal = ({
                   onChange={(e) =>
                     setUpdatedUserData({
                       ...updatedUserData,
-                      FirstName: e.target.value,
+                      FirstName: e.target.value.replace(/\s/g, ""),
                     })
                   }
                 />
@@ -89,7 +89,7 @@ const Editusermodal = ({
                   onChange={(e) =>
                     setUpdatedUserData({
                       ...updatedUserData,
-                      LastName: e.target.value,
+                      LastName: e.target.value.replace(/\s/g, ""),
                     })
                   }
                 />

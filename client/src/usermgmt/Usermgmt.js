@@ -198,7 +198,7 @@ const Usermgmt = () => {
             className="btn btn-primary text-nowrap"
             onClick={() => setShowUserModal(true)}
           >
-            <i className="fa fa-plus me-2" aria-hidden="true"></i> Add User
+            <i className="fa fa-plus me-2" aria-hidden="true"></i>Add
           </button>
           <UserModal
             showModal={showUserModal}

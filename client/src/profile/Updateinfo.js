@@ -40,6 +40,9 @@ const Updateinfo = ({ showModal, handleClose }) => {
   };
 
   const onClose = async () => {
+    setUpdatedFirstname(firstname);
+    setUpdatedLastname(lastname);
+    setUpdatedEmail(email);
     setErrorMessage("");
     setSuccessMessage("");
     handleClose();
@@ -75,7 +78,9 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditFirstName"
                   placeholder="Enter Firstname"
                   value={updatedFirstname}
-                  onChange={(e) => setUpdatedFirstname(e.target.value)}
+                  onChange={(e) =>
+                    setUpdatedFirstname(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -88,7 +93,9 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditLastName"
                   placeholder="Enter Lastname"
                   value={updatedLastname}
-                  onChange={(e) => setUpdatedLastname(e.target.value)}
+                  onChange={(e) =>
+                    setUpdatedLastname(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -101,7 +108,9 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditEmail"
                   placeholder="Enter Email"
                   value={updatedEmail}
-                  onChange={(e) => setUpdatedEmail(e.target.value)}
+                  onChange={(e) =>
+                    setUpdatedEmail(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
 

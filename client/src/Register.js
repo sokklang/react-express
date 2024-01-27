@@ -64,7 +64,9 @@ const Register = () => {
                     className="form-control"
                     id="username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) =>
+                      setUsername(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
                 <div className="mb-3">
@@ -77,7 +79,9 @@ const Register = () => {
                     className="form-control"
                     id="firstname"
                     value={firstname}
-                    onChange={(e) => setFirstname(e.target.value)}
+                    onChange={(e) =>
+                      setFirstname(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
                 <div className="mb-3">
@@ -90,7 +94,9 @@ const Register = () => {
                     className="form-control"
                     id="lastname"
                     value={lastname}
-                    onChange={(e) => setLastname(e.target.value)}
+                    onChange={(e) =>
+                      setLastname(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
 
@@ -104,7 +110,9 @@ const Register = () => {
                     className="form-control"
                     id="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) =>
+                      setPassword(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
 
@@ -118,7 +126,9 @@ const Register = () => {
                     className="form-control"
                     id="company"
                     value={companyname}
-                    onChange={(e) => setCompanyname(e.target.value)}
+                    onChange={(e) =>
+                      setCompanyname(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
 
@@ -158,7 +168,9 @@ const Register = () => {
                     className="form-control"
                     id="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) =>
+                      setEmail(e.target.value.replace(/\s/g, ""))
+                    }
                   />
                 </div>
 

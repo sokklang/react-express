@@ -68,7 +68,9 @@ const Updatepassword = ({ showModal, handleClose }) => {
                   className="form-control"
                   placeholder="Enter New Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) =>
+                    setPassword(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -80,7 +82,9 @@ const Updatepassword = ({ showModal, handleClose }) => {
                   className="form-control"
                   placeholder="Enter Confirm Password"
                   value={confirmpassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) =>
+                    setConfirmPassword(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
 

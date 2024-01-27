@@ -66,7 +66,9 @@ const UserModal = ({
                   id="formUsername"
                   placeholder="Enter Username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) =>
+                    setUsername(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -79,7 +81,9 @@ const UserModal = ({
                   id="formFirstName"
                   placeholder="Enter Firstname"
                   value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
+                  onChange={(e) =>
+                    setFirstname(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -92,7 +96,9 @@ const UserModal = ({
                   id="formLastName"
                   placeholder="Enter Lastname"
                   value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
+                  onChange={(e) =>
+                    setLastname(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
@@ -105,7 +111,9 @@ const UserModal = ({
                   id="formPassword"
                   placeholder="Enter Password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) =>
+                    setPassword(e.target.value.replace(/\s/g, ""))
+                  }
                 />
               </div>
               <div className="mb-3">
