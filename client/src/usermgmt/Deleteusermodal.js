@@ -6,10 +6,17 @@ const DeleteModal = ({
   handleDelete,
   selectDeleteId,
   selectDeleteUsername,
+  errorMessage,
 }) => {
   const onDelete = async () => {
-    handleDelete(selectDeleteId);
-    handleClose();
+    try {
+      // Call handleDelete and wait for it to complete
+      await handleDelete(selectDeleteId);
+      // If successful, close the modal
+      handleClose();
+    } catch (error) {
+      console.error("Delete operation failed:", error);
+    }
   };
 
   return (
@@ -21,7 +28,9 @@ const DeleteModal = ({
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title"><i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!</h5>
+            <h5 className="modal-title">
+              <i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!
+            </h5>
             <button
               type="button"
               className="btn-close"
@@ -30,7 +39,16 @@ const DeleteModal = ({
             ></button>
           </div>
           <div className="modal-body">
-            <p>Confirm Delete Username : {selectDeleteUsername} with User ID : {selectDeleteId} ?</p>
+            <p>
+              Confirm Delete Username : {selectDeleteUsername} with User ID :{" "}
+              {selectDeleteId} ?
+            </p>
+
+            {errorMessage ? (
+              <div className="alert alert-danger mt-3" role="alert">
+                {errorMessage}
+              </div>
+            ) : null}
           </div>
           <div className="modal-footer">
             <button

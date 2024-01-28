@@ -94,6 +94,8 @@ const Usermgmt = () => {
       }
     } catch (error) {
       console.error(error.response.data.error);
+      setErrorMessage(error.response.data.error);
+      throw error;
     }
   };
 
@@ -223,6 +225,7 @@ const Usermgmt = () => {
               <th>Username</th>
 
               <th>UserRole</th>
+              <th>UserStatus</th>
               <th className="text-center">Action</th>
               {/* Add more fields as needed */}
             </tr>
@@ -234,6 +237,7 @@ const Usermgmt = () => {
                 <td>{user.Username}</td>
 
                 <td>{user.RoleType}</td>
+                <td>{user.IsActive === 1 ? "Active" : "Inactive"}</td>
                 <td className="text-center">
                   <button
                     className="btn btn-success btn-sm me-2"
@@ -290,10 +294,12 @@ const Usermgmt = () => {
                       setShowDeleteUserModal(false);
                       setSelectDeleteId("");
                       setSelectDeleteUsername("");
+                      setErrorMessage("");
                     }}
                     handleDelete={handleDelete}
                     selectDeleteId={selectDeleteId}
                     selectDeleteUsername={selectDeleteUsername}
+                    errorMessage={errorMessage}
                   />
                 </td>
                 {/* Add more fields as needed */}
