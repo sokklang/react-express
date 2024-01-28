@@ -37,6 +37,13 @@ router.put(
 );
 
 router.put(
+  "/resetpassword/:passwordresetuserid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  authController.ResetPassword
+);
+
+router.put(
   "/updateuserdata/:userIdToUpdate",
   middleware.checkLoggedIn,
   middleware.isAdmin,

@@ -314,6 +314,30 @@ async function updatePassword(req, res) {
   );
 }
 
+async function ResetPassword(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  const requestingUserRole = req.session.user.RoleType;
+
+  const { password } = req.body;
+  const passwordresetuserid = req.params.passwordresetuserid;
+  const hashedPassword = await bcryptUtils.hashPassword(password);
+  if (requestingUserRole === "Admin User") {
+    db.run(
+      "UPDATE User SET PasswordHash=? WHERE UserID=?",
+      [hashedPassword, passwordresetuserid],
+      (updateErr) => {
+        if (updateErr) {
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        return res.json({ message: "User Password updated successfully" });
+      }
+    );
+  } else {
+    res.status(403).json({ error: "Access forbidden" });
+  }
+}
+
 async function deleteUserData(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   const { userIdToDelete } = req.params;
@@ -562,6 +586,7 @@ module.exports = {
   checkLoginStatus,
   logoutUser,
   getUserData,
+  ResetPassword,
   deleteUserData,
   selfUpdateData,
   updatePassword,

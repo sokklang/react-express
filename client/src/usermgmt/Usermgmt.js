@@ -13,6 +13,7 @@ import UserModal from "./Addusermodal";
 import DeleteModal from "./Deleteusermodal";
 import Detailusermodal from "./Detailusermodal";
 import Editusermodal from "./Editusermodal";
+import Resetpasswordmodal from "./Resetpasswordmodal";
 
 import defaultCompanyLogo from "../company/defaultlogo.png";
 
@@ -26,10 +27,12 @@ const Usermgmt = () => {
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
   const [showDetailUserModal, setShowDetailUserModal] = useState(false);
   const [showEditUserModal, setShowEditUserModal] = useState(false);
+  const [showResetPasswordmodal, setShowResetPasswordModal] = useState(false);
   const [selectDeleteId, setSelectDeleteId] = useState("");
   const [selectDeleteUsername, setSelectDeleteUsername] = useState("");
   const [selectDetailUser, setSelectDetailUser] = useState("");
   const [selectEditUser, setSelectEditUser] = useState(null);
+  const [selectResetPasswordUser, setSelectResetPasswordUser] = useState("");
   const [imageLogo, setImageLogo] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -277,6 +280,23 @@ const Usermgmt = () => {
                     }}
                     successMessage={successMessage}
                     errorMessage={errorMessage}
+                  />
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => {
+                      setShowResetPasswordModal(true);
+                      setSelectResetPasswordUser(user.UserID);
+                    }}
+                  >
+                    <i className="fa fa-key" aria-hidden="true"></i> Reset
+                  </button>
+                  <Resetpasswordmodal
+                    showModal={showResetPasswordmodal}
+                    selectResetPasswordUser={selectResetPasswordUser}
+                    handleClose={() => {
+                      setShowResetPasswordModal(false);
+                      setSelectResetPasswordUser("");
+                    }}
                   />
                   <button
                     className="btn btn-danger btn-sm"
