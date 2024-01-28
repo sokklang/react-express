@@ -299,6 +299,9 @@ async function updatePassword(req, res) {
 
   const { password } = req.body;
   const userpasswordupdateid = req.session.user.UserID;
+  if (!password.trim()) {
+    return res.status(400).json({ message: "Password cannot be empty" });
+  }
   const hashedPassword = await bcryptUtils.hashPassword(password);
 
   db.run(
@@ -320,7 +323,14 @@ async function ResetPassword(req, res) {
 
   const { password } = req.body;
   const passwordresetuserid = req.params.passwordresetuserid;
+
+  // Check if the password is an empty string
+  if (!password.trim()) {
+    return res.status(400).json({ error: "Password cannot be empty" });
+  }
+
   const hashedPassword = await bcryptUtils.hashPassword(password);
+
   if (requestingUserRole === "Admin User") {
     db.run(
       "UPDATE User SET PasswordHash=? WHERE UserID=?",
