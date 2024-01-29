@@ -73,6 +73,11 @@ export const AuthProvider = ({ children }) => {
     setEmail(updatedInfo.Email || email);
   };
 
+  const handleCompanyInfoUpdateState = (updatedInfo) => {
+    setCompanyAddress(updatedInfo.companyAddress || companyAddress);
+    setCompanyIndustry(updatedInfo.companyIndustry || companyindustry);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -90,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         handleLogin,
         handleLogout,
         handleSelfUpdate,
+        handleCompanyInfoUpdateState,
       }}
     >
       {children}

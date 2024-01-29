@@ -71,35 +71,38 @@ const UserModal = ({
                   }
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="formFirstName" className="form-label">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="formFirstName"
-                  placeholder="Enter Firstname"
-                  value={firstname}
-                  onChange={(e) =>
-                    setFirstname(e.target.value.replace(/\s/g, ""))
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="formLastName" className="form-label">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="formLastName"
-                  placeholder="Enter Lastname"
-                  value={lastname}
-                  onChange={(e) =>
-                    setLastname(e.target.value.replace(/\s/g, ""))
-                  }
-                />
+              <div className="row">
+                <div className="col mb-3">
+                  <label htmlFor="formFirstName" className="form-label">
+                    Firstname
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formFirstName"
+                    placeholder="Enter Firstname"
+                    value={firstname}
+                    onChange={(e) =>
+                      setFirstname(e.target.value.replace(/\s/g, ""))
+                    }
+                  />
+                </div>
+
+                <div className="col mb-3">
+                  <label htmlFor="formLastName" className="form-label">
+                    Lastname
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formLastName"
+                    placeholder="Enter Lastname"
+                    value={lastname}
+                    onChange={(e) =>
+                      setLastname(e.target.value.replace(/\s/g, ""))
+                    }
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="formPassword" className="form-label">

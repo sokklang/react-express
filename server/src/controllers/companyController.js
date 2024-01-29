@@ -61,8 +61,36 @@ async function getCompanyLogo(req, res) {
   }
 }
 
+async function updateCompanyInfo(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+
+    const requestingUserRole = req.session.user.RoleType;
+    const CompanyID = req.session.user.CompanyID;
+    const { companyAddress, companyIndustry } = req.body;
+
+    if (!companyAddress.trim() && !companyIndustry.trim()) {
+      return res.status(400).json({ error: "Input cannot be empty" });
+    }
+    if (requestingUserRole === "Admin User") {
+      db.run("UPDATE Company SET Address=?, Industry=? WHERE CompanyID=?", [
+        companyAddress,
+        companyIndustry,
+        CompanyID,
+      ]);
+      req.session.user.Address = companyAddress;
+      req.session.user.Industry = companyIndustry;
+
+      res.status(200).json({ message: "Company Info updated successfully" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   updateCompanyLogo,
   getCompanyLogo,
+  updateCompanyInfo,
   // ... (other company-related functions)
 };

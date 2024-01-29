@@ -82,4 +82,11 @@ router.get(
   companyController.getCompanyLogo
 );
 
+router.put(
+  "/updatecompanyinfo",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  companyController.updateCompanyInfo
+);
+
 module.exports = router;

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 //import { CompanyContext } from "../context/CompanyContext";
 import { AuthContext } from "../context/AuthContext";
 import Updatecompanylogo from "./Updatecompanylogo";
+import Updatecompanyinfo from "./Updatecompanyinfo";
 import axios from "axios";
 
 import defaultCompanyLogo from "./defaultlogo.png";
@@ -15,6 +16,8 @@ const Company = () => {
   const [showUpdateCompanyLogoModal, setShowUpdateCompanyLogo] =
     useState(false);
   const [showUpateCompanyInfo, setShowUpdateCompanyInfo] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const updateCompanyLogo = async (LogoData) => {
     try {
@@ -70,6 +73,25 @@ const Company = () => {
     }
   };
 
+  const updateCompanyInfo = async (companyinfo) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:5000/api/updatecompanyinfo",
+        companyinfo,
+        { withCredentials: true }
+      );
+      console.log(companyinfo);
+      if (response.status === 200) {
+        console.log(response.data.message);
+        setSuccessMessage(response.data.message);
+        setErrorMessage("");
+      }
+    } catch (error) {
+      console.log("Error Updating Company Info:", error);
+      setErrorMessage(error.response.data.error);
+      setSuccessMessage("");
+    }
+  };
   useEffect(() => {
     if (loggedIn) {
       getCompanyLogo();
@@ -129,6 +151,17 @@ const Company = () => {
         updateCompanyLogo={updateCompanyLogo}
         handleClose={() => {
           setShowUpdateCompanyLogo(false);
+        }}
+      />
+      <Updatecompanyinfo
+        showModal={showUpateCompanyInfo}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        updateCompanyInfo={updateCompanyInfo}
+        handleClose={() => {
+          setShowUpdateCompanyInfo(false);
+          setErrorMessage("");
+          setSuccessMessage("");
         }}
       />
       <div className="card position-relative">
