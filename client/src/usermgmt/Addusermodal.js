@@ -107,6 +107,7 @@ const UserModal = ({
                 </label>
                 <input
                   type="password"
+                  autoComplete="on"
                   className="form-control"
                   id="formPassword"
                   placeholder="Enter Password"

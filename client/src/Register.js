@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import "font-awesome/css/font-awesome.min.css";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -51,7 +52,9 @@ const Register = () => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
-            <div className="card-header">Register</div>
+            <div className="card-header">
+              <i className="fa fa-registered fa-fw me-1 "></i>Register
+            </div>
             <div className="card-body">
               <form onSubmit={handleRegister}>
                 <div className="mb-3">
@@ -69,35 +72,37 @@ const Register = () => {
                     }
                   />
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="firstname" className="form-label">
-                    firstname
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter firstname"
-                    className="form-control"
-                    id="firstname"
-                    value={firstname}
-                    onChange={(e) =>
-                      setFirstname(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="lastname" className="form-label">
-                    lastname
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Lastname"
-                    className="form-control"
-                    id="lastname"
-                    value={lastname}
-                    onChange={(e) =>
-                      setLastname(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
+                <div className="row">
+                  <div className="col mb-3">
+                    <label htmlFor="firstname" className="form-label">
+                      Firstname
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter firstname"
+                      className="form-control"
+                      id="firstname"
+                      value={firstname}
+                      onChange={(e) =>
+                        setFirstname(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
+                  <div className="col mb-3">
+                    <label htmlFor="lastname" className="form-label">
+                      Lastname
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Enter Lastname"
+                      className="form-control"
+                      id="lastname"
+                      value={lastname}
+                      onChange={(e) =>
+                        setLastname(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-3">
@@ -106,6 +111,7 @@ const Register = () => {
                   </label>
                   <input
                     type="password"
+                    autoComplete="on"
                     placeholder="Enter Password"
                     className="form-control"
                     id="password"

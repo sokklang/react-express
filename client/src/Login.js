@@ -5,6 +5,7 @@ import { AuthContext } from "./context/AuthContext"; // Import AuthContext
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import "font-awesome/css/font-awesome.min.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -15,7 +16,6 @@ const Login = () => {
   const { handleLogin, handleLogout } = useContext(AuthContext);
 
   const checkLoginStatus = useCallback(async () => {
-    console.log("Running checkLoginStatus");
     try {
       const response = await axios.get(
         "http://localhost:5000/api/check-login",
@@ -36,14 +36,12 @@ const Login = () => {
           user.Industry,
           user.UserRoleId
         );
+        console.log("Login status", response.data.loggedIn);
       } else {
         handleLogout();
       }
     } catch (error) {
-      console.error(
-        "Error checking login status:",
-        error.response.data.message
-      );
+      console.error("Login status:", error.response.data.loggedIn);
     }
   }, [handleLogin, handleLogout]);
 
@@ -51,7 +49,7 @@ const Login = () => {
     checkLoginStatus();
   }, [checkLoginStatus]);
 
-  const checkLogininput = async () => {
+  const handleUserLogin = async () => {
     if (!username || !password) {
       setErrorMessage("Username and password are required");
       return;
@@ -130,6 +128,7 @@ const Login = () => {
                   </label>
                   <input
                     type="password"
+                    autoComplete="on"
                     placeholder="Enter Password"
                     className="form-control"
                     id="password"
@@ -147,7 +146,7 @@ const Login = () => {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={checkLogininput}
+                    onClick={handleUserLogin}
                   >
                     <i className="fa fa-sign-in fa-fw me-2"></i>Login
                   </button>

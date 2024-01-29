@@ -65,6 +65,7 @@ const Updatepassword = ({ showModal, handleClose }) => {
                 </label>
                 <input
                   type="password"
+                  autoComplete="on"
                   className="form-control"
                   placeholder="Enter New Password"
                   value={password}
@@ -79,6 +80,7 @@ const Updatepassword = ({ showModal, handleClose }) => {
                 </label>
                 <input
                   type="password"
+                  autoComplete="on"
                   className="form-control"
                   placeholder="Enter Confirm Password"
                   value={confirmpassword}
