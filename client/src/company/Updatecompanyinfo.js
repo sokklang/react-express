@@ -9,12 +9,8 @@ const Updatecompanyinfo = ({
   errorMessage,
   successMessage,
 }) => {
-  const {
-    companyName,
-    companyAddress,
-    companyindustry,
-    handleCompanyInfoUpdateState,
-  } = useContext(AuthContext);
+  const { companyName, companyAddress, companyindustry } =
+    useContext(AuthContext);
 
   const [updateCompany, setUpdateCompany] = useState({
     companyAddress: companyAddress,
@@ -24,7 +20,6 @@ const Updatecompanyinfo = ({
   const handleUpdateCompanyInfo = async (e) => {
     e.preventDefault();
     updateCompanyInfo(updateCompany);
-    handleCompanyInfoUpdateState(updateCompany);
   };
   return (
     <div

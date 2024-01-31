@@ -9,8 +9,13 @@ import defaultCompanyLogo from "./defaultlogo.png";
 import { Navigate } from "react-router-dom";
 const Company = () => {
   //const { UpdateLogo } = useContext(CompanyContext);
-  const { loggedIn, companyName, companyAddress, companyindustry } =
-    useContext(AuthContext);
+  const {
+    loggedIn,
+    companyName,
+    companyAddress,
+    companyindustry,
+    handleCompanyInfoUpdateState,
+  } = useContext(AuthContext);
   const [imageLogo, setImageLogo] = useState(null);
 
   const [showUpdateCompanyLogoModal, setShowUpdateCompanyLogo] =
@@ -70,6 +75,7 @@ const Company = () => {
       }
     } catch (error) {
       console.error("Error fetching Company Logo data:", error);
+      throw error;
     }
   };
 
@@ -83,6 +89,7 @@ const Company = () => {
       console.log(companyinfo);
       if (response.status === 200) {
         console.log(response.data.message);
+        handleCompanyInfoUpdateState(companyinfo);
         setSuccessMessage(response.data.message);
         setErrorMessage("");
       }
