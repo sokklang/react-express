@@ -363,43 +363,64 @@ async function deleteUserData(req, res) {
       .json({ error: "User cannot delete their own account" });
   }
 
-  // Disable foreign key constraints
-  db.run("PRAGMA foreign_keys = '0';");
-
-  // Proceed with the deletion
-  db.run(
-    "DELETE FROM User WHERE UserID = ?",
+  db.get(
+    "SELECT RoleType FROM User WHERE UserID = ?",
     [userIdToDelete],
-    function (error) {
-      // Re-enable foreign key constraints
-      db.run("PRAGMA foreign_keys = '1';");
-
+    function (error, row) {
       if (error) {
-        console.error("Error deleting user:", error.message);
+        console.error("Error checking user role:", error.message);
         return res.status(500).json({ error: "Internal Server Error" });
       }
 
-      if (this.changes === 0) {
+      if (!row) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      db.run("PRAGMA foreign_keys = '1';");
+      const userRoleType = row.RoleType;
 
-      const userIdToDeleteInt = parseInt(userIdToDelete, 10);
+      if (userRoleType === "Admin User") {
+        return res.status(403).json({ error: "Cannot delete admin account" });
+      }
 
-      sessionDB.run(
-        `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
-        [userIdToDeleteInt],
-        function (err) {
-          if (err) {
-            return console.error(err.message);
+      // Disable foreign key constraints
+      db.run("PRAGMA foreign_keys = '0';");
+
+      // Proceed with the deletion
+      db.run(
+        "DELETE FROM User WHERE UserID = ?",
+        [userIdToDelete],
+        function (error) {
+          // Re-enable foreign key constraints
+          db.run("PRAGMA foreign_keys = '1';");
+
+          if (error) {
+            console.error("Error deleting user:", error.message);
+            return res.status(500).json({ error: "Internal Server Error" });
           }
 
-          console.log(`Row(s) deleted ${this.changes}`);
+          if (this.changes === 0) {
+            return res.status(404).json({ error: "User not found" });
+          }
+
+          db.run("PRAGMA foreign_keys = '1';");
+
+          const userIdToDeleteInt = parseInt(userIdToDelete, 10);
+
+          sessionDB.run(
+            `DELETE FROM sessions WHERE json_extract(sess, '$.user.UserID') = ?`,
+            [userIdToDeleteInt],
+            function (err) {
+              if (err) {
+                return console.error(err.message);
+              }
+
+              console.log(`Row(s) deleted ${this.changes}`);
+            }
+          );
+
+          res.status(200).json({ message: "User deleted successfully" });
         }
       );
-
-      res.status(200).json({ message: "User deleted successfully" });
     }
   );
 }
