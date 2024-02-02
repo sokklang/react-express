@@ -185,6 +185,7 @@ async function loginUser(req, res) {
           companyaddress: user.Address,
           companyindustry: user.Industry,
           companyname: user.CompanyName,
+          companyid: user.CompanyID,
         };
 
         return res.status(200).json(responseData);
@@ -352,9 +353,6 @@ async function deleteUserData(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   const { userIdToDelete } = req.params;
   const loggedInUserId = req.session.user.UserID;
-
-  console.log("User to delete:", userIdToDelete);
-  console.log("Logged-in user:", loggedInUserId);
 
   // Check if the user to be deleted is the same as the logged-in user
   if (parseInt(userIdToDelete, 10) === loggedInUserId) {

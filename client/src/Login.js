@@ -34,7 +34,8 @@ const Login = () => {
           user.CompanyName,
           user.Address,
           user.Industry,
-          user.UserRoleId
+          user.UserRoleId,
+          user.CompanyID
         );
         console.log("Login status", response.data.loggedIn);
       } else {
@@ -73,6 +74,7 @@ const Login = () => {
         companyaddress,
         companyindustry,
         userroleid,
+        companyid,
       } = response.data;
 
       // Save the token to localStorage
@@ -92,7 +94,8 @@ const Login = () => {
         companyname,
         companyaddress,
         companyindustry,
-        userroleid
+        userroleid,
+        companyid
       );
       navigate("/home");
     } catch (error) {

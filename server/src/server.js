@@ -7,6 +7,7 @@ const SQLiteStore = require("connect-sqlite3")(session);
 require("dotenv").config();
 const corsMiddleware = require("./middleware/corsMiddleware");
 const authRoutes = require("./routes/authRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,7 +25,7 @@ app.use(
   })
 );
 
-app.use("/api", authRoutes);
+app.use("/api", authRoutes, taskRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

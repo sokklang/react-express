@@ -63,6 +63,15 @@ CREATE TABLE Task (
     FOREIGN KEY (ApproverUserID) REFERENCES User(UserID)
 );
 
+CREATE TABLE TaskAssignment (
+    AssignmentID INTEGER PRIMARY KEY,
+    TaskID INTEGER,
+    AssignedUserID INTEGER,
+    FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE,
+    FOREIGN KEY (AssignedUserID) REFERENCES User(UserID)
+);
+
+
 -- Create UserTaskNotify table
 CREATE TABLE UserTaskNotify (
     UserTaskID INTEGER PRIMARY KEY,

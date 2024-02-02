@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [companyAddress, setCompanyAddress] = useState("");
   const [companyindustry, setCompanyIndustry] = useState("");
   const [UserRoleId, setUserRoleId] = useState("");
+  const [companyId, setCompanyId] = useState("");
 
   const handleLogin = (
     loggedInUsername,
@@ -26,7 +27,8 @@ export const AuthProvider = ({ children }) => {
     loggedInCompanyName,
     loggedInCompanyAddress,
     loggedInCompanyIndustry,
-    loggedInUserRoleId
+    loggedInUserRoleId,
+    loggedInCompanyID
   ) => {
     setUsername(loggedInUsername);
     setFirstname(loggedInFirstname);
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     setCompanyAddress(loggedInCompanyAddress);
     setCompanyIndustry(loggedInCompanyIndustry);
     setUserRoleId(loggedInUserRoleId);
+    setCompanyId(loggedInCompanyID);
   };
 
   const handleLogout = async () => {
@@ -61,6 +64,7 @@ export const AuthProvider = ({ children }) => {
         setCompanyAddress("");
         setCompanyIndustry("");
         setUserRoleId("");
+        setCompanyId("");
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -91,6 +95,7 @@ export const AuthProvider = ({ children }) => {
         companyName,
         companyAddress,
         companyindustry,
+        companyId,
         UserRoleId,
         handleLogin,
         handleLogout,
