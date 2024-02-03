@@ -213,16 +213,21 @@ const Task = () => {
                         <i className="fa fa-pencil me-2" aria-hidden="true"></i>{" "}
                         Update
                       </button>
-                      <button
-                        className="dropdown-item "
-                        type="button"
-                        onClick={() => {
-                          approveTask(task.TaskID);
-                        }}
-                      >
-                        <i className="fa fa-check me-2" aria-hidden="true"></i>{" "}
-                        Approve
-                      </button>
+                      {task.ApprovalStatus !== "Approved" && (
+                        <button
+                          className="dropdown-item "
+                          type="button"
+                          onClick={() => {
+                            approveTask(task.TaskID);
+                          }}
+                        >
+                          <i
+                            className="fa fa-check me-2"
+                            aria-hidden="true"
+                          ></i>{" "}
+                          Approve
+                        </button>
+                      )}
                       <div className="dropdown-divider"></div>
                       <button
                         className="dropdown-item btn btn-danger"
