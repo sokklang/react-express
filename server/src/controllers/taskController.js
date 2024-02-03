@@ -132,7 +132,50 @@ async function getTask(req, res) {
   }
 }
 
-async function updateTask(req, res) {}
+async function updateTask(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  const { taskid } = req.params;
+  const userrole = req.session.user.RoleType;
+  console.log(taskid);
+  const {
+    TaskDescription,
+    TaskDeadline,
+    PriorityID,
+    TaskTypeID,
+    DependentTaskID,
+  } = req.body;
+
+  if (userrole === "Admin User") {
+    db.run("PRAGMA foreign_keys = '0';");
+
+    db.run(
+      "UPDATE Task SET TaskDescription=?, TaskDeadline=?, PriorityID=?, TaskTypeID=?, DependentTaskID=? WHERE TaskID=?",
+      [
+        TaskDescription,
+        TaskDeadline, // Assuming TaskDeadline is the correct column here
+        PriorityID,
+        TaskTypeID,
+        DependentTaskID,
+        taskid,
+      ],
+      (updateErr) => {
+        // Re-enable foreign key constraints
+        db.run("PRAGMA foreign_keys = '1';");
+
+        if (updateErr) {
+          console.error("Error updating Task information:", updateErr.message);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        db.run("PRAGMA foreign_keys = '1';");
+
+        res.status(200).json({ message: "Task Update successfully" });
+      }
+    );
+  } else {
+    res.status(403).json({ error: "Access forbidden" });
+  }
+}
 
 async function deleteTask(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);

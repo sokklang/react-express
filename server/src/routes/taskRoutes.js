@@ -14,4 +14,11 @@ router.delete(
   taskController.deleteTask
 );
 
+router.put(
+  "/updatetask/:taskid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.updateTask
+);
+
 module.exports = router;

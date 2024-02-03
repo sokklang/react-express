@@ -5,6 +5,8 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import AddTask from "./Addtask";
 import Deletetask from "./Deletetask";
+import Detailtask from "./Detailtask";
+import Updatetask from "./Updatetask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -14,8 +16,14 @@ const Task = () => {
   const { loggedIn } = useContext(AuthContext);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false);
+  const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
+  const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false);
   const [selectDeleteTask, setSelectDeleteTask] = useState("");
+  const [selectDetailTask, setSelectDetailTask] = useState("");
+  const [selectUpdateTask, setSelectUpdateTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchTasks = async () => {
     try {
@@ -46,6 +54,26 @@ const Task = () => {
       console.error(error.response.data.error);
 
       throw error;
+    }
+  };
+
+  const updateTask = async (updateTaskData) => {
+    const taskid = selectUpdateTask.TaskID;
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/updatetask/${taskid}`,
+        updateTaskData,
+        { withCredentials: true }
+      );
+      console.log(updateTaskData);
+      if (response.status === 200) {
+        fetchTasks();
+        setSuccessMessage(response.data.message);
+        setErrorMessage("");
+      }
+    } catch (error) {
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.error);
     }
   };
 
@@ -128,7 +156,7 @@ const Task = () => {
 
                 <td className="text-center">
                   {/* Add action buttons as needed */}
-                  <div className="dropdown">
+                  <div className="dropdown" data-bs-theme="dark">
                     <button
                       className="btn btn-secondary dropdown-toggle"
                       type="button"
@@ -136,33 +164,75 @@ const Task = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                      <i
+                        className="fa fa-ellipsis-v fa-fw "
+                        aria-hidden="true"
+                      ></i>
                     </button>
                     <div
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenu2"
                     >
-                      <button className="dropdown-item" type="button">
-                        Action
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => {
+                          setShowDetailTaskModal(true);
+                          setSelectDetailTask(task);
+                        }}
+                      >
+                        <i className="fa fa-eye  me-2" aria-hidden="true"></i>
+                        Detail
                       </button>
-                      <button class="dropdown-item" type="button">
-                        Another action
+
+                      <button
+                        className="dropdown-item btn btn-warning"
+                        type="button"
+                        onClick={() => {
+                          setShowUpdateTaskModal(true);
+                          setSelectUpdateTask(task);
+                        }}
+                      >
+                        <i className="fa fa-pencil me-2" aria-hidden="true"></i>{" "}
+                        Update
                       </button>
-                      <button class="dropdown-item" type="button">
-                        Something else here
+                      <div className="dropdown-divider"></div>
+                      <button
+                        className="dropdown-item btn btn-danger"
+                        type="button"
+                        onClick={() => {
+                          setShowDeleteTaskModal(true);
+                          setSelectDeleteTask(task.TaskID);
+                        }}
+                      >
+                        <i className="fa fa-trash me-2" aria-hidden="true"></i>{" "}
+                        Delete
                       </button>
                     </div>
                   </div>
-
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => {
-                      setShowDeleteTaskModal(true);
-                      setSelectDeleteTask(task.TaskID);
+                  <Detailtask
+                    showModal={showDetailTaskModal}
+                    selectDetailTask={selectDetailTask}
+                    handleClose={() => {
+                      setShowDetailTaskModal(false);
+                      setSelectDetailTask("");
                     }}
-                  >
-                    <i className="fa fa-trash" aria-hidden="true"></i> Delete
-                  </button>
+                  />
+
+                  <Updatetask
+                    showModal={showUpdateTaskModal}
+                    updateTask={updateTask}
+                    selectUpdateTask={selectUpdateTask}
+                    successMessage={successMessage}
+                    errorMessage={errorMessage}
+                    handleClose={() => {
+                      setShowUpdateTaskModal(false);
+                      setSelectUpdateTask("");
+                      setErrorMessage("");
+                      setSuccessMessage("");
+                    }}
+                  />
+
                   <Deletetask
                     showModal={showDeleteTaskModal}
                     deleteTask={deleteTask}
