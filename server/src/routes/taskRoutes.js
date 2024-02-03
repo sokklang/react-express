@@ -21,4 +21,6 @@ router.put(
   taskController.updateTask
 );
 
+router.put("/approvetask/:taskid", taskController.approveTask);
+
 module.exports = router;

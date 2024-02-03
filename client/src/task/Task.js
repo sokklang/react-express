@@ -77,6 +77,23 @@ const Task = () => {
     }
   };
 
+  const approveTask = async (taskid) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/approvetask/${taskid}`,
+        null,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        console.log(response.data.message);
+        // Trigger useEffect by calling fetchUserData
+        fetchTasks();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) {
       fetchTasks();
@@ -195,6 +212,16 @@ const Task = () => {
                       >
                         <i className="fa fa-pencil me-2" aria-hidden="true"></i>{" "}
                         Update
+                      </button>
+                      <button
+                        className="dropdown-item "
+                        type="button"
+                        onClick={() => {
+                          approveTask(task.TaskID);
+                        }}
+                      >
+                        <i className="fa fa-check me-2" aria-hidden="true"></i>{" "}
+                        Approve
                       </button>
                       <div className="dropdown-divider"></div>
                       <button
