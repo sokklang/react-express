@@ -4,6 +4,7 @@ import defaultProfileImage from "../profile/profile.jpg";
 
 const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
   const [userProfiles, setUserProfiles] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -33,8 +34,21 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
   const handleAssignTask = async (e) => {
     e.preventDefault();
   };
+
+  const handleUserSelection = (userId) => {
+    // Toggle the selection status of the user
+    setSelectedUsers((prevSelectedUsers) => {
+      if (prevSelectedUsers.includes(userId)) {
+        return prevSelectedUsers.filter((id) => id !== userId);
+      } else {
+        return [...prevSelectedUsers, userId];
+      }
+    });
+  };
+
   const onClose = () => {
     handleClose();
+    setSelectedUsers("");
   };
 
   useEffect(() => {
@@ -50,7 +64,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-xl modal-dialog-centered ">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title text-white">
@@ -65,34 +79,65 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
           <div className="modal-body text-white text-start">
             <form onSubmit={handleAssignTask}>
               {/* Iterate over user profiles and display them */}
-              {userProfiles.map((user) => (
-                <div key={user.UserID} className="card mb-3">
-                  <div className="card-body">
-                    {user.ImageData ? (
-                      // Convert Buffer to Blob and create Blob URL
-                      <img
-                        src={arrayToBlobUrl(user.ImageData.data, "image/jpeg")}
-                        alt={`Profile for ${user.Username}`}
-                        className="card-img-top"
-                        style={{ maxWidth: "100px", maxHeight: "100px" }}
-                      />
-                    ) : (
-                      // Render default profile image if ImageData is not available
-                      <img
-                        src={defaultProfileImage}
-                        alt={`Default Profile for ${user.Username}`}
-                        className="card-img-top"
-                        style={{ maxWidth: "100px", maxHeight: "100px" }}
-                      />
-                    )}
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "flex-start",
+                }}
+              >
+                {userProfiles.map((user) => (
+                  <div
+                    key={user.UserID}
+                    className="card mb-3"
+                    style={{
+                      flex: "0 1 calc(25% - 1em)",
+                      margin: "0.5em",
+                      backgroundColor: selectedUsers.includes(user.UserID)
+                        ? "#007bff"
+                        : "",
+                      color: selectedUsers.includes(user.UserID) ? "white" : "",
+                    }}
+                    onClick={() => handleUserSelection(user.UserID)}
+                  >
+                    <div
+                      className="card-body"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {user.ImageData ? (
+                        // Convert Buffer to Blob and create Blob URL
+                        <img
+                          src={arrayToBlobUrl(
+                            user.ImageData.data,
+                            "image/jpeg"
+                          )}
+                          alt={`Profile for ${user.Username}`}
+                          className="card-img-top"
+                          style={{ maxWidth: "150px", maxHeight: "150px" }}
+                        />
+                      ) : (
+                        // Render default profile image if ImageData is not available
+                        <img
+                          src={defaultProfileImage}
+                          alt={`Default Profile for ${user.Username}`}
+                          className="card-img-top"
+                          style={{ maxWidth: "150px", maxHeight: "150px" }}
+                        />
+                      )}
 
-                    <div className="card-text">
-                      <p className="mb-0">User ID: {user.UserID}</p>
-                      <p className="mb-0">Username: {user.Username}</p>
+                      <div className="card-text">
+                        <p className="mb-0">User ID: {user.UserID}</p>
+                        <p className="mb-0">Username: {user.Username}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
               {errorMessage && (
                 <div className="alert alert-danger mt-3" role="alert">

@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
-const Assigntask = ({}) => {
+const Assigntask = () => {
   const { loggedIn } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [selectAssignTask, setSelectAssignTask] = useState("");
@@ -125,6 +125,10 @@ const Assigntask = ({}) => {
                           aria-hidden="true"
                         ></i>
                         Assign
+                      </button>
+                      <button className="dropdown-item" type="button">
+                        <i className="fa fa-eye me-2" aria-hidden="true"></i>{" "}
+                        Detail
                       </button>
 
                       <button
