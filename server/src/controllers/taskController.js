@@ -255,9 +255,103 @@ async function approveTask(req, res) {
   }
 }
 
+async function getApproveTask(req, res) {
+  try {
+    const companyID = req.session.user.CompanyID;
+
+    const query = `
+      SELECT * FROM Task
+      WHERE CompanyID = ? AND ApprovalStatus = 'Approved'
+    `;
+
+    // Using a Promise to make the asynchronous call
+    const getApprovedTasks = () => {
+      return new Promise((resolve, reject) => {
+        db.all(query, [companyID], (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            const taskData = rows.map((task) => ({
+              TaskID: task.TaskID,
+              TaskTitle: task.TaskTitle,
+              TaskDescription: task.TaskDescription,
+              TaskDeadline: task.TaskDeadline,
+              PriorityID: task.PriorityID,
+              CompanyID: task.CompanyID,
+              TaskTypeID: task.TaskTypeID,
+              UserID: task.UserID,
+              UserRoleID: task.UserRoleID,
+              TaskCreationDate: task.TaskCreationDate,
+              ApprovalStatus: task.ApprovalStatus,
+              ApprovalTimestamp: task.ApprovalTimestamp,
+              ApproverUserID: task.ApproverUserID,
+              Status: task.Status,
+              DependentTaskID: task.DependentTaskID,
+            }));
+            resolve(taskData);
+          }
+        });
+      });
+    };
+
+    // Await the Promise and send the mapped data as a response
+    const approvedTasks = await getApprovedTasks();
+    res.status(200).json({ approvedTasks });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function closeTaskReport(req, res) {}
 
-async function AssignTask(req, res) {}
+async function AssignTask(req, res) {
+  try {
+    const { taskId, assignedUserIds } = req.body;
+
+    if (!taskId || !assignedUserIds || !Array.isArray(assignedUserIds)) {
+      return res.status(400).json({
+        error: "Task ID and an array of assigned user IDs are required.",
+      });
+    }
+
+    const insertQuery = `
+      INSERT INTO TaskAssignment (TaskID, AssignedUserID)
+      VALUES (?, ?);
+    `;
+
+    // Using a Promise to make the asynchronous call
+    const assignTaskToUsers = () => {
+      return new Promise((resolve, reject) => {
+        const promises = assignedUserIds.map((userId) => {
+          return new Promise((innerResolve, innerReject) => {
+            db.run(insertQuery, [taskId, userId], function (err) {
+              if (err) {
+                innerReject(err);
+              } else {
+                innerResolve();
+              }
+            });
+          });
+        });
+
+        // Wait for all promises to resolve
+        Promise.all(promises)
+          .then(() => resolve())
+          .catch(reject);
+      });
+    };
+
+    // Await the Promise and send a success message as a response
+    await assignTaskToUsers();
+    res
+      .status(200)
+      .json({ message: "Task assigned successfully to multiple users." });
+  } catch (error) {
+    console.error("Error assigning task:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
 async function notifyTask(req, res) {}
 
@@ -267,6 +361,7 @@ module.exports = {
   updateTask,
   deleteTask,
   approveTask,
+  getApproveTask,
   closeTaskReport,
   AssignTask,
   notifyTask,

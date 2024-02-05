@@ -10,7 +10,7 @@ import "font-awesome/css/font-awesome.min.css";
 const Navbar = () => {
   const { loggedIn, UserRoleId, username, handleLogout } =
     useContext(AuthContext);
-  const notificationCount = 2;
+
   if (!loggedIn) {
     // If the user is not logged in, redirect to the login page
     return <Navigate to="/login" />;
@@ -42,6 +42,13 @@ const Navbar = () => {
               </li>
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
+                  <Link className="nav-link" to="/assigntask">
+                    <i className="fa fa-list fa-fw me-1"></i>AssignTask
+                  </Link>
+                </li>
+              )}
+              {String(UserRoleId) === "2" && (
+                <li className="nav-item">
                   <Link className="nav-link" to="/approval">
                     <i className="fa fa-check fa-fw me-1"></i>Approval
                   </Link>
@@ -57,9 +64,6 @@ const Navbar = () => {
               <li className="nav-item">
                 <Link className="nav-link" to="/notification">
                   <i className="fa fa-bell fa-fw me-1"></i>Notification{" "}
-                  {notificationCount > 0 && (
-                    <span className="badge bg-danger">{notificationCount}</span>
-                  )}
                 </Link>
               </li>
             </ul>

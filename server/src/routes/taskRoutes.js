@@ -21,6 +21,24 @@ router.put(
   taskController.updateTask
 );
 
-router.put("/approvetask/:taskid", taskController.approveTask);
+router.put(
+  "/approvetask/:taskid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.approveTask
+);
+
+router.get(
+  "/getapprovetask",
+  middleware.checkLoggedIn,
+  taskController.getApproveTask
+);
+
+router.post(
+  "/assigntask",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.AssignTask
+);
 
 module.exports = router;

@@ -20,6 +20,7 @@ import Company from "./company/Company";
 import Settings from "./Settings";
 import Notification from "./Notification";
 import Nopage from "./Nopage";
+import Assigntask from "./assigntask/Assigntask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -44,6 +45,7 @@ const App = () => {
           path="/home"
           element={loggedIn ? <Home /> : <Navigate to="/login" />}
         />
+        <Route path="/assigntask" element={<Assigntask />} />
         <Route path="/task" element={<Task />} />
         <Route path="/usermgmt" element={<Usermgmt />} />
         <Route path="/Approval" element={<Approval />} />

@@ -609,6 +609,46 @@ async function UpdateUserProfile(req, res) {
   }
 }
 
+async function GetUserProfileAdminCompany(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    const requestingUserRole = req.session.user.RoleType; // Assuming you have the role in the session
+    const companyId = req.session.user.CompanyID;
+
+    // Check if the requesting user is an admin
+    if (requestingUserRole === "Admin User") {
+      const userProfilesResult = await new Promise((resolve, reject) => {
+        db.all(
+          "SELECT u.UserID, u.Username, i.ImageData FROM User u LEFT JOIN ImageProfile i ON u.UserID = i.UserID WHERE u.CompanyID = ?",
+          [companyId],
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+      });
+
+      if (!userProfilesResult || userProfilesResult.length === 0) {
+        return res
+          .status(404)
+          .json({ error: "No user profiles found for the company" });
+      }
+
+      // Send the user profiles for admin users
+      res.status(200).json(userProfilesResult);
+    } else {
+      // Handle the case where the requesting user is not an admin
+      res.status(403).json({ error: "Permission denied" });
+    }
+  } catch (error) {
+    console.error("Error in GetUserProfile:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
@@ -623,4 +663,5 @@ module.exports = {
   GetUserProfile,
   GetUserProfileAdmin,
   UpdateUserProfile,
+  GetUserProfileAdminCompany,
 };

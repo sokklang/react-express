@@ -89,4 +89,11 @@ router.put(
   companyController.updateCompanyInfo
 );
 
+router.get(
+  "/getuserprofileadmincompany",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  authController.GetUserProfileAdminCompany
+);
+
 module.exports = router;
