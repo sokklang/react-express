@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import defaultProfileImage from "../profile/profile.jpg";
 
@@ -33,16 +33,46 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
 
   const handleAssignTask = async (e) => {
     e.preventDefault();
+
+    try {
+      const taskId = selectAssignTask; // Assuming selectAssignTask is the taskId
+      const assignedUserIds = selectedUsers; // Assuming selectedUsers is the array of user IDs
+
+      if (!taskId || !assignedUserIds || assignedUserIds.length === 0) {
+        setErrorMessage("Task ID and at least one assigned user are required.");
+        return;
+      }
+
+      // Perform your request to the server with taskId and assignedUserIds
+      const response = await axios.post(
+        "http://localhost:5000/api/assigntask",
+        { taskId, assignedUserIds },
+        {
+          withCredentials: true,
+          // Add any other necessary configurations for your request
+        }
+      );
+
+      // Handle the response from the server
+      console.log("Server Response:", response.data);
+      setErrorMessage("");
+      setSuccessMessage(response.data.message);
+    } catch (error) {
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.error);
+      console.error(error);
+    }
   };
 
   const handleUserSelection = (userId) => {
     // Toggle the selection status of the user
     setSelectedUsers((prevSelectedUsers) => {
-      if (prevSelectedUsers.includes(userId)) {
-        return prevSelectedUsers.filter((id) => id !== userId);
-      } else {
-        return [...prevSelectedUsers, userId];
-      }
+      const newSelectedUsers = prevSelectedUsers.includes(userId)
+        ? prevSelectedUsers.filter((id) => id !== userId)
+        : [...prevSelectedUsers, userId];
+
+      console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
+      return newSelectedUsers;
     });
   };
 
@@ -51,12 +81,33 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
     setSelectedUsers("");
   };
 
+  const fetchAssignedUsers = useCallback(async () => {
+    try {
+      const taskId = selectAssignTask;
+      const response = await axios.get(
+        `http://localhost:5000/api/getusertaskassigned/${taskId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      // Assuming the backend response has a structure like { assignedUserIds: [...] }
+      const { assignedUserIds } = response.data;
+
+      // Set the retrieved user IDs in the state
+      setSelectedUsers(assignedUserIds);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [selectAssignTask]);
+
   useEffect(() => {
     if (showModal) {
       // Call fetchUserCompany only when showModal is true
       fetchUserCompany();
+      fetchAssignedUsers();
     }
-  }, [showModal]);
+  }, [showModal, fetchAssignedUsers]);
 
   return (
     <div

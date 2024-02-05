@@ -41,4 +41,11 @@ router.post(
   taskController.AssignTask
 );
 
+router.get(
+  "/getusertaskassigned/:taskId",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.getUserTaskAssigned
+);
+
 module.exports = router;

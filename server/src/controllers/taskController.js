@@ -353,6 +353,37 @@ async function AssignTask(req, res) {
   }
 }
 
+async function getUserTaskAssigned(req, res) {
+  try {
+    const taskId = req.params.taskId;
+
+    if (!taskId) {
+      return res.status(400).json({
+        error: "Task ID is required.",
+      });
+    }
+
+    const query = `
+      SELECT AssignedUserID
+      FROM TaskAssignment
+      WHERE TaskID = ?;
+    `;
+
+    db.all(query, [taskId], (err, rows) => {
+      if (err) {
+        console.error("Error fetching assigned users for task:", err.message);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      const assignedUserIds = rows.map((row) => row.AssignedUserID);
+      res.status(200).json({ assignedUserIds });
+    });
+  } catch (error) {
+    console.error("Error in getUserTaskAssigned:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function notifyTask(req, res) {}
 
 module.exports = {
@@ -364,5 +395,6 @@ module.exports = {
   getApproveTask,
   closeTaskReport,
   AssignTask,
+  getUserTaskAssigned,
   notifyTask,
 };
