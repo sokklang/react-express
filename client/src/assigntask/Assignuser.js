@@ -37,6 +37,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
     try {
       const taskId = selectAssignTask; // Assuming selectAssignTask is the taskId
       const assignedUserIds = selectedUsers; // Assuming selectedUsers is the array of user IDs
+      console.log("assigneduser", assignedUserIds);
 
       if (!taskId || !assignedUserIds || assignedUserIds.length === 0) {
         setErrorMessage("Task ID and at least one assigned user are required.");
@@ -65,11 +66,16 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
   };
 
   const handleUserSelection = (userId) => {
-    // Toggle the selection status of the user
     setSelectedUsers((prevSelectedUsers) => {
-      const newSelectedUsers = prevSelectedUsers.includes(userId)
-        ? prevSelectedUsers.filter((id) => id !== userId)
-        : [...prevSelectedUsers, userId];
+      // Ensure prevSelectedUsers is always an array
+
+      const currentSelectedUsers = Array.isArray(prevSelectedUsers)
+        ? prevSelectedUsers
+        : [];
+
+      const newSelectedUsers = currentSelectedUsers.includes(userId)
+        ? currentSelectedUsers.filter((id) => id !== userId)
+        : [...currentSelectedUsers, userId];
 
       console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
       return newSelectedUsers;
@@ -78,7 +84,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
 
   const onClose = () => {
     handleClose();
-    setSelectedUsers("");
+    setSelectedUsers([]);
   };
 
   const fetchAssignedUsers = useCallback(async () => {
@@ -96,6 +102,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
 
       // Set the retrieved user IDs in the state
       setSelectedUsers(assignedUserIds);
+      console.log(assignedUserIds);
     } catch (error) {
       console.error(error);
     }

@@ -315,35 +315,55 @@ async function AssignTask(req, res) {
       });
     }
 
-    const insertQuery = `
-      INSERT INTO TaskAssignment (TaskID, AssignedUserID)
-      VALUES (?, ?);
-    `;
+    // Convert array of assigned user IDs to a string
+    const assignedUserIdsString = JSON.stringify(assignedUserIds);
 
-    // Using a Promise to make the asynchronous call
-    const assignTaskToUsers = () => {
-      return new Promise((resolve, reject) => {
-        const promises = assignedUserIds.map((userId) => {
-          return new Promise((innerResolve, innerReject) => {
-            db.run(insertQuery, [taskId, userId], function (err) {
-              if (err) {
-                innerReject(err);
-              } else {
-                innerResolve();
-              }
-            });
-          });
-        });
+    // Check if a record already exists for this TaskID
+    const existingRecord = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT * FROM TaskAssignment WHERE TaskID = ?",
+        [taskId],
+        function (err, row) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        }
+      );
+    });
 
-        // Wait for all promises to resolve
-        Promise.all(promises)
-          .then(() => resolve())
-          .catch(reject);
+    // If a record already exists, update it; otherwise, insert a new record
+    if (existingRecord) {
+      await new Promise((resolve, reject) => {
+        db.run(
+          "UPDATE TaskAssignment SET AssignedUserID = ? WHERE TaskID = ?",
+          [assignedUserIdsString, taskId],
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          }
+        );
       });
-    };
+    } else {
+      await new Promise((resolve, reject) => {
+        db.run(
+          "INSERT INTO TaskAssignment (TaskID, AssignedUserID) VALUES (?, ?)",
+          [taskId, assignedUserIdsString],
+          function (err) {
+            if (err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          }
+        );
+      });
+    }
 
-    // Await the Promise and send a success message as a response
-    await assignTaskToUsers();
     res
       .status(200)
       .json({ message: "Task assigned successfully to multiple users." });
@@ -369,13 +389,17 @@ async function getUserTaskAssigned(req, res) {
       WHERE TaskID = ?;
     `;
 
-    db.all(query, [taskId], (err, rows) => {
+    db.get(query, [taskId], (err, row) => {
       if (err) {
         console.error("Error fetching assigned users for task:", err.message);
         return res.status(500).json({ error: "Internal Server Error" });
       }
 
-      const assignedUserIds = rows.map((row) => row.AssignedUserID);
+      if (!row) {
+        return res.status(404).json({ error: "Task not found." });
+      }
+
+      const assignedUserIds = row.AssignedUserID;
       res.status(200).json({ assignedUserIds });
     });
   } catch (error) {
