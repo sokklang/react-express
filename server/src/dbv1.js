@@ -126,6 +126,14 @@ BEGIN
     DELETE FROM ImageProfile WHERE UserID = OLD.UserID;
 END;
 
+CREATE TRIGGER delete_task_assignment
+AFTER DELETE ON Task
+FOR EACH ROW
+BEGIN
+    DELETE FROM TaskAssignment WHERE TaskID = OLD.TaskID;
+END;
+
+
 `;
 
 db.exec(script, function (err) {

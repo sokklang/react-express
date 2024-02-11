@@ -315,6 +315,17 @@ async function AssignTask(req, res) {
       });
     }
 
+    // Disable foreign key constraints
+    await new Promise((resolve, reject) => {
+      db.run("PRAGMA foreign_keys = '0';", function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+
     // Convert array of assigned user IDs to a string
     const assignedUserIdsString = JSON.stringify(assignedUserIds);
 
@@ -364,9 +375,20 @@ async function AssignTask(req, res) {
       });
     }
 
-    res
-      .status(200)
-      .json({ message: "Task assigned successfully to multiple users." });
+    // Re-enable foreign key constraints
+    await new Promise((resolve, reject) => {
+      db.run("PRAGMA foreign_keys = '1';", function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    res.status(200).json({
+      message: `Task assigned successfully to ${assignedUserIds.length} users.`,
+    });
   } catch (error) {
     console.error("Error assigning task:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

@@ -5,6 +5,7 @@ import defaultProfileImage from "../profile/profile.jpg";
 const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
   const [userProfiles, setUserProfiles] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -37,9 +38,10 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
     try {
       const taskId = selectAssignTask; // Assuming selectAssignTask is the taskId
       const assignedUserIds = selectedUsers; // Assuming selectedUsers is the array of user IDs
-      console.log("assigneduser", assignedUserIds);
+      //console.log("assigneduser", assignedUserIds);
 
       if (!taskId || !assignedUserIds || assignedUserIds.length === 0) {
+        setSuccessMessage("");
         setErrorMessage("Task ID and at least one assigned user are required.");
         return;
       }
@@ -68,23 +70,20 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
   const handleUserSelection = (userId) => {
     setSelectedUsers((prevSelectedUsers) => {
       // Ensure prevSelectedUsers is always an array
-
       const currentSelectedUsers = Array.isArray(prevSelectedUsers)
         ? prevSelectedUsers
-        : [];
+        : selectedUsers;
+
+      console.log("currentSelectedUsers", currentSelectedUsers);
 
       const newSelectedUsers = currentSelectedUsers.includes(userId)
         ? currentSelectedUsers.filter((id) => id !== userId)
         : [...currentSelectedUsers, userId];
 
       console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
+
       return newSelectedUsers;
     });
-  };
-
-  const onClose = () => {
-    handleClose();
-    setSelectedUsers([]);
   };
 
   const fetchAssignedUsers = useCallback(async () => {
@@ -97,12 +96,14 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
         }
       );
 
-      // Assuming the backend response has a structure like { assignedUserIds: [...] }
+      // Assuming the backend response has a structure like { assignedUserIds: "[1,2,3]" } String Format
       const { assignedUserIds } = response.data;
 
+      // Parse the retrieved string into an array using JSON.parse()
+      const parsedAssignedUserIds = JSON.parse(assignedUserIds);
+
       // Set the retrieved user IDs in the state
-      setSelectedUsers(assignedUserIds);
-      console.log(assignedUserIds);
+      setSelectedUsers(parsedAssignedUserIds);
     } catch (error) {
       console.error(error);
     }
@@ -115,6 +116,11 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
       fetchAssignedUsers();
     }
   }, [showModal, fetchAssignedUsers]);
+
+  const onClose = () => {
+    handleClose();
+    setSelectedUsers([]);
+  };
 
   return (
     <div
