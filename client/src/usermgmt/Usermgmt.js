@@ -6,9 +6,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
-import "font-awesome/css/font-awesome.min.css";
 import UserModal from "./Addusermodal";
 import DeleteModal from "./Deleteusermodal";
 import Detailusermodal from "./Detailusermodal";
@@ -16,6 +13,10 @@ import Editusermodal from "./Editusermodal";
 import Resetpasswordmodal from "./Resetpasswordmodal";
 
 import defaultCompanyLogo from "../company/defaultlogo.png";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+import "font-awesome/css/font-awesome.min.css";
 
 const Usermgmt = () => {
   const { loggedIn, companyName, companyAddress, companyindustry } =
@@ -251,14 +252,7 @@ const Usermgmt = () => {
                   >
                     <i className="fa fa-eye" aria-hidden="true"></i> Detail
                   </button>
-                  <Detailusermodal
-                    showModal={showDetailUserModal}
-                    selectDetailUser={selectDetailUser}
-                    handleClose={() => {
-                      setShowDetailUserModal(false);
-                      setSelectDetailUser("");
-                    }}
-                  />
+
                   <button
                     className="btn btn-warning btn-sm me-2"
                     onClick={() => {
@@ -328,6 +322,14 @@ const Usermgmt = () => {
           </tbody>
         </table>
       </div>
+      <Detailusermodal
+        showModal={showDetailUserModal}
+        selectDetailUser={selectDetailUser}
+        handleClose={() => {
+          setShowDetailUserModal(false);
+          setSelectDetailUser("");
+        }}
+      />
       {/* Add additional features or components related to user management */}
     </div>
   );
