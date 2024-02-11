@@ -50,7 +50,7 @@ const Updatetask = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title text-white">
-              <i className="fa fa-task fa-fw me-2"></i>Add Task
+              <i className="fa fa-edit fa-fw me-2"></i>Update Task
             </h5>
             <button
               type="button"
@@ -60,23 +60,6 @@ const Updatetask = ({
           </div>
           <div className="modal-body text-white text-start">
             <form onSubmit={handleUpdateTask}>
-              <div className="mb-3">
-                <label htmlFor="formTaskDescription" className="form-label">
-                  Task Description
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Task Description"
-                  value={updateTaskData.TaskDescription}
-                  onChange={(e) =>
-                    setUpdateTaskData({
-                      ...updateTaskData,
-                      TaskDescription: e.target.value,
-                    })
-                  }
-                />
-              </div>
               <div className="mb-3">
                 <label htmlFor="formTaskDeadline" className="form-label">
                   Task Deadline
@@ -133,6 +116,24 @@ const Updatetask = ({
                     <option value={2}>Medium Task</option>
                     <option value={3}>Large Task</option>
                   </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="formTaskDescription" className="form-label">
+                    Task Description
+                  </label>
+                  <textarea
+                    className="form-control"
+                    placeholder="Enter Task Description (around 200 words)"
+                    //style={{ height: "200px" }} // Set height to make it bigger
+                    rows={5}
+                    value={updateTaskData.TaskDescription}
+                    onChange={(e) =>
+                      setUpdateTaskData({
+                        ...updateTaskData,
+                        TaskDescription: e.target.value,
+                      })
+                    }
+                  />
                 </div>
               </div>
 

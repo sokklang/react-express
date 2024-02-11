@@ -57,7 +57,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
       );
 
       // Handle the response from the server
-      console.log("Server Response:", response.data);
+      console.log(response.data);
       setErrorMessage("");
       setSuccessMessage(response.data.message);
     } catch (error) {

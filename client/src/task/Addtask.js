@@ -58,7 +58,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title text-white">
-              <i className="fa fa-task fa-fw me-2"></i>Add Task
+              <i className="fa fa-plus fa-fw me-2"></i>Add Task
             </h5>
             <button
               type="button"
@@ -82,23 +82,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                   }
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="formTaskDescription" className="form-label">
-                  Task Description
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Task Description"
-                  value={taskData.TaskDescription}
-                  onChange={(e) =>
-                    setTaskData({
-                      ...taskData,
-                      TaskDescription: e.target.value,
-                    })
-                  }
-                />
-              </div>
+
               <div className="mb-3">
                 <label htmlFor="formTaskDeadline" className="form-label">
                   Task Deadline
@@ -146,6 +130,24 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                     <option value={2}>Medium Task</option>
                     <option value={3}>Large Task</option>
                   </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="formTaskDescription" className="form-label">
+                    Task Description
+                  </label>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Task Description"
+                    rows={5}
+                    value={taskData.TaskDescription}
+                    onChange={(e) =>
+                      setTaskData({
+                        ...taskData,
+                        TaskDescription: e.target.value,
+                      })
+                    }
+                  />
                 </div>
               </div>
 
