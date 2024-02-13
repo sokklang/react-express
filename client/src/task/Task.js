@@ -94,6 +94,23 @@ const Task = () => {
     }
   };
 
+  const requestJoinTask = async (taskid) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/api/requestjointask/${taskid}`,
+        null,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        console.log(response.data.message);
+        // Trigger useEffect by calling fetchUserData
+        fetchTasks();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) {
       fetchTasks();
@@ -219,7 +236,13 @@ const Task = () => {
                         ></i>{" "}
                         Update
                       </button>
-                      <button className="dropdown-item" type="button">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => {
+                          requestJoinTask(task.TaskID);
+                        }}
+                      >
                         <i
                           className="fa fa fa-user-plus fa-fw me-2"
                           aria-hidden="true"

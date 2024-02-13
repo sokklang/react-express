@@ -66,7 +66,8 @@ CREATE TABLE Task (
 CREATE TABLE TaskAssignment (
     AssignmentID INTEGER PRIMARY KEY,
     TaskID INTEGER,
-    AssignedUserID INTEGER,
+    AssignedUserID TEXT,
+    RequestJoinUserID TEXT,
     FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE,
     FOREIGN KEY (AssignedUserID) REFERENCES User(UserID)
 );

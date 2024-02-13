@@ -395,6 +395,187 @@ async function AssignTask(req, res) {
   }
 }
 
+async function requestJoinTask(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+
+  try {
+    const { taskId } = req.params;
+    const userId = req.session.user.UserID;
+
+    if (!taskId || !userId) {
+      return res.status(400).json({
+        error: "Task ID and user ID are required.",
+      });
+    }
+
+    // Retrieve the existing TaskAssignment record for the given task
+    const existingAssignment = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT * FROM TaskAssignment WHERE TaskID = ?",
+        [taskId],
+        function (err, row) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        }
+      );
+    });
+
+    if (!existingAssignment) {
+      return res.status(404).json({
+        error: "Task assignment not found.",
+      });
+    }
+
+    // Parse the existing RequestJoinUserID as an array
+    let requestJoinUserIds = JSON.parse(
+      existingAssignment.RequestJoinUserID || "[]"
+    );
+
+    // Check if the user has already requested to join
+    if (requestJoinUserIds.includes(userId)) {
+      return res.status(400).json({
+        error: "User has already requested to join this task.",
+      });
+    }
+
+    // Add the user ID to the array of requested join users
+    requestJoinUserIds.push(userId);
+
+    // Update the TaskAssignment record with the updated RequestJoinUserID
+    await new Promise((resolve, reject) => {
+      db.run(
+        "UPDATE TaskAssignment SET RequestJoinUserID = ? WHERE TaskID = ?",
+        [JSON.stringify(requestJoinUserIds), taskId],
+        function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
+    res.status(200).json({
+      message: "Request to join task sent successfully.",
+    });
+  } catch (error) {
+    console.error("Error requesting to join task:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function approveRequestJoin(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+
+  try {
+    const { taskId, userId } = req.body;
+
+    if (!taskId || !userId) {
+      return res.status(400).json({
+        error: "Task ID and user ID are required.",
+      });
+    }
+
+    // Retrieve the TaskAssignment record for the given task
+    const taskAssignment = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT * FROM TaskAssignment WHERE TaskID = ?",
+        [taskId],
+        function (err, row) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        }
+      );
+    });
+
+    if (!taskAssignment) {
+      return res.status(404).json({
+        error: "Task assignment not found.",
+      });
+    }
+
+    // Parse the RequestJoinUserID as an array
+    let requestJoinUserIds = JSON.parse(
+      taskAssignment.RequestJoinUserID || "[]"
+    );
+
+    // Check if the user has requested to join
+    if (!requestJoinUserIds.includes(userId)) {
+      return res.status(400).json({
+        error: "User has not requested to join this task.",
+      });
+    }
+
+    // Remove the user ID from the array of requested join users
+    requestJoinUserIds = requestJoinUserIds.filter((id) => id !== userId);
+
+    // Update the TaskAssignment record with the updated RequestJoinUserID and AssignedUserID
+    await new Promise((resolve, reject) => {
+      db.run(
+        "UPDATE TaskAssignment SET RequestJoinUserID = ?, AssignedUserID = COALESCE(AssignedUserID, '[]') || ? WHERE TaskID = ?",
+        [JSON.stringify(requestJoinUserIds), JSON.stringify([userId]), taskId],
+        function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+
+    res.status(200).json({
+      message: "Request to join task approved successfully.",
+    });
+  } catch (error) {
+    console.error("Error approving request to join task:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function getAllRequestJoin(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+
+  try {
+    // Query TaskAssignment records where RequestJoinUserID is not null and not an empty array
+    const taskAssignments = await new Promise((resolve, reject) => {
+      db.all(
+        "SELECT * FROM TaskAssignment WHERE RequestJoinUserID IS NOT NULL AND RequestJoinUserID != '[]'",
+        function (err, rows) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+
+    // If no task assignments with pending join requests are found, return an empty response
+    if (!taskAssignments || taskAssignments.length === 0) {
+      return res.status(404).json({
+        message: "No pending join requests found.",
+      });
+    }
+
+    // Return the task assignments with pending join requests
+    res.status(200).json({
+      message: "Pending join requests found.",
+      taskAssignments: taskAssignments,
+    });
+  } catch (error) {
+    console.error("Error retrieving pending join requests:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function getUserTaskAssigned(req, res) {
   try {
     const taskId = req.params.taskId;
@@ -441,6 +622,9 @@ module.exports = {
   getApproveTask,
   closeTaskReport,
   AssignTask,
+  requestJoinTask,
+  approveRequestJoin,
+  getAllRequestJoin,
   getUserTaskAssigned,
   notifyTask,
 };

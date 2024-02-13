@@ -41,6 +41,26 @@ router.post(
   taskController.AssignTask
 );
 
+router.post(
+  "/requestjointask/:taskId",
+  middleware.checkLoggedIn,
+  taskController.requestJoinTask
+);
+
+router.put(
+  "/approverequestjoin",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.approveRequestJoin
+);
+
+router.get(
+  "/getallrequestjoin",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.getAllRequestJoin
+);
+
 router.get(
   "/getusertaskassigned/:taskId",
   middleware.checkLoggedIn,

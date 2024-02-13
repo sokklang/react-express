@@ -13,7 +13,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Home from "./home/Home";
 import Task from "./task/Task";
-import Approval from "./Approval";
+import Approval from "./approval/Approval";
 import Usermgmt from "./usermgmt/Usermgmt";
 import Profile from "./profile/Profile";
 import Company from "./company/Company";
@@ -21,6 +21,7 @@ import Settings from "./Settings";
 import Notification from "./Notification";
 import Nopage from "./Nopage";
 import Assigntask from "./assigntask/Assigntask";
+import Mytask from "./mytask/Mytask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -46,6 +47,7 @@ const App = () => {
           element={loggedIn ? <Home /> : <Navigate to="/login" />}
         />
         <Route path="/assigntask" element={<Assigntask />} />
+        <Route path="/mytask" element={<Mytask />} />
         <Route path="/task" element={<Task />} />
         <Route path="/usermgmt" element={<Usermgmt />} />
         <Route path="/Approval" element={<Approval />} />
