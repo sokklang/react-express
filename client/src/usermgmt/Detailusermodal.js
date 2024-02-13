@@ -11,8 +11,6 @@ import "font-awesome/css/font-awesome.min.css";
 const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
   const [profileImage, setProfileImage] = useState(null);
 
-  console.log("selectDetailUser:", selectDetailUser);
-
   const fetchUserProfile = async (userid) => {
     try {
       const response = await axios.get(
@@ -33,8 +31,6 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
 
         setProfileImage(blobUrl);
         console.log("Fetched user profile image data:", blobUrl);
-
-        // Update your UI or perform other actions with the fetched data
       }
     } catch (error) {
       console.error("Error fetching user profile data:", error);

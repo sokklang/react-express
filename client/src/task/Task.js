@@ -198,7 +198,10 @@ const Task = () => {
                           setSelectDetailTask(task);
                         }}
                       >
-                        <i className="fa fa-eye  me-2" aria-hidden="true"></i>
+                        <i
+                          className="fa fa-eye fa-fw  me-2"
+                          aria-hidden="true"
+                        ></i>
                         Detail
                       </button>
 
@@ -210,8 +213,18 @@ const Task = () => {
                           setSelectUpdateTask(task);
                         }}
                       >
-                        <i className="fa fa-pencil me-2" aria-hidden="true"></i>{" "}
+                        <i
+                          className="fa fa-pencil fa-fw me-2"
+                          aria-hidden="true"
+                        ></i>{" "}
                         Update
+                      </button>
+                      <button className="dropdown-item" type="button">
+                        <i
+                          className="fa fa fa-user-plus fa-fw me-2"
+                          aria-hidden="true"
+                        ></i>{" "}
+                        Request Join
                       </button>
                       {task.ApprovalStatus !== "Approved" && (
                         <button
@@ -237,7 +250,10 @@ const Task = () => {
                           setSelectDeleteTask(task.TaskID);
                         }}
                       >
-                        <i className="fa fa-trash me-2" aria-hidden="true"></i>{" "}
+                        <i
+                          className="fa fa-trash fa-fw me-2"
+                          aria-hidden="true"
+                        ></i>{" "}
                         Delete
                       </button>
                     </div>
