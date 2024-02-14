@@ -74,13 +74,13 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
         ? prevSelectedUsers
         : selectedUsers;
 
-      console.log("currentSelectedUsers", currentSelectedUsers);
+      //console.log("currentSelectedUsers", currentSelectedUsers);
 
       const newSelectedUsers = currentSelectedUsers.includes(userId)
         ? currentSelectedUsers.filter((id) => id !== userId)
         : [...currentSelectedUsers, userId];
 
-      console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
+      //console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
 
       return newSelectedUsers;
     });

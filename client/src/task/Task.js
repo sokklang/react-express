@@ -7,13 +7,14 @@ import AddTask from "./Addtask";
 import Deletetask from "./Deletetask";
 import Detailtask from "./Detailtask";
 import Updatetask from "./Updatetask";
+import RequestJoinModal from "./Requestjoinmodal";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
 const Task = () => {
-  const { loggedIn } = useContext(AuthContext);
+  const { loggedIn, userroletype } = useContext(AuthContext);
   const [showAddTaskModal, setShowAddTaskModal] = useState(false);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false);
   const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
@@ -24,6 +25,7 @@ const Task = () => {
   const [tasks, setTasks] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showRequestJoinModal, setShowRequestJoinModal] = useState(false);
 
   const fetchTasks = async () => {
     try {
@@ -103,11 +105,17 @@ const Task = () => {
       );
       if (response.status === 200) {
         console.log(response.data.message);
+        setShowRequestJoinModal(true);
+        setErrorMessage("");
+        setSuccessMessage(response.data.message);
         // Trigger useEffect by calling fetchUserData
         fetchTasks();
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response.data.error);
+      setShowRequestJoinModal(true);
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.error);
     }
   };
 
@@ -143,6 +151,16 @@ const Task = () => {
             fetchTasks={fetchTasks}
             handleClose={() => {
               setShowAddTaskModal(false);
+            }}
+          />
+          <RequestJoinModal
+            errorMessage={errorMessage}
+            successMessage={successMessage}
+            showModal={showRequestJoinModal}
+            handleClose={() => {
+              setShowRequestJoinModal(false);
+              setErrorMessage("");
+              setSuccessMessage("");
             }}
           />
         </div>
@@ -236,34 +254,38 @@ const Task = () => {
                         ></i>{" "}
                         Update
                       </button>
-                      <button
-                        className="dropdown-item"
-                        type="button"
-                        onClick={() => {
-                          requestJoinTask(task.TaskID);
-                        }}
-                      >
-                        <i
-                          className="fa fa fa-user-plus fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>{" "}
-                        Request Join
-                      </button>
-                      {task.ApprovalStatus !== "Approved" && (
-                        <button
-                          className="dropdown-item "
-                          type="button"
-                          onClick={() => {
-                            approveTask(task.TaskID);
-                          }}
-                        >
-                          <i
-                            className="fa fa-check me-2"
-                            aria-hidden="true"
-                          ></i>{" "}
-                          Approve
-                        </button>
-                      )}
+                      {userroletype === "Standard User" &&
+                        task.ApprovalStatus === "Approved" && (
+                          <button
+                            className="dropdown-item"
+                            type="button"
+                            onClick={() => {
+                              requestJoinTask(task.TaskID);
+                            }}
+                          >
+                            <i
+                              className="fa fa fa-user-plus fa-fw me-2"
+                              aria-hidden="true"
+                            ></i>{" "}
+                            Request Join
+                          </button>
+                        )}
+                      {userroletype === "Admin User" &&
+                        task.ApprovalStatus !== "Approved" && (
+                          <button
+                            className="dropdown-item "
+                            type="button"
+                            onClick={() => {
+                              approveTask(task.TaskID);
+                            }}
+                          >
+                            <i
+                              className="fa fa-check me-2"
+                              aria-hidden="true"
+                            ></i>{" "}
+                            Approve
+                          </button>
+                        )}
                       <div className="dropdown-divider"></div>
                       <button
                         className="dropdown-item btn btn-danger"

@@ -441,6 +441,16 @@ async function requestJoinTask(req, res) {
       });
     }
 
+    // Parse the existing AssignedUserID as an array
+    let assignedUserIds = JSON.parse(existingAssignment.AssignedUserID || "[]");
+
+    // Check if the user is already assigned to the task
+    if (assignedUserIds.includes(userId)) {
+      return res.status(400).json({
+        error: "User is already assigned to this task.",
+      });
+    }
+
     // Add the user ID to the array of requested join users
     requestJoinUserIds.push(userId);
 
@@ -576,6 +586,15 @@ async function getAllRequestJoin(req, res) {
   }
 }
 
+async function getTaskDetail(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskId = req.params.taskId;
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function getUserTaskAssigned(req, res) {
   try {
     const taskId = req.params.taskId;
@@ -625,6 +644,7 @@ module.exports = {
   requestJoinTask,
   approveRequestJoin,
   getAllRequestJoin,
+  getTaskDetail,
   getUserTaskAssigned,
   notifyTask,
 };

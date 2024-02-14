@@ -62,6 +62,13 @@ router.get(
 );
 
 router.get(
+  "/gettaskdetail/:taskId",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.getTaskDetail
+);
+
+router.get(
   "/getusertaskassigned/:taskId",
   middleware.checkLoggedIn,
   middleware.isAdmin,
