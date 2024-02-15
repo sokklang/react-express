@@ -38,7 +38,8 @@ const Approval = () => {
         setRequestList(response.data.taskAssignments);
       }
     } catch (error) {
-      console.error("Error fetching tasks:", error.response.data.error);
+      console.error("Error fetching tasks:", error.response.data.message);
+      setRequestList([]);
     }
   };
 
