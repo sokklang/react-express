@@ -4,6 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import axios from "axios";
 
+import Usercard from "./Usercard";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
@@ -11,6 +13,9 @@ import "font-awesome/css/font-awesome.min.css";
 const Approval = () => {
   const { loggedIn } = useContext(AuthContext);
   const [requestList, setRequestList] = useState([]);
+
+  const [showUserCardModal, setShowUserCardModal] = useState(false);
+  const [selectAssignedUser, setSelectAssignedUser] = useState("");
 
   const getAllRequestJoin = async () => {
     try {
@@ -25,6 +30,7 @@ const Approval = () => {
           "Request Join Tasks Fetched Successfully",
           response.data.taskAssignments
         );
+
         setRequestList(response.data.taskAssignments);
       }
     } catch (error) {
@@ -53,6 +59,8 @@ const Approval = () => {
             <th>Task ID</th>
             <th>Assigned Users</th>
             <th>Requesting User</th>
+            <th>Assigned Profile</th>
+            <th>Request Profile</th>
           </tr>
         </thead>
         <tbody>
@@ -60,26 +68,34 @@ const Approval = () => {
             <tr key={index}>
               <td>{request.AssignmentID}</td>
               <td>{request.TaskID}</td>
+              <td>{request.AssignedUserID}</td>
+              <td>{request.RequestJoinUserID}</td>
               <td>
-                {JSON.parse(request.AssignedUserID).map((userId, index) => (
-                  <span key={index}>
-                    {index !== 0 && ", "}
-                    {userId}
-                  </span>
-                ))}
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={() => {
+                    setShowUserCardModal(true);
+                    setSelectAssignedUser(JSON.parse(request.AssignedUserID));
+                  }}
+                >
+                  <i className="fa fa-eye fa-fw me-2" aria-hidden="true"></i>{" "}
+                  Detail
+                </button>
               </td>
-              <td>
-                {JSON.parse(request.RequestJoinUserID).map((userId, index) => (
-                  <span key={index}>
-                    {index !== 0 && ", "}
-                    {userId}
-                  </span>
-                ))}
-              </td>
+              <td></td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Usercard
+        showModal={showUserCardModal}
+        user={selectAssignedUser}
+        handleClose={() => {
+          setShowUserCardModal(false);
+          setSelectAssignedUser("");
+        }}
+      />
     </div>
   );
 };

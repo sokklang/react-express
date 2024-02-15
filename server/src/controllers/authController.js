@@ -649,6 +649,43 @@ async function GetUserProfileAdminCompany(req, res) {
   }
 }
 
+async function GetMultiProfileInfo(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    const { userid } = req.body;
+    console.log(userid);
+
+    if (!userid || !Array.isArray(userid)) {
+      return res
+        .status(400)
+        .json({ error: "User IDs must be provided as an array." });
+    }
+
+    const placeholders = userid.map(() => "?").join(",");
+    const query = `
+      SELECT User.UserID, User.Username, ImageProfile.ImageData
+      FROM User
+      LEFT JOIN ImageProfile ON User.UserID = ImageProfile.UserID
+      WHERE User.UserID IN (${placeholders})
+    `;
+
+    db.all(query, userid, function (err, rows) {
+      if (err) {
+        console.error("Error executing query:", err.message);
+        return res
+          .status(500)
+          .json({ error: "Failed to retrieve profile information." });
+      }
+
+      // Send the retrieved data as is
+      res.status(200).json(rows);
+    });
+  } catch (error) {
+    console.error("Error in GetMultiProfileInfo:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
@@ -664,4 +701,5 @@ module.exports = {
   GetUserProfileAdmin,
   UpdateUserProfile,
   GetUserProfileAdminCompany,
+  GetMultiProfileInfo,
 };

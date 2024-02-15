@@ -96,4 +96,11 @@ router.get(
   authController.GetUserProfileAdminCompany
 );
 
+router.post(
+  "/getmultiprofileinfo",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  authController.GetMultiProfileInfo
+);
+
 module.exports = router;
