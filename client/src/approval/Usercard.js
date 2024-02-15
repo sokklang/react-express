@@ -50,7 +50,7 @@ const Usercard = ({ user, showModal, handleClose }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title text-white">
-              <i className="fa fa-user-plus fa-fw me-2"></i>Assigned To
+              <i className="fa fa-user-plus fa-fw me-2"></i>Assigned User
             </h5>
             <button
               type="button"

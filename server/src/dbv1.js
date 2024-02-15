@@ -68,8 +68,7 @@ CREATE TABLE TaskAssignment (
     TaskID INTEGER,
     AssignedUserID TEXT,
     RequestJoinUserID TEXT,
-    FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE,
-    FOREIGN KEY (AssignedUserID) REFERENCES User(UserID)
+    FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE
 );
 
 

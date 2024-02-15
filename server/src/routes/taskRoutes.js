@@ -34,6 +34,12 @@ router.get(
   taskController.getApproveTask
 );
 
+router.get(
+  "/getpendingapprovetask",
+  middleware.checkLoggedIn,
+  taskController.getPendingApproveTask
+);
+
 router.post(
   "/assigntask",
   middleware.checkLoggedIn,

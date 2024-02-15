@@ -303,6 +303,54 @@ async function getApproveTask(req, res) {
   }
 }
 
+async function getPendingApproveTask(req, res) {
+  try {
+    const companyID = req.session.user.CompanyID;
+
+    const query = `
+      SELECT * FROM Task
+      WHERE CompanyID = ? AND ApprovalStatus = 'Pending'
+    `;
+
+    // Using a Promise to make the asynchronous call
+    const getPendingApprovedTasks = () => {
+      return new Promise((resolve, reject) => {
+        db.all(query, [companyID], (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            const taskData = rows.map((task) => ({
+              TaskID: task.TaskID,
+              TaskTitle: task.TaskTitle,
+              TaskDescription: task.TaskDescription,
+              TaskDeadline: task.TaskDeadline,
+              PriorityID: task.PriorityID,
+              CompanyID: task.CompanyID,
+              TaskTypeID: task.TaskTypeID,
+              UserID: task.UserID,
+              UserRoleID: task.UserRoleID,
+              TaskCreationDate: task.TaskCreationDate,
+              ApprovalStatus: task.ApprovalStatus,
+              ApprovalTimestamp: task.ApprovalTimestamp,
+              ApproverUserID: task.ApproverUserID,
+              Status: task.Status,
+              DependentTaskID: task.DependentTaskID,
+            }));
+            resolve(taskData);
+          }
+        });
+      });
+    };
+
+    // Await the Promise and send the mapped data as a response
+    const pendingApprovedTasks = await getPendingApprovedTasks();
+    res.status(200).json({ pendingApprovedTasks });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function closeTaskReport(req, res) {}
 
 async function AssignTask(req, res) {
@@ -642,6 +690,7 @@ module.exports = {
   deleteTask,
   approveTask,
   getApproveTask,
+  getPendingApproveTask,
   closeTaskReport,
   AssignTask,
   requestJoinTask,
