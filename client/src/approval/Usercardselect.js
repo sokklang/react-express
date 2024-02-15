@@ -56,6 +56,7 @@ const Usercardselect = ({
       if (response.status === 200) {
         console.log(response.data);
         getAllRequestJoin();
+        onClose();
       }
     } catch (error) {
       console.error("Error ApproveJoin:", error.response.data.error);
@@ -69,7 +70,7 @@ const Usercardselect = ({
 
     setSelectedUsers(newSelectedUsers);
 
-    console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
+    //console.log("Selected Users:", newSelectedUsers); // Log the selectedUsers array
   };
 
   useEffect(() => {
@@ -77,6 +78,7 @@ const Usercardselect = ({
       getMultiProfileInfo(user);
     }
   }, [showModal, user]);
+
   const onClose = () => {
     handleClose();
     setSelectedUsers([]);
