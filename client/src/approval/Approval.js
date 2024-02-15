@@ -5,6 +5,7 @@ import { useContext } from "react";
 import axios from "axios";
 
 import Usercard from "./Usercard";
+import Usercardselect from "./Usercardselect";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -15,7 +16,10 @@ const Approval = () => {
   const [requestList, setRequestList] = useState([]);
 
   const [showUserCardModal, setShowUserCardModal] = useState(false);
+  const [showUserCardSelectModal, setShowUserCardSelectModal] = useState(false);
   const [selectAssignedUser, setSelectAssignedUser] = useState("");
+  const [selectRequestUser, setSelectRequestUser] = useState("");
+  const [selectTaskId, setSelectTaskId] = useState("");
 
   const getAllRequestJoin = async () => {
     try {
@@ -83,7 +87,20 @@ const Approval = () => {
                   Detail
                 </button>
               </td>
-              <td></td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={() => {
+                    setShowUserCardSelectModal(true);
+                    setSelectRequestUser(JSON.parse(request.RequestJoinUserID));
+                    setSelectTaskId(request.TaskID);
+                  }}
+                >
+                  <i className="fa fa-check fa-fw me-2" aria-hidden="true"></i>{" "}
+                  Approve
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -94,6 +111,17 @@ const Approval = () => {
         handleClose={() => {
           setShowUserCardModal(false);
           setSelectAssignedUser("");
+        }}
+      />
+
+      <Usercardselect
+        showModal={showUserCardSelectModal}
+        user={selectRequestUser}
+        taskid={selectTaskId}
+        getAllRequestJoin={getAllRequestJoin}
+        handleClose={() => {
+          setShowUserCardSelectModal(false);
+          setSelectRequestUser("");
         }}
       />
     </div>

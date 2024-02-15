@@ -482,11 +482,13 @@ async function approveRequestJoin(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
 
   try {
-    const { taskId, userId } = req.body;
+    const { taskId, userIds } = req.body;
+    console.log("taskid", taskId);
+    console.log("userid", userIds);
 
-    if (!taskId || !userId) {
+    if (!taskId || !Array.isArray(userIds) || userIds.length === 0) {
       return res.status(400).json({
-        error: "Task ID and user ID are required.",
+        error: "Task ID and an array of user IDs are required.",
       });
     }
 
@@ -511,26 +513,27 @@ async function approveRequestJoin(req, res) {
       });
     }
 
-    // Parse the RequestJoinUserID as an array
+    // Parse the RequestJoinUserID and AssignedUserID as arrays
     let requestJoinUserIds = JSON.parse(
       taskAssignment.RequestJoinUserID || "[]"
     );
+    let assignedUserIds = JSON.parse(taskAssignment.AssignedUserID || "[]");
 
-    // Check if the user has requested to join
-    if (!requestJoinUserIds.includes(userId)) {
-      return res.status(400).json({
-        error: "User has not requested to join this task.",
-      });
-    }
-
-    // Remove the user ID from the array of requested join users
-    requestJoinUserIds = requestJoinUserIds.filter((id) => id !== userId);
+    // Remove common elements from RequestJoinUserID and AssignedUserID
+    requestJoinUserIds = requestJoinUserIds.filter(
+      (id) => !userIds.includes(id)
+    );
+    assignedUserIds = assignedUserIds.filter((id) => !userIds.includes(id));
 
     // Update the TaskAssignment record with the updated RequestJoinUserID and AssignedUserID
     await new Promise((resolve, reject) => {
       db.run(
-        "UPDATE TaskAssignment SET RequestJoinUserID = ?, AssignedUserID = COALESCE(AssignedUserID, '[]') || ? WHERE TaskID = ?",
-        [JSON.stringify(requestJoinUserIds), JSON.stringify([userId]), taskId],
+        "UPDATE TaskAssignment SET RequestJoinUserID = ?, AssignedUserID = ? WHERE TaskID = ?",
+        [
+          JSON.stringify(requestJoinUserIds),
+          JSON.stringify([...assignedUserIds, ...userIds]),
+          taskId,
+        ],
         function (err) {
           if (err) {
             reject(err);
@@ -542,10 +545,10 @@ async function approveRequestJoin(req, res) {
     });
 
     res.status(200).json({
-      message: "Request to join task approved successfully.",
+      message: "Requests to join task approved successfully.",
     });
   } catch (error) {
-    console.error("Error approving request to join task:", error.message);
+    console.error("Error approving requests to join task:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
