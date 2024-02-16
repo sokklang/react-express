@@ -608,7 +608,10 @@ async function getAllRequestJoin(req, res) {
     // Query TaskAssignment records where RequestJoinUserID is not null and not an empty array
     const taskAssignments = await new Promise((resolve, reject) => {
       db.all(
-        "SELECT * FROM TaskAssignment WHERE RequestJoinUserID IS NOT NULL AND RequestJoinUserID != '[]'",
+        `SELECT TaskAssignment.*, Task.TaskID, Task.TaskTitle, Task.TaskDescription, Task.TaskDeadline, Task.PriorityID, Task.CompanyID, Task.TaskTypeID, Task.UserID, Task.UserRoleID, Task.TaskCreationDate, Task.ApprovalStatus, Task.ApprovalTimestamp, Task.ApproverUserID, Task.Status, Task.DependentTaskID 
+         FROM TaskAssignment 
+         JOIN Task ON TaskAssignment.TaskID = Task.TaskID 
+         WHERE TaskAssignment.RequestJoinUserID IS NOT NULL AND TaskAssignment.RequestJoinUserID != '[]'`,
         function (err, rows) {
           if (err) {
             reject(err);

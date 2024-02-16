@@ -32,7 +32,7 @@ const Deletetask = ({
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog" role="document">
+      <div className="modal-dialog text-white text-center" role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">

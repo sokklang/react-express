@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Assignuser from "./Assignuser";
+import Detailtask from "../task/Detailtask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -13,6 +14,8 @@ const Assigntask = () => {
   const [tasks, setTasks] = useState([]);
   const [selectAssignTask, setSelectAssignTask] = useState("");
   const [showAssignUserModal, setShowAssignUserModal] = useState(false);
+  const [selectDetailTask, setSelectDetailTask] = useState("");
+  const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
   //const [errorMessage, setErrorMessage] = useState("");
   //const [successMessage, setSuccessMessage] = useState("");
 
@@ -126,17 +129,16 @@ const Assigntask = () => {
                         ></i>
                         Assign
                       </button>
-                      <button className="dropdown-item" type="button">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => {
+                          setShowDetailTaskModal(true);
+                          setSelectDetailTask(task);
+                        }}
+                      >
                         <i className="fa fa-eye me-2" aria-hidden="true"></i>{" "}
                         Detail
-                      </button>
-
-                      <button
-                        className="dropdown-item btn btn-warning"
-                        type="button"
-                      >
-                        <i className="fa fa-pencil me-2" aria-hidden="true"></i>{" "}
-                        Edit
                       </button>
                     </div>
                   </div>
@@ -150,6 +152,14 @@ const Assigntask = () => {
           selectAssignTask={selectAssignTask}
           handleClose={() => {
             setShowAssignUserModal(false);
+          }}
+        />
+        <Detailtask
+          showModal={showDetailTaskModal}
+          selectDetailTask={selectDetailTask}
+          handleClose={() => {
+            setShowDetailTaskModal(false);
+            setSelectDetailTask("");
           }}
         />
       </div>

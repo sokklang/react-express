@@ -163,6 +163,14 @@ const Task = () => {
               setSuccessMessage("");
             }}
           />
+          <Detailtask
+            showModal={showDetailTaskModal}
+            selectDetailTask={selectDetailTask}
+            handleClose={() => {
+              setShowDetailTaskModal(false);
+              setSelectDetailTask("");
+            }}
+          />
         </div>
       </div>
 
@@ -303,14 +311,6 @@ const Task = () => {
                       </button>
                     </div>
                   </div>
-                  <Detailtask
-                    showModal={showDetailTaskModal}
-                    selectDetailTask={selectDetailTask}
-                    handleClose={() => {
-                      setShowDetailTaskModal(false);
-                      setSelectDetailTask("");
-                    }}
-                  />
 
                   <Updatetask
                     showModal={showUpdateTaskModal}

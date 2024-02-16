@@ -6,6 +6,8 @@ import axios from "axios";
 
 import Usercard from "./Usercard";
 import Usercardselect from "./Usercardselect";
+import Detailtask from "../task/Detailtask";
+import Deletetask from "../task/Deletetask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -17,9 +19,13 @@ const Approval = () => {
 
   const [showUserCardModal, setShowUserCardModal] = useState(false);
   const [showUserCardSelectModal, setShowUserCardSelectModal] = useState(false);
+  const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false);
   const [selectAssignedUser, setSelectAssignedUser] = useState("");
   const [selectRequestUser, setSelectRequestUser] = useState("");
   const [selectTaskId, setSelectTaskId] = useState("");
+  const [selectDetailTask, setSelectDetailTask] = useState("");
+  const [selectDeleteTask, setSelectDeleteTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
   const getAllRequestJoin = async () => {
@@ -64,6 +70,41 @@ const Approval = () => {
     }
   };
 
+  const approveTask = async (taskid) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/approvetask/${taskid}`,
+        null,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        console.log(response.data.message);
+        // Trigger useEffect by calling fetchUserData
+        fetchPendingApproveTasks();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const deleteTask = async (taskid) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/deletetask/${taskid}`,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        console.log(response.data.message);
+        // Trigger useEffect by calling fetchUserData
+        fetchPendingApproveTasks();
+      }
+    } catch (error) {
+      console.error(error.response.data.error);
+
+      throw error;
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) {
       getAllRequestJoin();
@@ -83,19 +124,29 @@ const Approval = () => {
         <table className="table table-dark table-striped table-hover table-bordered">
           <thead>
             <tr>
-              <th>Task ID</th>
+              <th>Task Title</th>
+              <th>Task Detail</th>
               <th>Assigned Users</th>
               <th>Requesting User</th>
-              <th>Assigned Profile</th>
-              <th>Request Profile</th>
             </tr>
           </thead>
           <tbody>
             {requestList.map((request, index) => (
               <tr key={index}>
-                <td>{request.TaskID}</td>
-                <td>{request.AssignedUserID}</td>
-                <td>{request.RequestJoinUserID}</td>
+                <td>{request.TaskTitle}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => {
+                      setShowDetailTaskModal(true);
+                      setSelectDetailTask(request);
+                    }}
+                  >
+                    <i className="fa fa-eye fa-fw " aria-hidden="true"></i> View
+                  </button>
+                </td>
+
                 <td>
                   <button
                     className="btn btn-primary"
@@ -105,7 +156,7 @@ const Approval = () => {
                       setSelectAssignedUser(JSON.parse(request.AssignedUserID));
                     }}
                   >
-                    <i className="fa fa-eye fa-fw me-2" aria-hidden="true"></i>{" "}
+                    <i className="fa fa-eye fa-fw " aria-hidden="true"></i>{" "}
                     Detail
                   </button>
                 </td>
@@ -121,10 +172,7 @@ const Approval = () => {
                       setSelectTaskId(request.TaskID);
                     }}
                   >
-                    <i
-                      className="fa fa-check fa-fw me-2"
-                      aria-hidden="true"
-                    ></i>{" "}
+                    <i className="fa fa-check fa-fw " aria-hidden="true"></i>{" "}
                     Approve
                   </button>
                 </td>
@@ -139,13 +187,11 @@ const Approval = () => {
         <table className="table table-dark table-striped table-hover table-bordered">
           <thead>
             <tr>
-              <th>Task ID</th>
               <th>Task Title</th>
-              <th>Task Deadline</th>
+              <th>Task Detail</th>
               <th>Task Priority</th>
               <th>Task Type</th>
-              <th>Created By</th>
-              <th>Creation Date</th>
+
               <th>ApprovalStatus</th>
               <th>Action</th>
             </tr>
@@ -153,9 +199,19 @@ const Approval = () => {
           <tbody>
             {tasks.map((task) => (
               <tr key={task.TaskID}>
-                <td>{task.TaskID}</td>
                 <td>{task.TaskTitle}</td>
-                <td>{task.TaskDeadline}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    type="button"
+                    onClick={() => {
+                      setShowDetailTaskModal(true);
+                      setSelectDetailTask(task);
+                    }}
+                  >
+                    <i className="fa fa-eye fa-fw " aria-hidden="true"></i> View
+                  </button>
+                </td>
                 <td>
                   {task.PriorityID === 1
                     ? "Low"
@@ -172,8 +228,7 @@ const Approval = () => {
                     ? "Large Task"
                     : "Unknown"}
                 </td>
-                <td>{task.UserID}</td>
-                <td>{task.TaskCreationDate}</td>
+
                 <td>{task.ApprovalStatus}</td>
 
                 <td className="text-center">
@@ -195,24 +250,28 @@ const Approval = () => {
                       className="dropdown-menu"
                       aria-labelledby="dropdownMenu2"
                     >
-                      <button className="dropdown-item" type="button">
-                        <i
-                          className="fa fa-eye fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>
-                        Detail
-                      </button>
-                      <button className="dropdown-item" type="button">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        onClick={() => {
+                          approveTask(task.TaskID);
+                        }}
+                      >
                         <i
                           className="fa fa-check fa-fw me-2"
                           aria-hidden="true"
                         ></i>{" "}
                         Approve
                       </button>
+                      <div className="dropdown-divider"></div>
 
                       <button
                         className="dropdown-item btn btn-warning"
                         type="button"
+                        onClick={() => {
+                          setShowDeleteTaskModal(true);
+                          setSelectDeleteTask(task.TaskID);
+                        }}
                       >
                         <i
                           className="fa fa-trash fa-fw me-2"
@@ -246,6 +305,24 @@ const Approval = () => {
         handleClose={() => {
           setShowUserCardSelectModal(false);
           setSelectRequestUser("");
+        }}
+      />
+      <Detailtask
+        showModal={showDetailTaskModal}
+        selectDetailTask={selectDetailTask}
+        handleClose={() => {
+          setShowDetailTaskModal(false);
+          setSelectDetailTask("");
+        }}
+      />
+
+      <Deletetask
+        showModal={showDeleteTaskModal}
+        deleteTask={deleteTask}
+        selectDeleteTask={selectDeleteTask}
+        handleClose={() => {
+          setShowDeleteTaskModal(false);
+          setSelectDeleteTask("");
         }}
       />
     </div>
