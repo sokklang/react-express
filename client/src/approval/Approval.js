@@ -136,7 +136,7 @@ const Approval = () => {
                 <td>{request.TaskTitle}</td>
                 <td>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-outline-info"
                     type="button"
                     onClick={() => {
                       setShowDetailTaskModal(true);
@@ -149,7 +149,7 @@ const Approval = () => {
 
                 <td>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-outline-info"
                     type="button"
                     onClick={() => {
                       setShowUserCardModal(true);
@@ -162,7 +162,7 @@ const Approval = () => {
                 </td>
                 <td>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-outline-success"
                     type="button"
                     onClick={() => {
                       setShowUserCardSelectModal(true);
@@ -202,7 +202,7 @@ const Approval = () => {
                 <td>{task.TaskTitle}</td>
                 <td>
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-outline-info "
                     type="button"
                     onClick={() => {
                       setShowDetailTaskModal(true);
@@ -247,12 +247,13 @@ const Approval = () => {
                       ></i>
                     </button>
                     <div
-                      className="dropdown-menu"
+                      className="dropdown-menu dropdown-menu-end"
                       aria-labelledby="dropdownMenu2"
                     >
                       <button
-                        className="dropdown-item"
+                        className="dropdown-item btn btn-success"
                         type="button"
+                        style={{ color: "#00FF00" }}
                         onClick={() => {
                           approveTask(task.TaskID);
                         }}
@@ -266,8 +267,9 @@ const Approval = () => {
                       <div className="dropdown-divider"></div>
 
                       <button
-                        className="dropdown-item btn btn-warning"
+                        className="dropdown-item btn btn-danger"
                         type="button"
+                        style={{ color: "red" }}
                         onClick={() => {
                           setShowDeleteTaskModal(true);
                           setSelectDeleteTask(task.TaskID);

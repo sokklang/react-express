@@ -94,10 +94,10 @@ const Profile = () => {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" data-bs-theme="dark">
       <div className="d-flex justify-content-between align-items-center mb-auto">
         <h2>{username} Page</h2>
-        <div className="dropdown" data-bs-theme="dark">
+        <div className="dropdown">
           <button
             className="btn btn-primary dropdown-toggle"
             type="button"

@@ -112,12 +112,13 @@ const Assigntask = () => {
                       ></i>
                     </button>
                     <div
-                      className="dropdown-menu"
+                      className="dropdown-menu dropdown-menu-end"
                       aria-labelledby="dropdownMenu2"
                     >
                       <button
-                        className="dropdown-item"
+                        className="dropdown-item btn btn-success"
                         type="button"
+                        style={{ color: "#00FF00" }}
                         onClick={() => {
                           setShowAssignUserModal(true);
                           setSelectAssignTask(task.TaskID);
@@ -130,8 +131,9 @@ const Assigntask = () => {
                         Assign
                       </button>
                       <button
-                        className="dropdown-item"
+                        className="dropdown-item btn btn-info"
                         type="button"
+                        style={{ color: "cyan" }}
                         onClick={() => {
                           setShowDetailTaskModal(true);
                           setSelectDetailTask(task);

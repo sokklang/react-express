@@ -181,7 +181,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
                             "image/jpeg"
                           )}
                           alt={`Profile for ${user.Username}`}
-                          className="card-img-top"
+                          className="card-img-top rounded"
                           style={{ maxWidth: "150px", maxHeight: "150px" }}
                         />
                       ) : (
@@ -189,7 +189,7 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
                         <img
                           src={defaultProfileImage}
                           alt={`Default Profile for ${user.Username}`}
-                          className="card-img-top"
+                          className="card-img-top rounded"
                           style={{ maxWidth: "150px", maxHeight: "150px" }}
                         />
                       )}

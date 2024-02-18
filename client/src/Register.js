@@ -14,6 +14,7 @@ const Register = () => {
   const [companyname, setCompanyname] = useState("");
   const [companyaddress, setCompanyaddress] = useState("");
   const [industry, setIndustry] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -47,6 +48,10 @@ const Register = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container mt-5" data-bs-theme="dark">
       <div className="row justify-content-center">
@@ -61,16 +66,21 @@ const Register = () => {
                   <label htmlFor="username" className="form-label">
                     Username
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Username"
-                    className="form-control"
-                    id="username"
-                    value={username}
-                    onChange={(e) =>
-                      setUsername(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-user fa-fw"></i>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Username"
+                      className="form-control"
+                      id="username"
+                      value={username}
+                      onChange={(e) =>
+                        setUsername(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
                 </div>
                 <div className="row">
                   <div className="col mb-3">
@@ -109,75 +119,113 @@ const Register = () => {
                   <label htmlFor="password" className="form-label">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    autoComplete="on"
-                    placeholder="Enter Password"
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) =>
-                      setPassword(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-lock fa-fw"></i>
+                    </span>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="on"
+                      placeholder="Enter Password"
+                      className="form-control"
+                      id="password"
+                      value={password}
+                      onChange={(e) =>
+                        setPassword(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? (
+                        <i className="fa fa-eye-slash"></i>
+                      ) : (
+                        <i className="fa fa-eye"></i>
+                      )}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="Company" className="form-label">
                     Company Name
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Company Name"
-                    className="form-control"
-                    id="company"
-                    value={companyname}
-                    onChange={(e) =>
-                      setCompanyname(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa fa-institution fa-fw"></i>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Company Name"
+                      className="form-control"
+                      id="company"
+                      value={companyname}
+                      onChange={(e) =>
+                        setCompanyname(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="Company Address" className="form-label">
                     Company Address
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Company Address"
-                    className="form-control"
-                    id="companyaddress"
-                    value={companyaddress}
-                    onChange={(e) => setCompanyaddress(e.target.value)}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-map-pin fa-fw"></i>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Company Address"
+                      className="form-control"
+                      id="companyaddress"
+                      value={companyaddress}
+                      onChange={(e) => setCompanyaddress(e.target.value)}
+                    />
+                  </div>
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="Company Industry" className="form-label">
                     Company Industry
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Company Industry"
-                    className="form-control"
-                    id="companyindustry"
-                    value={industry}
-                    onChange={(e) => setIndustry(e.target.value)}
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-industry fa-fw"></i>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Company Industry"
+                      className="form-control"
+                      id="companyindustry"
+                      value={industry}
+                      onChange={(e) => setIndustry(e.target.value)}
+                    />
+                  </div>
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
                     Email
                   </label>
-                  <input
-                    type="email"
-                    placeholder="Enter Email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) =>
-                      setEmail(e.target.value.replace(/\s/g, ""))
-                    }
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-envelope fa-fw"></i>
+                    </span>
+                    <input
+                      type="email"
+                      placeholder="Enter Email"
+                      className="form-control"
+                      id="email"
+                      value={email}
+                      onChange={(e) =>
+                        setEmail(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-3">

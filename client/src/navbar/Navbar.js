@@ -103,6 +103,7 @@ const Navbar = () => {
                   <button
                     className="dropdown-item btn btn-danger"
                     onClick={handleLogout}
+                    style={{ color: "red" }}
                   >
                     <i className="fa fa-sign-out fa-fw me-2 "></i>Logout
                   </button>

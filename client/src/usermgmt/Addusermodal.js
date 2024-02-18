@@ -60,16 +60,21 @@ const UserModal = ({
                 <label htmlFor="formUsername" className="form-label ">
                   Username
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="formUsername"
-                  placeholder="Enter Username"
-                  value={username}
-                  onChange={(e) =>
-                    setUsername(e.target.value.replace(/\s/g, ""))
-                  }
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-user fa-fw"></i>
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="formUsername"
+                    placeholder="Enter Username"
+                    value={username}
+                    onChange={(e) =>
+                      setUsername(e.target.value.replace(/\s/g, ""))
+                    }
+                  />
+                </div>
               </div>
               <div className="row">
                 <div className="col mb-3">
@@ -108,30 +113,40 @@ const UserModal = ({
                 <label htmlFor="formPassword" className="form-label">
                   Password
                 </label>
-                <input
-                  type="password"
-                  autoComplete="on"
-                  className="form-control"
-                  id="formPassword"
-                  placeholder="Enter Password"
-                  value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value.replace(/\s/g, ""))
-                  }
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-lock fa-fw"></i>
+                  </span>
+                  <input
+                    type="password"
+                    autoComplete="on"
+                    className="form-control"
+                    id="formPassword"
+                    placeholder="Enter Password"
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value.replace(/\s/g, ""))
+                    }
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="formEmail" className="form-label">
                   Email
                 </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="formEmail"
-                  placeholder="Enter Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-envelope fa-fw"></i>
+                  </span>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="formEmail"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
               </div>
               {errorMessage ? (
                 <div className="alert alert-danger mt-3" role="alert">

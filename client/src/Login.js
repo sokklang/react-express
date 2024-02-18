@@ -11,6 +11,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   // Use the AuthContext
   const { handleLogin, handleLogout } = useContext(AuthContext);
@@ -103,43 +104,76 @@ const Login = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container mt-5" data-bs-theme="dark">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
-            <div className="card-header">Login</div>
+            <div className="card-header fs-4 fw-bold">
+              <i className="fa fa-user-circle fa-fw me-2"></i>Login
+            </div>
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label htmlFor="username" className="form-label">
+                  <label htmlFor="username" className="form-label fs-5 fw-bold">
                     Username
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter username"
-                    className="form-control"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-user fa-fw"></i>
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter username"
+                      className="form-control"
+                      id="username"
+                      value={username}
+                      onChange={(e) =>
+                        setUsername(e.target.value.replace(/\s/g, ""))
+                      }
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">
+                  <label htmlFor="password" className="form-label fs-5 fw-bold">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    autoComplete="on"
-                    placeholder="Enter Password"
-                    className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-lock fa-fw"></i>
+                    </span>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      autoComplete="on"
+                      placeholder="Enter Password"
+                      className="form-control"
+                      id="password"
+                      value={password}
+                      onChange={(e) =>
+                        setPassword(e.target.value.replace(/\s/g, ""))
+                      }
+                      required
+                    />
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? (
+                        <i className="fa fa-eye-slash fa-fw"></i>
+                      ) : (
+                        <i className="fa fa-eye fa-fw"></i>
+                      )}
+                    </button>
+                  </div>
                 </div>
+
                 {errorMessage && (
                   <div className="alert alert-danger" role="alert">
                     {errorMessage}

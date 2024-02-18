@@ -92,14 +92,14 @@ const Usercard = ({ user, showModal, handleClose }) => {
                           "image/jpeg"
                         )}
                         alt={`Profile for ${profile.Username}`}
-                        className="card-img-top"
+                        className="card-img-top rounded"
                         style={{ maxWidth: "150px", maxHeight: "150px" }}
                       />
                     ) : (
                       <img
                         src={defaultProfileImage}
                         alt={`Default Profile for ${profile.Username}`}
-                        className="card-img-top"
+                        className="card-img-top rounded"
                         style={{ maxWidth: "150px", maxHeight: "150px" }}
                       />
                     )}

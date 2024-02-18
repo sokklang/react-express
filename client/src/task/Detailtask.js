@@ -106,9 +106,10 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
             {profileImage ? (
               <div>
                 <img
+                  className="rounded"
                   src={profileImage}
                   alt="Profile"
-                  style={{ maxWidth: "100px" }}
+                  style={{ maxWidth: "150px" }}
                 />
                 <p>Task created By: {selectDetailTask.UserID}</p>
               </div>

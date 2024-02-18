@@ -38,7 +38,7 @@ const DeleteModal = ({
               onClick={handleClose}
             ></button>
           </div>
-          <div className="modal-body">
+          <div className="modal-body text-center">
             <p>
               Confirm Delete Username : {selectDeleteUsername} with User ID :{" "}
               {selectDeleteId} ?

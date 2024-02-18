@@ -172,7 +172,7 @@ const Usermgmt = () => {
   );
 
   return (
-    <div className="container-fluid mt-5 p-3 border">
+    <div className="container-fluid mt-5 p-3 border" data-bs-theme="dark">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <center>
@@ -193,13 +193,18 @@ const Usermgmt = () => {
           </center>
         </div>
         <div className="d-flex align-items-center">
-          <input
-            type="text"
-            placeholder="Search by Username"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="form-control me-2"
-          />
+          <div className="input-group">
+            <span className="input-group-text">
+              <i className="fa fa-search fa-fw"></i>
+            </span>
+            <input
+              type="text"
+              placeholder="Search by Username"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="form-control me-2"
+            />
+          </div>
           <button
             type="button"
             className="btn btn-primary text-nowrap"
@@ -262,19 +267,7 @@ const Usermgmt = () => {
                   >
                     <i className="fa fa-pencil" aria-hidden="true"></i> Edit
                   </button>
-                  <Editusermodal
-                    showModal={showEditUserModal}
-                    selectEditUser={selectEditUser}
-                    handleUpdate={handleUpdate}
-                    handleClose={() => {
-                      setShowEditUserModal(false);
-                      setSelectEditUser("");
-                      setErrorMessage(""); // Clear error message
-                      setSuccessMessage("");
-                    }}
-                    successMessage={successMessage}
-                    errorMessage={errorMessage}
-                  />
+
                   <button
                     className="btn btn-warning btn-sm me-2"
                     onClick={() => {
@@ -284,14 +277,7 @@ const Usermgmt = () => {
                   >
                     <i className="fa fa-key" aria-hidden="true"></i> Reset
                   </button>
-                  <Resetpasswordmodal
-                    showModal={showResetPasswordmodal}
-                    selectResetPasswordUser={selectResetPasswordUser}
-                    handleClose={() => {
-                      setShowResetPasswordModal(false);
-                      setSelectResetPasswordUser("");
-                    }}
-                  />
+
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => {
@@ -302,19 +288,6 @@ const Usermgmt = () => {
                   >
                     <i className="fa fa-trash" aria-hidden="true"></i> Delete
                   </button>
-                  <DeleteModal
-                    showModal={showDeleteUserModal}
-                    handleClose={() => {
-                      setShowDeleteUserModal(false);
-                      setSelectDeleteId("");
-                      setSelectDeleteUsername("");
-                      setErrorMessage("");
-                    }}
-                    handleDelete={handleDelete}
-                    selectDeleteId={selectDeleteId}
-                    selectDeleteUsername={selectDeleteUsername}
-                    errorMessage={errorMessage}
-                  />
                 </td>
                 {/* Add more fields as needed */}
               </tr>
@@ -329,6 +302,40 @@ const Usermgmt = () => {
           setShowDetailUserModal(false);
           setSelectDetailUser("");
         }}
+      />
+      <Editusermodal
+        showModal={showEditUserModal}
+        selectEditUser={selectEditUser}
+        handleUpdate={handleUpdate}
+        handleClose={() => {
+          setShowEditUserModal(false);
+          setSelectEditUser("");
+          setErrorMessage(""); // Clear error message
+          setSuccessMessage("");
+        }}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
+      <Resetpasswordmodal
+        showModal={showResetPasswordmodal}
+        selectResetPasswordUser={selectResetPasswordUser}
+        handleClose={() => {
+          setShowResetPasswordModal(false);
+          setSelectResetPasswordUser("");
+        }}
+      />
+      <DeleteModal
+        showModal={showDeleteUserModal}
+        handleClose={() => {
+          setShowDeleteUserModal(false);
+          setSelectDeleteId("");
+          setSelectDeleteUsername("");
+          setErrorMessage("");
+        }}
+        handleDelete={handleDelete}
+        selectDeleteId={selectDeleteId}
+        selectDeleteUsername={selectDeleteUsername}
+        errorMessage={errorMessage}
       />
       {/* Add additional features or components related to user management */}
     </div>

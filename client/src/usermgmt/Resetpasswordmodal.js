@@ -11,6 +11,7 @@ const Resetpasswordmodal = ({
   const [confirmpassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -44,6 +45,10 @@ const Resetpasswordmodal = ({
     handleClose();
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div
       className={`modal fade ${showModal ? "show" : ""}`}
@@ -68,33 +73,66 @@ const Resetpasswordmodal = ({
                 <label htmlFor="formNewPassword" className="form-label">
                   New Password
                 </label>
-                <input
-                  type="password"
-                  autoComplete="on"
-                  className="form-control"
-                  placeholder="Enter New Password"
-                  value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value.replace(/\s/g, ""))
-                  }
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-lock fa-fw"></i>
+                  </span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="on"
+                    className="form-control"
+                    placeholder="Enter New Password"
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value.replace(/\s/g, ""))
+                    }
+                    required
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <i className="fa fa-eye-slash fa-fw"></i>
+                    ) : (
+                      <i className="fa fa-eye fa-fw"></i>
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="formConfirmPassword" className="form-label">
                   Confirm Password
                 </label>
-                <input
-                  type="password"
-                  autoComplete="on"
-                  className="form-control"
-                  placeholder="Enter Confirm Password"
-                  value={confirmpassword}
-                  onChange={(e) =>
-                    setConfirmPassword(e.target.value.replace(/\s/g, ""))
-                  }
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-lock fa-fw"></i>
+                  </span>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="on"
+                    className="form-control"
+                    placeholder="Enter Confirm Password"
+                    value={confirmpassword}
+                    onChange={(e) =>
+                      setConfirmPassword(e.target.value.replace(/\s/g, ""))
+                    }
+                    required
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <i className="fa fa-eye-slash fa-fw"></i>
+                    ) : (
+                      <i className="fa fa-eye fa-fw"></i>
+                    )}
+                  </button>
+                </div>
               </div>
-
               {/* Add more fields for editing, if necessary */}
               {errorMessage ? (
                 <div className="alert alert-danger mt-3" role="alert">

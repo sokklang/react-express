@@ -122,6 +122,8 @@ const Task = () => {
   useEffect(() => {
     if (loggedIn) {
       fetchTasks();
+      const interval = setInterval(fetchTasks, 5000); // Polling every 5 seconds
+      return () => clearInterval(interval);
     }
   }, [loggedIn]);
 
@@ -230,12 +232,13 @@ const Task = () => {
                       ></i>
                     </button>
                     <div
-                      className="dropdown-menu"
+                      className="dropdown-menu dropdown-menu-end"
                       aria-labelledby="dropdownMenu2"
                     >
                       <button
-                        className="dropdown-item"
+                        className="dropdown-item btn btn-info"
                         type="button"
+                        style={{ color: "cyan" }}
                         onClick={() => {
                           setShowDetailTaskModal(true);
                           setSelectDetailTask(task);
@@ -251,6 +254,7 @@ const Task = () => {
                       <button
                         className="dropdown-item btn btn-warning"
                         type="button"
+                        style={{ color: "yellow" }}
                         onClick={() => {
                           setShowUpdateTaskModal(true);
                           setSelectUpdateTask(task);
@@ -265,7 +269,7 @@ const Task = () => {
                       {userroletype === "Standard User" &&
                         task.ApprovalStatus === "Approved" && (
                           <button
-                            className="dropdown-item"
+                            className="dropdown-item "
                             type="button"
                             onClick={() => {
                               requestJoinTask(task.TaskID);
@@ -281,8 +285,9 @@ const Task = () => {
                       {userroletype === "Admin User" &&
                         task.ApprovalStatus !== "Approved" && (
                           <button
-                            className="dropdown-item "
+                            className="dropdown-item btn btn-success"
                             type="button"
+                            style={{ color: "#00FF00" }}
                             onClick={() => {
                               approveTask(task.TaskID);
                             }}
@@ -298,6 +303,7 @@ const Task = () => {
                       <button
                         className="dropdown-item btn btn-danger"
                         type="button"
+                        style={{ color: "red" }}
                         onClick={() => {
                           setShowDeleteTaskModal(true);
                           setSelectDeleteTask(task.TaskID);

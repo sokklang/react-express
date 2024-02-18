@@ -94,7 +94,7 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-light">
+    <div className="bg-light" data-bs-theme="dark">
       {/* Main Content */}
       <div className="container mt-5">
         <div className="row justify-content-center">
