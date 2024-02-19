@@ -57,7 +57,7 @@ const Register = () => {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card">
-            <div className="card-header">
+            <div className="card-header fs-5 fw-bold">
               <i className="fa fa-registered fa-fw me-1 "></i>Register
             </div>
             <div className="card-body">
@@ -149,6 +149,27 @@ const Register = () => {
                 </div>
 
                 <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fa fa-envelope fa-fw"></i>
+                    </span>
+                    <input
+                      type="email"
+                      placeholder="Enter Email"
+                      className="form-control"
+                      id="email"
+                      value={email}
+                      onChange={(e) =>
+                        setEmail(e.target.value.replace(/\s/g, ""))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-3">
                   <label htmlFor="Company" className="form-label">
                     Company Name
                   </label>
@@ -203,27 +224,6 @@ const Register = () => {
                       id="companyindustry"
                       value={industry}
                       onChange={(e) => setIndustry(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <div className="input-group">
-                    <span className="input-group-text">
-                      <i className="fa fa-envelope fa-fw"></i>
-                    </span>
-                    <input
-                      type="email"
-                      placeholder="Enter Email"
-                      className="form-control"
-                      id="email"
-                      value={email}
-                      onChange={(e) =>
-                        setEmail(e.target.value.replace(/\s/g, ""))
-                      }
                     />
                   </div>
                 </div>

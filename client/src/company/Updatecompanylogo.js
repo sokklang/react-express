@@ -57,7 +57,7 @@ const Updatecompanylogo = ({
         <div className="modal-content text-white">
           <div className="modal-header">
             <h5 className="modal-title">
-              <i className="fa fa-building fa-fw me-2"></i>Update Logo
+              <i className="fa fa-institution fa-fw me-2"></i>Update Logo
             </h5>
             <button
               type="button"

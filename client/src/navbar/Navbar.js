@@ -93,11 +93,11 @@ const Navbar = () => {
                   </Link>
                   {String(UserRoleId) === "2" && (
                     <Link className="dropdown-item" to="/company">
-                      <i className="fa fa-building fa-fw me-2"></i>Company
+                      <i className="fa fa-institution fa-fw me-2"></i>Company
                     </Link>
                   )}
                   <Link className="dropdown-item" to="/settings">
-                    <i className="fa fa-cog fa-fw me-2 "></i>Settings
+                    <i className="fa fa-cogs fa-fw me-2 "></i>Settings
                   </Link>
                   <div className="dropdown-divider"></div>
                   <button
