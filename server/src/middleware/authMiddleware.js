@@ -1,10 +1,10 @@
-function checkLoggedIn(req, res, next) {
+const checkLoggedIn = (req, res, next) => {
   if (req.session.user) {
     next();
   } else {
     res.status(401).json({ loggedIn: false });
   }
-}
+};
 
 const isAdmin = (req, res, next) => {
   // Check if the user is logged in and has the 'admin' role

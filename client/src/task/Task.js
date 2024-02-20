@@ -220,7 +220,7 @@ const Task = () => {
                   {/* Add action buttons as needed */}
                   <div className="dropdown" data-bs-theme="dark">
                     <button
-                      className="btn btn-outline-secondary dropdown-toggle"
+                      className="btn btn-outline-primary dropdown-toggle"
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-haspopup="true"
@@ -269,8 +269,9 @@ const Task = () => {
                       {userroletype === "Standard User" &&
                         task.ApprovalStatus === "Approved" && (
                           <button
-                            className="dropdown-item "
+                            className="dropdown-item btn btn-success"
                             type="button"
+                            style={{ color: "#00FF00" }}
                             onClick={() => {
                               requestJoinTask(task.TaskID);
                             }}

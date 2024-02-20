@@ -5,6 +5,7 @@ import { useContext } from "react";
 import axios from "axios";
 import Detailtask from "../task/Detailtask";
 import Usercard from "../approval/Usercard";
+import Closereport from "./Closereport";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -14,8 +15,11 @@ const Mytask = () => {
   const { loggedIn } = useContext(AuthContext);
   const [tasks, setTasks] = useState([]);
   const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
-  const [selectDetailTask, setSelectDetailTask] = useState("");
   const [showUserCardModal, setShowUserCardModal] = useState(false);
+  const [showCloseReportModal, setShowCloseReportModal] = useState(false);
+  const [selectDetailTask, setSelectDetailTask] = useState("");
+  const [selectTaskID, setSelectTaskID] = useState("");
+
   const [selectAssignedUser, setSelectAssignedUser] = useState("");
 
   const FetchMyTasks = async () => {
@@ -177,6 +181,10 @@ const Mytask = () => {
                         className="dropdown-item btn btn-danger"
                         type="button"
                         style={{ color: "red" }}
+                        onClick={() => {
+                          setShowCloseReportModal(true);
+                          setSelectTaskID(task.TaskID);
+                        }}
                       >
                         <i
                           className="fa fa-archive fa-fw me-2"
@@ -207,6 +215,15 @@ const Mytask = () => {
           setShowUserCardModal(false);
           setSelectAssignedUser("");
         }}
+      />
+      <Closereport
+        showModal={showCloseReportModal}
+        TaskID={selectTaskID}
+        handleClose={() => {
+          setShowCloseReportModal(false);
+          setSelectTaskID("");
+        }}
+        FetchMyTasks={FetchMyTasks}
       />
     </div>
   );

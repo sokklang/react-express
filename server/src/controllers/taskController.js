@@ -136,7 +136,7 @@ async function updateTask(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   const { taskid } = req.params;
   const userrole = req.session.user.RoleType;
-  console.log(taskid);
+  //console.log(taskid);
   const {
     TaskDescription,
     TaskDeadline,
@@ -445,10 +445,10 @@ async function requestJoinTask(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
 
   try {
-    const { taskId } = req.params;
+    const { taskid } = req.params;
     const userId = req.session.user.UserID;
 
-    if (!taskId || !userId) {
+    if (!taskid || !userId) {
       return res.status(400).json({
         error: "Task ID and user ID are required.",
       });
@@ -458,7 +458,7 @@ async function requestJoinTask(req, res) {
     const existingAssignment = await new Promise((resolve, reject) => {
       db.get(
         "SELECT * FROM TaskAssignment WHERE TaskID = ?",
-        [taskId],
+        [taskid],
         function (err, row) {
           if (err) {
             reject(err);
@@ -504,7 +504,7 @@ async function requestJoinTask(req, res) {
     await new Promise((resolve, reject) => {
       db.run(
         "UPDATE TaskAssignment SET RequestJoinUserID = ? WHERE TaskID = ?",
-        [JSON.stringify(requestJoinUserIds), taskId],
+        [JSON.stringify(requestJoinUserIds), taskid],
         function (err) {
           if (err) {
             reject(err);
@@ -742,9 +742,58 @@ async function getMyTasks(req, res) {
 
 async function notifyTask(req, res) {}
 
-async function closeTaskReport(req, res) {}
+async function closeTaskReport(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskid = req.params.taskid;
 
-async function getTaskDetail(req, res) {
+    // Fetch task details from the database
+    db.get(
+      "SELECT TaskDeadline, Status FROM Task WHERE TaskID = ?",
+      [taskid],
+      async function (err, row) {
+        if (err) {
+          throw new Error("Error fetching task details: " + err.message);
+        }
+
+        if (!row) {
+          res.status(404).json({ error: "Task not found" });
+          return;
+        }
+
+        const taskDeadline = new Date(row.TaskDeadline);
+        const currentDate = new Date();
+
+        let newStatus;
+        if (currentDate > taskDeadline) {
+          newStatus = "Undone"; // If task deadline has passed, set status to Undone
+        } else {
+          newStatus = "Done"; // Otherwise, set status to Done
+        }
+
+        // Update task status in the database
+        db.run(
+          "UPDATE Task SET Status = ? WHERE TaskID = ?",
+          [newStatus, taskid],
+          function (err) {
+            if (err) {
+              throw new Error("Error updating task status: " + err.message);
+            }
+
+            res
+              .status(200)
+              .json({ message: "Task status updated successfully" });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.error("Error in closeTaskReport:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function getTaskDetailReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
     const taskId = req.params.taskId;
@@ -767,7 +816,7 @@ module.exports = {
   approveRequestJoin,
   getAllRequestJoin,
   getMyTasks,
-  getTaskDetail,
+  getTaskDetailReport,
   getUserTaskAssigned,
   notifyTask,
 };

@@ -4,11 +4,13 @@ const express = require("express");
 const router = express.Router();
 const taskController = require("../controllers/taskController");
 const middleware = require("../middleware/authMiddleware"); // Use a different name for the middleware module
+const taskMiddleware = require("../middleware/taskMiddleware");
 
 router.post("/addtask", middleware.checkLoggedIn, taskController.addTask);
 router.get("/gettask", middleware.checkLoggedIn, taskController.getTask);
 router.delete(
   "/deletetask/:taskid",
+  taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.deleteTask
@@ -16,6 +18,7 @@ router.delete(
 
 router.put(
   "/updatetask/:taskid",
+  taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.updateTask
@@ -42,19 +45,22 @@ router.get(
 
 router.post(
   "/assigntask",
+  taskMiddleware.isTaskClosedReqBody,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.AssignTask
 );
 
 router.post(
-  "/requestjointask/:taskId",
+  "/requestjointask/:taskid",
+  taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   taskController.requestJoinTask
 );
 
 router.put(
   "/approverequestjoin",
+  taskMiddleware.isTaskClosedReqBody,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.approveRequestJoin
@@ -71,7 +77,7 @@ router.get(
   "/gettaskdetail/:taskId",
   middleware.checkLoggedIn,
   middleware.isAdmin,
-  taskController.getTaskDetail
+  taskController.getTaskDetailReport
 );
 
 router.get(
@@ -82,5 +88,12 @@ router.get(
 );
 
 router.get("/getmytasks", middleware.checkLoggedIn, taskController.getMyTasks);
+
+router.put(
+  "/closetaskreport/:taskid",
+  taskMiddleware.isTaskClosed,
+  middleware.checkLoggedIn,
+  taskController.closeTaskReport
+);
 
 module.exports = router;
