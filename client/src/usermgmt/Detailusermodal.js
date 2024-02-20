@@ -14,7 +14,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
   const fetchUserProfile = async (userid) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/getuserprofileadmin/${userid}`, // Update the URL based on your backend route
+        `http://localhost:5000/api/getuserprofile/${userid}`, // Update the URL based on your backend route
         { withCredentials: true, responseType: "arraybuffer" } // Set the responseType to 'arraybuffer' to receive the data as an ArrayBuffer
       );
 

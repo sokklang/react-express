@@ -740,8 +740,6 @@ async function getMyTasks(req, res) {
   }
 }
 
-async function notifyTask(req, res) {}
-
 async function closeTaskReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
@@ -797,6 +795,17 @@ async function getTaskDetailReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
     const taskId = req.params.taskId;
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function notifyTask(req, res) {}
+
+async function submitTaskReport(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskid = req.params.taskid;
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

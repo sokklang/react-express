@@ -101,39 +101,49 @@ const Editusermodal = ({
                 <label htmlFor="formEditEmail" className="form-label">
                   Email
                 </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter Email"
-                  value={updatedUserData.Email}
-                  onChange={(e) =>
-                    setUpdatedUserData({
-                      ...updatedUserData,
-                      Email: e.target.value,
-                    })
-                  }
-                />
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-envelope fa-fw"></i>
+                  </span>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Enter Email"
+                    value={updatedUserData.Email}
+                    onChange={(e) =>
+                      setUpdatedUserData({
+                        ...updatedUserData,
+                        Email: e.target.value,
+                      })
+                    }
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="formEditRoleType" className="form-label">
                   RoleType
                 </label>
-                <select
-                  className="form-select"
-                  value={updatedUserData.RoleType}
-                  onChange={(e) =>
-                    setUpdatedUserData({
-                      ...updatedUserData,
-                      RoleType: e.target.value,
-                    })
-                  }
-                >
-                  {roleOptions.map((role, index) => (
-                    <option key={index} value={role}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fa fa-id-badge fa-fw"></i>
+                  </span>
+                  <select
+                    className="form-select"
+                    value={updatedUserData.RoleType}
+                    onChange={(e) =>
+                      setUpdatedUserData({
+                        ...updatedUserData,
+                        RoleType: e.target.value,
+                      })
+                    }
+                  >
+                    {roleOptions.map((role, index) => (
+                      <option key={index} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="formEditUserStatus" className="form-label">

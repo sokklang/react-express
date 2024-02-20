@@ -16,6 +16,7 @@ const UserModal = ({
   const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -34,6 +35,10 @@ const UserModal = ({
     //setLastname("");
     //setPassword("");
     //setEmail("");
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -118,7 +123,7 @@ const UserModal = ({
                     <i className="fa fa-lock fa-fw"></i>
                   </span>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     autoComplete="on"
                     className="form-control"
                     id="formPassword"
@@ -128,6 +133,17 @@ const UserModal = ({
                       setPassword(e.target.value.replace(/\s/g, ""))
                     }
                   />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <i className="fa fa-eye-slash fa-fw"></i>
+                    ) : (
+                      <i className="fa fa-eye fa-fw"></i>
+                    )}
+                  </button>
                 </div>
               </div>
               <div className="mb-3">

@@ -13,6 +13,8 @@ const Usercardselect = ({
   const [profiles, setProfiles] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const getMultiProfileInfo = async (userid) => {
     try {
       const response = await axios.post(
@@ -60,6 +62,7 @@ const Usercardselect = ({
       }
     } catch (error) {
       console.error("Error ApproveJoin:", error.response.data.error);
+      setErrorMessage(error.response.data.error);
     }
   };
 
@@ -81,6 +84,7 @@ const Usercardselect = ({
 
   const onClose = () => {
     handleClose();
+    setErrorMessage("");
     setSelectedUsers([]);
   };
 
@@ -163,6 +167,11 @@ const Usercardselect = ({
                   </div>
                 ))}
               </div>
+              {errorMessage ? (
+                <div className="alert alert-danger mt-3" role="alert">
+                  {errorMessage}
+                </div>
+              ) : null}
 
               <div className="modal-footer">
                 <button

@@ -98,7 +98,6 @@ router.get(
 router.post(
   "/getmultiprofileinfo",
   middleware.checkLoggedIn,
-  middleware.isAdmin,
   authController.GetMultiProfileInfo
 );
 

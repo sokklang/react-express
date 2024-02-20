@@ -47,10 +47,6 @@ const Login = () => {
     }
   }, [handleLogin, handleLogout]);
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, [checkLoginStatus]);
-
   const handleUserLogin = async () => {
     if (!username || !password) {
       setErrorMessage("Username and password are required");
@@ -108,6 +104,10 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus]);
+
   return (
     <div className="container mt-5" data-bs-theme="dark">
       <div className="row justify-content-center">
@@ -115,6 +115,7 @@ const Login = () => {
           <div className="card">
             <div className="card-header fs-4 fw-bold">
               <i className="fa fa-user-circle fa-fw me-2"></i>Login
+              <div className="dragon">{/* Render the GIF */}</div>
             </div>
             <div className="card-body">
               <form>
