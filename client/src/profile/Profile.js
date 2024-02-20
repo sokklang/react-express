@@ -192,13 +192,14 @@ const Profile = () => {
         </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item">
-            <i className="fa fa-envelope me-2"></i>Email : {email}
+            <i className="fa fa-envelope fa-fw me-2"></i>Email : {email}
           </li>
           <li className="list-group-item">
-            <i className="fa fa-building me-2"></i>Company : {companyName}
+            <i className="fa fa-institution fa-fw me-2"></i>Company :{" "}
+            {companyName}
           </li>
           <li className="list-group-item">
-            <i className="fa fa-id-badge me-2 "></i>User Role :{" "}
+            <i className="fa fa-id-badge fa-fw me-2 "></i>User Role :{" "}
             {UserRoleId === 2 ? "Admin" : "User"}
           </li>
         </ul>

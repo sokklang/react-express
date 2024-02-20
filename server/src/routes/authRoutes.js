@@ -57,9 +57,8 @@ router.put(
 );
 
 router.get(
-  "/getuserprofileadmin/:userid",
+  "/getuserprofile/:userid",
   middleware.checkLoggedIn,
-  middleware.isAdmin,
   authController.GetUserProfileAdmin
 );
 

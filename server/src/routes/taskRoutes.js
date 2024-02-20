@@ -81,4 +81,6 @@ router.get(
   taskController.getUserTaskAssigned
 );
 
+router.get("/getmytasks", middleware.checkLoggedIn, taskController.getMyTasks);
+
 module.exports = router;

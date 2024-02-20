@@ -220,7 +220,7 @@ const Task = () => {
                   {/* Add action buttons as needed */}
                   <div className="dropdown" data-bs-theme="dark">
                     <button
-                      className="btn btn-secondary dropdown-toggle"
+                      className="btn btn-outline-secondary dropdown-toggle"
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-haspopup="true"

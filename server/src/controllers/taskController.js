@@ -351,8 +351,6 @@ async function getPendingApproveTask(req, res) {
   }
 }
 
-async function closeTaskReport(req, res) {}
-
 async function AssignTask(req, res) {
   try {
     const { taskId, assignedUserIds } = req.body;
@@ -640,15 +638,6 @@ async function getAllRequestJoin(req, res) {
   }
 }
 
-async function getTaskDetail(req, res) {
-  console.log(`Received ${req.method} request for ${req.url}`);
-  try {
-    const taskId = req.params.taskId;
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
 async function getUserTaskAssigned(req, res) {
   try {
     const taskId = req.params.taskId;
@@ -684,7 +673,85 @@ async function getUserTaskAssigned(req, res) {
   }
 }
 
+async function getMyTasks(req, res) {
+  try {
+    console.log(`Received ${req.method} request for ${req.url}`);
+
+    // Extract user ID from session
+    const userId = req.session.user.UserID;
+    //console.log(`User ID extracted from session: ${userId}`);
+
+    // Query to retrieve all task assignments
+    const assignmentQuery = `
+      SELECT * 
+      FROM TaskAssignment 
+    `;
+
+    // Execute the query to retrieve all task assignments
+    db.all(assignmentQuery, [], (err, taskAssignments) => {
+      if (err) {
+        console.error("Error fetching task assignments:", err.message);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      //console.log("Task assignments fetched:", taskAssignments);
+
+      // Filter task assignments based on the user ID
+      const filteredAssignments = taskAssignments.filter((taskAssignment) => {
+        // Parse AssignedUserID as an array
+        const assignedUserIds = JSON.parse(taskAssignment.AssignedUserID);
+        // Check if userId exists in the assignedUserIds array
+        return assignedUserIds.includes(userId);
+      });
+
+      //console.log("Filtered task assignments:", filteredAssignments);
+
+      // Extract TaskIDs from filtered task assignments
+      const taskIDs = filteredAssignments.map(
+        (taskAssignment) => taskAssignment.TaskID
+      );
+
+      //console.log("Task IDs:", taskIDs);
+
+      // Query to retrieve tasks associated with the TaskIDs
+      const taskQuery = `
+        SELECT Task.*, TaskAssignment.AssignedUserID
+        FROM Task
+        JOIN TaskAssignment ON Task.TaskID = TaskAssignment.TaskID
+        WHERE Task.TaskID IN (${taskIDs.join(",")})
+      `;
+
+      // Execute the query to retrieve tasks associated with the user ID
+      db.all(taskQuery, [], (err, tasks) => {
+        if (err) {
+          console.error("Error fetching tasks:", err.message);
+          res.status(500).json({ error: "Internal Server Error" });
+        } else {
+          //console.log("Tasks fetched:", tasks);
+          // Send the retrieved tasks as JSON response
+          res.json(tasks);
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching tasks:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function notifyTask(req, res) {}
+
+async function closeTaskReport(req, res) {}
+
+async function getTaskDetail(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskId = req.params.taskId;
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
 module.exports = {
   addTask,
@@ -699,6 +766,7 @@ module.exports = {
   requestJoinTask,
   approveRequestJoin,
   getAllRequestJoin,
+  getMyTasks,
   getTaskDetail,
   getUserTaskAssigned,
   notifyTask,
