@@ -639,6 +639,7 @@ async function getAllRequestJoin(req, res) {
 }
 
 async function getUserTaskAssigned(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
   try {
     const taskId = req.params.taskId;
 
@@ -672,6 +673,30 @@ async function getUserTaskAssigned(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+const removeRequestJoin = async (req, res) => {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskid = req.params.taskid; // Ensure the parameter name matches the route parameter
+    //console.log(taskid); // Log taskId to verify it's received correctly
+    // Update TaskAssignment table to set RequestJoinUserID to an empty array
+    const updateQuery = `UPDATE TaskAssignment SET RequestJoinUserID = '[]' WHERE TaskID = ?`;
+    db.run(updateQuery, [taskid], function (err) {
+      if (err) {
+        console.error("Error updating TaskAssignment table:", err.message);
+        return res.status(500).json({ error: "Internal server error" });
+      } else {
+        console.log(`Request join removed successfully for task ${taskid}`);
+        return res
+          .status(200)
+          .json({ message: "Request join removed successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error in removeRequestJoin function:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 async function getMyTasks(req, res) {
   try {
@@ -800,8 +825,6 @@ async function getTaskDetailReport(req, res) {
   }
 }
 
-async function notifyTask(req, res) {}
-
 async function submitTaskReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
@@ -810,6 +833,8 @@ async function submitTaskReport(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+async function notifyTask(req, res) {}
 
 module.exports = {
   addTask,
@@ -828,4 +853,5 @@ module.exports = {
   getTaskDetailReport,
   getUserTaskAssigned,
   notifyTask,
+  removeRequestJoin,
 };

@@ -6,6 +6,7 @@ import axios from "axios";
 import Detailtask from "../task/Detailtask";
 import Usercard from "../approval/Usercard";
 import Closereport from "./Closereport";
+import Submitreport from "./Submitreport";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -17,6 +18,7 @@ const Mytask = () => {
   const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
   const [showUserCardModal, setShowUserCardModal] = useState(false);
   const [showCloseReportModal, setShowCloseReportModal] = useState(false);
+  const [showSubmitReportModal, setShowSubmitReportModal] = useState(false);
   const [selectDetailTask, setSelectDetailTask] = useState("");
   const [selectTaskID, setSelectTaskID] = useState("");
 
@@ -170,6 +172,10 @@ const Mytask = () => {
                         className="dropdown-item btn btn-success"
                         type="button"
                         style={{ color: "#00FF00" }}
+                        onClick={() => {
+                          setShowSubmitReportModal(true);
+                          setSelectTaskID(task.TaskID);
+                        }}
                       >
                         <i
                           className="fa fa-paper-plane me-2"
@@ -224,6 +230,14 @@ const Mytask = () => {
           setSelectTaskID("");
         }}
         FetchMyTasks={FetchMyTasks}
+      />
+      <Submitreport
+        showModal={showSubmitReportModal}
+        TaskID={selectTaskID}
+        handleClose={() => {
+          setShowSubmitReportModal(false);
+          setSelectTaskID("");
+        }}
       />
     </div>
   );

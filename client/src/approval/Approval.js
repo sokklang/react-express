@@ -105,6 +105,23 @@ const Approval = () => {
     }
   };
 
+  const removeRequestJoinTask = async (taskid) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/removerequestjointask/${taskid}`,
+        null,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        console.log(response.data.message);
+        // Trigger useEffect by calling fetchUserData
+        getAllRequestJoin();
+      }
+    } catch (error) {
+      console.error(error.response.data.error);
+    }
+  };
+
   useEffect(() => {
     if (loggedIn) {
       getAllRequestJoin();
@@ -162,7 +179,7 @@ const Approval = () => {
                 </td>
                 <td>
                   <button
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success me-2"
                     type="button"
                     onClick={() => {
                       setShowUserCardSelectModal(true);
@@ -174,6 +191,16 @@ const Approval = () => {
                   >
                     <i className="fa fa-check fa-fw " aria-hidden="true"></i>{" "}
                     Approve
+                  </button>
+                  <button
+                    className="btn btn-outline-danger"
+                    type="button"
+                    onClick={() => {
+                      removeRequestJoinTask(request.TaskID);
+                    }}
+                  >
+                    <i className="fa fa-remove fa-fw " aria-hidden="true"></i>{" "}
+                    Remove
                   </button>
                 </td>
               </tr>
@@ -193,7 +220,7 @@ const Approval = () => {
               <th>Task Type</th>
 
               <th>ApprovalStatus</th>
-              <th>Action</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -235,7 +262,7 @@ const Approval = () => {
                   {/* Add action buttons as needed */}
                   <div className="dropdown" data-bs-theme="dark">
                     <button
-                      className="btn btn-secondary dropdown-toggle"
+                      className="btn btn-outline-primary dropdown-toggle"
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-haspopup="true"

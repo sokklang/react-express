@@ -10,7 +10,7 @@ router.post("/addtask", middleware.checkLoggedIn, taskController.addTask);
 router.get("/gettask", middleware.checkLoggedIn, taskController.getTask);
 router.delete(
   "/deletetask/:taskid",
-  taskMiddleware.isTaskClosed,
+  //taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.deleteTask
@@ -94,6 +94,13 @@ router.put(
   taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   taskController.closeTaskReport
+);
+
+router.put(
+  "/removerequestjointask/:taskid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.removeRequestJoin
 );
 
 module.exports = router;

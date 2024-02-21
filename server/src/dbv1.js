@@ -71,6 +71,16 @@ CREATE TABLE TaskAssignment (
     FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE
 );
 
+CREATE TABLE TaskReport (
+    ReportID INTEGER PRIMARY KEY,
+    TaskID INTEGER,
+    ReportType VARCHAR(50) NOT NULL,
+    ReportData BLOB,
+    TextData TEXT,
+    FOREIGN KEY (TaskID) REFERENCES Task(TaskID) ON DELETE CASCADE
+);
+
+
 
 -- Create UserTaskNotify table
 CREATE TABLE UserTaskNotify (
