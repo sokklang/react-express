@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 
 const Submitreport = ({ showModal, handleClose, TaskID }) => {
@@ -6,6 +6,7 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [files, setFiles] = useState([]);
   const [textInput, setTextInput] = useState("");
+  const fileInputRef = useRef(null);
 
   const onClose = () => {
     handleClose();
@@ -13,17 +14,33 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
     setSuccessMessage("");
     setFiles([]); // Clear uploaded files on modal close
     setTextInput(""); // Clear text input on modal close
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset file input value to clear previous selection
+    }
+  };
+
+  // Function to handle text input change
+  const handleTextChange = (e) => {
+    setTextInput(e.target.value);
   };
 
   // Function to handle file upload
   const handleFileChange = (e) => {
     const filesArray = Array.from(e.target.files);
     setFiles(filesArray);
+    console.log("files", filesArray);
   };
 
-  // Function to handle text input change
-  const handleTextChange = (e) => {
-    setTextInput(e.target.value);
+  // Function to remove a file from the files array
+  const handleRemoveFile = (indexToRemove) => {
+    console.log("Removing file at index:", indexToRemove);
+    setFiles((prevFiles) => {
+      const updatedFiles = prevFiles.filter(
+        (_, index) => index !== indexToRemove
+      );
+      console.log("Files after removal:", updatedFiles);
+      return updatedFiles;
+    });
   };
 
   // Function to submit the report
@@ -98,22 +115,53 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
               <label htmlFor="fileInput" className="form-label">
                 Upload Files:
               </label>
-              <input
-                type="file"
-                id="fileInput"
-                multiple
-                className="form-control"
-                onChange={handleFileChange}
-              />
+              <div className="input-group">
+                <button
+                  className="btn btn-secondary"
+                  type="button"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  <i className="fa fa-file fa-fw "></i> Browse
+                </button>
+                <input
+                  type="file"
+                  id="fileInput"
+                  multiple
+                  className="form-control visually-hidden"
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                />
+                <label
+                  className="input-group-text flex-grow-1"
+                  htmlFor="fileInput"
+                >
+                  {files.length > 0
+                    ? files.length === 1
+                      ? files[0].name
+                      : `${files.length} Files Selected`
+                    : "No File Chosen"}
+                </label>
+              </div>
             </div>
 
             {/* Preview Section */}
             <div>
               {files.map((file, index) => (
                 <div key={index}>
-                  <p>{file.name}</p>
+                  <p>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm me-2"
+                      onClick={() => handleRemoveFile(index)}
+                    >
+                      <i className="fa fa-remove fa-fw" aria-hidden="true"></i>{" "}
+                      Remove
+                    </button>
+                    {file.name}
+                  </p>
                   {file.type.startsWith("image/") && (
                     <img
+                      className="mb-3"
                       src={URL.createObjectURL(file)}
                       alt={file.name}
                       style={{ maxWidth: "100%" }}
@@ -121,9 +169,10 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
                   )}
                   {file.type === "application/pdf" && (
                     <embed
+                      className="mb-3"
                       src={URL.createObjectURL(file)}
                       type="application/pdf"
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", height: "calc(100vw / 1.414)" }}
                     />
                   )}
                 </div>
