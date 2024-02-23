@@ -43,23 +43,61 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
     });
   };
 
-  // Function to submit the report
-  const handleSubmit = async () => {
+  const readFileAsArrayBuffer = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+        resolve(arrayBuffer);
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const handleSubmitReport = async () => {
     try {
-      // Here you can implement your submit logic, including file uploads and text input
-      // For example:
-      const formData = new FormData();
-      files.forEach((file) => {
-        formData.append("files", file);
-      });
-      formData.append("text", textInput);
-      formData.append("TaskID", TaskID);
+      if (files.length > 0) {
+        const fileBuffers = await Promise.all(files.map(readFileAsArrayBuffer));
+        const base64Files = fileBuffers.map((buffer) => {
+          const base64File = btoa(
+            new Uint8Array(buffer).reduce(
+              (data, byte) => data + String.fromCharCode(byte),
+              ""
+            )
+          );
 
-      const response = await axios.post("/api/submitreport", formData);
+          // Calculate and log the size of the base64 file
+          const padding = (base64File.match(/=/g) || []).length;
+          const size = (base64File.length * 3) / 4 - padding;
+          console.log(`Size of file: ${size} bytes`);
 
-      setSuccessMessage(response.data.message);
+          return base64File;
+        });
+
+        const data = {
+          files: base64Files,
+          fileTypes: files.map((file) => file.type),
+          text: textInput,
+        };
+
+        const response = await axios.post(
+          `http://localhost:5000/api/submittaskreport/${TaskID}`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        setSuccessMessage(response.data.message);
+      } else {
+        console.error("No files selected");
+      }
     } catch (error) {
-      setErrorMessage(error.response.data.message);
+      setErrorMessage(error.response.data.message || "Internal Server Error");
     }
   };
 
@@ -148,17 +186,18 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
             <div>
               {files.map((file, index) => (
                 <div key={index}>
-                  <p>
+                  <div className="input-group mb-3">
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm me-2"
+                      className="btn btn-danger btn-sm "
                       onClick={() => handleRemoveFile(index)}
                     >
                       <i className="fa fa-remove fa-fw" aria-hidden="true"></i>{" "}
                       Remove
                     </button>
-                    {file.name}
-                  </p>
+                    <span className="form-control">{file.name}</span>
+                  </div>
+
                   {file.type.startsWith("image/") && (
                     <img
                       className="mb-3"
@@ -190,7 +229,7 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
             <button
               type="button"
               className="btn btn-primary"
-              onClick={handleSubmit}
+              onClick={handleSubmitReport}
             >
               Submit
             </button>

@@ -825,11 +825,46 @@ async function getTaskDetailReport(req, res) {
   }
 }
 
-async function submitTaskReport(req, res) {
+function submitTaskReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
+
   try {
     const taskid = req.params.taskid;
+    const { files, fileTypes, text } = req.body;
+
+    //console.log("Task ID:", taskid);
+    //console.log("Files:", files);
+    //console.log("File Types:", fileTypes);
+    //console.log("Text:", text);
+
+    // Convert Base64 strings back to Buffer objects
+    const buffers = files.map((file) => Buffer.from(file, "base64"));
+
+    // Insert data into the database
+    for (let i = 0; i < buffers.length; i++) {
+      const fileBuffer = buffers[i];
+      const fileType = fileTypes[i];
+      //console.log("buffer", fileBuffer);
+
+      // Insert data into TaskReport table
+      db.run(
+        "INSERT INTO TaskReport (TaskID, ReportType, ReportData, TextData) VALUES (?, ?, ?, ?)",
+        [taskid, fileType, fileBuffer, text],
+        function (err) {
+          if (err) {
+            console.error("Error inserting data:", err.message);
+            res.status(500).json({ error: "Internal Server Error" });
+          } else {
+            console.log("Data inserted successfully");
+          }
+        }
+      );
+    }
+
+    // Send a success response
+    res.status(200).json({ message: "Task report submitted successfully" });
   } catch (error) {
+    console.error("Error in submitTaskReport:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
@@ -854,4 +889,5 @@ module.exports = {
   getUserTaskAssigned,
   notifyTask,
   removeRequestJoin,
+  submitTaskReport,
 };

@@ -12,8 +12,8 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(express.raw({ type: "application/octet-stream", limit: "10mb" }));
-app.use(bodyParser.json());
+app.use(express.raw({ type: "application/octet-stream", limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(corsMiddleware);
 
 app.use(

@@ -103,4 +103,11 @@ router.put(
   taskController.removeRequestJoin
 );
 
+router.post(
+  "/submittaskreport/:taskid",
+  middleware.checkLoggedIn,
+  middleware.isAdmin,
+  taskController.submitTaskReport
+);
+
 module.exports = router;

@@ -36,6 +36,7 @@ const Updateprofile = ({
         const reader = new FileReader();
         reader.onload = async function () {
           const arrayBuffer = this.result;
+          console.log(arrayBuffer);
 
           // Pass the ArrayBuffer to updateUserProfile
           await updateUserProfile(arrayBuffer);
