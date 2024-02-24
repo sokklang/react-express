@@ -819,8 +819,23 @@ async function closeTaskReport(req, res) {
 async function getTaskDetailReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
-    const taskid = req.params.taskid;
+    const taskId = req.params.taskid;
+
+    // Query the database to get ReportData, TextData, and ReportType for the task
+    db.all(
+      "SELECT ReportData, TextData, ReportType FROM TaskReport WHERE TaskID = ?",
+      [taskId],
+      (err, rows) => {
+        if (err) {
+          console.error("Error querying database:", err.message);
+          res.status(500).json({ error: "Internal Server Error" });
+        } else {
+          res.json(rows);
+        }
+      }
+    );
   } catch (error) {
+    console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

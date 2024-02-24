@@ -7,6 +7,7 @@ import Detailtask from "../task/Detailtask";
 import Usercard from "../approval/Usercard";
 import Closereport from "./Closereport";
 import Submitreport from "./Submitreport";
+import Reportdata from "./Reportdata";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -19,6 +20,7 @@ const Mytask = () => {
   const [showUserCardModal, setShowUserCardModal] = useState(false);
   const [showCloseReportModal, setShowCloseReportModal] = useState(false);
   const [showSubmitReportModal, setShowSubmitReportModal] = useState(false);
+  const [showReportDataModal, setShowReportDataModal] = useState(false);
   const [selectDetailTask, setSelectDetailTask] = useState("");
   const [selectTaskID, setSelectTaskID] = useState("");
 
@@ -72,6 +74,7 @@ const Mytask = () => {
 
               <th className="text-center">Detail</th>
               <th className="text-center">Action</th>
+              <th className="text-center">Report</th>
             </tr>
           </thead>
           <tbody>
@@ -201,6 +204,18 @@ const Mytask = () => {
                     </div>
                   </div>
                 </td>
+                <td className="text-center">
+                  <button
+                    className="btn btn-outline-info me-2"
+                    onClick={() => {
+                      setShowReportDataModal(true);
+                      setSelectTaskID(task.TaskID);
+                    }}
+                  >
+                    <i className="fa fa-eye fa-fw" aria-hidden="true"></i>{" "}
+                    Detail
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -236,6 +251,15 @@ const Mytask = () => {
         TaskID={selectTaskID}
         handleClose={() => {
           setShowSubmitReportModal(false);
+          setSelectTaskID("");
+        }}
+      />
+
+      <Reportdata
+        showModal={showReportDataModal}
+        TaskID={selectTaskID}
+        handleClose={() => {
+          setShowReportDataModal(false);
           setSelectTaskID("");
         }}
       />
