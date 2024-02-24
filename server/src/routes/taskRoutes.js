@@ -110,4 +110,10 @@ router.post(
   taskController.submitTaskReport
 );
 
+router.get(
+  "/gettaskdetailreport/:taskid",
+  middleware.checkLoggedIn,
+  taskController.getTaskDetailReport
+);
+
 module.exports = router;

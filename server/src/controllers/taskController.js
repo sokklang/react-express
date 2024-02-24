@@ -819,7 +819,7 @@ async function closeTaskReport(req, res) {
 async function getTaskDetailReport(req, res) {
   console.log(`Received ${req.method} request for ${req.url}`);
   try {
-    const taskId = req.params.taskId;
+    const taskid = req.params.taskid;
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

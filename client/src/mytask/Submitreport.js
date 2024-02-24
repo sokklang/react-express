@@ -124,16 +124,6 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
             ></button>
           </div>
           <div className="modal-body text-start">
-            {errorMessage ? (
-              <div className="alert alert-danger mt-3" role="alert">
-                {errorMessage}
-              </div>
-            ) : successMessage ? (
-              <div className="alert alert-success mt-3" role="alert">
-                {successMessage}
-              </div>
-            ) : null}
-
             {/* Text Input Section */}
             <div className="mb-3">
               <label htmlFor="textInput" className="form-label">
@@ -217,6 +207,15 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
                 </div>
               ))}
             </div>
+            {errorMessage ? (
+              <div className="alert alert-danger mt-3" role="alert">
+                {errorMessage}
+              </div>
+            ) : successMessage ? (
+              <div className="alert alert-success mt-3" role="alert">
+                {successMessage}
+              </div>
+            ) : null}
           </div>
           <div className="modal-footer">
             <button
