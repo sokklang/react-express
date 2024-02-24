@@ -1,15 +1,83 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 
 const Deletereport = ({ showModal, handleClose, TaskID }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [reportData, setReportData] = useState([]);
+  const [selectedReports, setSelectedReports] = useState([]);
 
-  const handleDeleteReport = async () => {};
+  const getTaskDetailReport = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/gettaskdetailreport/${TaskID}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Received report data:", response.data);
+        setReportData(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  }, [TaskID]);
+
+  const arrayToBlobUrl = (array, mimeType) => {
+    const blob = new Blob([Uint8Array.from(array)], { type: mimeType });
+    return URL.createObjectURL(blob);
+  };
+
+  const handleDeleteReport = async () => {
+    console.log(selectedReports);
+    console.log(TaskID);
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/deletereportdata/${TaskID}`,
+        {
+          data: { selectedReports }, // Include data in the request body
+          headers: {
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          withCredentials: true,
+        }
+      );
+
+      // Check response status and handle accordingly
+      if (response.status === 200) {
+        console.log(response.message);
+        setErrorMessage("");
+        setSuccessMessage(response.message);
+      } else {
+        console.error("Failed to delete reports:", response.data.error);
+        setSuccessMessage("");
+        setErrorMessage(response.data.error);
+      }
+    } catch (error) {
+      console.error("Error deleting reports:", error.message);
+    }
+  };
+
+  const handleSelectReport = (reportId) => {
+    if (selectedReports.includes(reportId)) {
+      setSelectedReports(selectedReports.filter((id) => id !== reportId));
+    } else {
+      setSelectedReports([...selectedReports, reportId]);
+    }
+  };
 
   const onClose = async () => {
     handleClose();
   };
+
+  useEffect(() => {
+    if (showModal) {
+      getTaskDetailReport();
+    }
+  }, [showModal, getTaskDetailReport]);
+
   return (
     <div
       className={`modal fade ${showModal ? "show" : ""}`}
@@ -33,6 +101,32 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
             ></button>
           </div>
           <div className="modal-body text-start">
+            {reportData.map((file, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  checked={selectedReports.includes(file.ReportID)}
+                  onChange={() => handleSelectReport(file.ReportID)}
+                />
+                {file.ReportType.startsWith("image/") && (
+                  <img
+                    className="mb-3"
+                    src={arrayToBlobUrl(file.ReportData.data, file.ReportType)}
+                    alt={`Report ${index}`}
+                    style={{ maxWidth: "100%" }}
+                  />
+                )}
+                {file.ReportType === "application/pdf" && (
+                  <embed
+                    className="mb-3"
+                    src={arrayToBlobUrl(file.ReportData.data, file.ReportType)}
+                    type="application/pdf"
+                    style={{ width: "100%", height: "calc(100vw / 1.414)" }}
+                  />
+                )}
+                {/* Add other conditions for different types of reports */}
+              </div>
+            ))}
             {errorMessage ? (
               <div className="alert alert-danger mt-3" role="alert">
                 {errorMessage}

@@ -116,4 +116,10 @@ router.get(
   taskController.getTaskDetailReport
 );
 
+router.delete(
+  "/deletereportdata/:taskid",
+  middleware.checkLoggedIn,
+  taskController.deleteReportData
+);
+
 module.exports = router;

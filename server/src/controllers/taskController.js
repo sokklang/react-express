@@ -823,7 +823,7 @@ async function getTaskDetailReport(req, res) {
 
     // Query the database to get ReportData, TextData, and ReportType for the task
     db.all(
-      "SELECT ReportData, TextData, ReportType FROM TaskReport WHERE TaskID = ?",
+      "SELECT ReportID, ReportData, TextData, ReportType FROM TaskReport WHERE TaskID = ?",
       [taskId],
       (err, rows) => {
         if (err) {
@@ -834,6 +834,48 @@ async function getTaskDetailReport(req, res) {
         }
       }
     );
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function deleteReportData(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskId = req.params.taskid;
+    const selectedReports = req.body.selectedReports;
+
+    // Ensure selectedReports is an array
+    if (!Array.isArray(selectedReports)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid report IDs. Expected an array." });
+    }
+
+    // Prepare and execute DELETE queries for each report ID
+    selectedReports.forEach((reportId) => {
+      const sql = "DELETE FROM TaskReport WHERE ReportID = ? AND TaskID = ?";
+      db.run(sql, [reportId, taskId], function (err) {
+        if (err) {
+          console.error(
+            `Error deleting report with ID ${reportId}:`,
+            err.message
+          );
+        } else {
+          if (this.changes === 0) {
+            console.error(
+              `Report with ID ${reportId} is not linked to TaskID ${taskId}.`
+            );
+          } else {
+            console.log(`Report with ID ${reportId} deleted successfully.`);
+          }
+        }
+      });
+    });
+
+    // Send success response
+    res.status(200).json({ message: "Report(s) deleted successfully." });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
@@ -905,4 +947,5 @@ module.exports = {
   notifyTask,
   removeRequestJoin,
   submitTaskReport,
+  deleteReportData,
 };
