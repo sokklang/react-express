@@ -8,6 +8,7 @@ import Usercard from "../approval/Usercard";
 import Closereport from "./Closereport";
 import Submitreport from "./Submitreport";
 import Reportdata from "./Reportdata";
+import Deletereport from "./Deletereport";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -20,6 +21,7 @@ const Mytask = () => {
   const [showUserCardModal, setShowUserCardModal] = useState(false);
   const [showCloseReportModal, setShowCloseReportModal] = useState(false);
   const [showSubmitReportModal, setShowSubmitReportModal] = useState(false);
+  const [showDeleteReportModal, setShowDeleteReportModal] = useState(false);
   const [showReportDataModal, setShowReportDataModal] = useState(false);
   const [selectDetailTask, setSelectDetailTask] = useState("");
   const [selectTaskID, setSelectTaskID] = useState("");
@@ -181,10 +183,26 @@ const Mytask = () => {
                         }}
                       >
                         <i
-                          className="fa fa-paper-plane me-2"
+                          className="fa fa-paper-plane fa-fw me-2"
                           aria-hidden="true"
                         ></i>
                         Submit Report
+                      </button>
+
+                      <button
+                        className="dropdown-item btn btn-warning"
+                        type="button"
+                        style={{ color: "yellow" }}
+                        onClick={() => {
+                          setShowDeleteReportModal(true);
+                          setSelectTaskID(task.TaskID);
+                        }}
+                      >
+                        <i
+                          className="fa fa-remove fa-fw me-2"
+                          aria-hidden="true"
+                        ></i>
+                        Remove Report
                       </button>
                       <button
                         className="dropdown-item btn btn-danger"
@@ -260,6 +278,15 @@ const Mytask = () => {
         TaskID={selectTaskID}
         handleClose={() => {
           setShowReportDataModal(false);
+          setSelectTaskID("");
+        }}
+      />
+
+      <Deletereport
+        showModal={showDeleteReportModal}
+        TaskID={selectTaskID}
+        handleClose={() => {
+          setShowDeleteReportModal(false);
           setSelectTaskID("");
         }}
       />
