@@ -47,9 +47,10 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
 
       // Check response status and handle accordingly
       if (response.status === 200) {
-        console.log(response.message);
+        getTaskDetailReport();
+        console.log(response.data.message);
         setErrorMessage("");
-        setSuccessMessage(response.message);
+        setSuccessMessage(response.data.message);
       } else {
         console.error("Failed to delete reports:", response.data.error);
         setSuccessMessage("");
@@ -70,6 +71,9 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
 
   const onClose = async () => {
     handleClose();
+    setErrorMessage("");
+    setSuccessMessage("");
+    setSelectedReports([]);
   };
 
   useEffect(() => {

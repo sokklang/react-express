@@ -845,6 +845,7 @@ async function deleteReportData(req, res) {
   try {
     const taskId = req.params.taskid;
     const selectedReports = req.body.selectedReports;
+    let deletedCount = 0;
 
     // Ensure selectedReports is an array
     if (!Array.isArray(selectedReports)) {
@@ -854,28 +855,35 @@ async function deleteReportData(req, res) {
     }
 
     // Prepare and execute DELETE queries for each report ID
-    selectedReports.forEach((reportId) => {
+    for (const reportId of selectedReports) {
       const sql = "DELETE FROM TaskReport WHERE ReportID = ? AND TaskID = ?";
-      db.run(sql, [reportId, taskId], function (err) {
-        if (err) {
-          console.error(
-            `Error deleting report with ID ${reportId}:`,
-            err.message
-          );
-        } else {
-          if (this.changes === 0) {
+      await new Promise((resolve, reject) => {
+        db.run(sql, [reportId, taskId], function (err) {
+          if (err) {
             console.error(
-              `Report with ID ${reportId} is not linked to TaskID ${taskId}.`
+              `Error deleting report with ID ${reportId}:`,
+              err.message
             );
+            reject(err);
           } else {
-            console.log(`Report with ID ${reportId} deleted successfully.`);
+            if (this.changes === 0) {
+              console.error(
+                `Report with ID ${reportId} is not linked to TaskID ${taskId}.`
+              );
+            } else {
+              console.log(`Report with ID ${reportId} deleted successfully.`);
+              deletedCount++;
+            }
+            resolve();
           }
-        }
+        });
       });
-    });
+    }
 
-    // Send success response
-    res.status(200).json({ message: "Report(s) deleted successfully." });
+    // Send success response with count of deleted reports
+    res
+      .status(200)
+      .json({ message: `Successfully deleted ${deletedCount} report(s).` });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
