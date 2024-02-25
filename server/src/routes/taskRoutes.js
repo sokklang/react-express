@@ -105,6 +105,7 @@ router.put(
 
 router.post(
   "/submittaskreport/:taskid",
+  taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   middleware.isAdmin,
   taskController.submitTaskReport
@@ -118,6 +119,7 @@ router.get(
 
 router.delete(
   "/deletereportdata/:taskid",
+  taskMiddleware.isTaskClosed,
   middleware.checkLoggedIn,
   taskController.deleteReportData
 );

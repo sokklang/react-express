@@ -57,7 +57,9 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
         setErrorMessage(response.data.error);
       }
     } catch (error) {
-      console.error("Error deleting reports:", error.message);
+      console.error("Error deleting reports:", error.response.data.error);
+      setSuccessMessage("");
+      setErrorMessage(error.response.data.error);
     }
   };
 

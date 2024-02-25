@@ -22,6 +22,7 @@ import Notification from "./Notification";
 import Nopage from "./Nopage";
 import Assigntask from "./assigntask/Assigntask";
 import Mytask from "./mytask/Mytask";
+import Archivetask from "./archivetask/Archivetask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -57,6 +58,7 @@ const App = () => {
 
         <Route path="/Settings" element={<Settings />} />
         <Route path="/Notification" element={<Notification />} />
+        <Route path="/archivetask" element={<Archivetask />} />
         <Route path="*" element={<Nopage />} />
       </Routes>
     </Router>

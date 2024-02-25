@@ -97,7 +97,7 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
         console.error("No files selected");
       }
     } catch (error) {
-      setErrorMessage(error.response.data.message || "Internal Server Error");
+      setErrorMessage(error.response.data.error);
     }
   };
 
