@@ -3,9 +3,11 @@ import axios from "axios";
 
 const Reportdata = ({ showModal, handleClose, TaskID }) => {
   const [reportData, setReportData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getTaskDetailReport = useCallback(async () => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `http://localhost:5000/api/gettaskdetailreport/${TaskID}`,
         {
@@ -19,6 +21,8 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
       }
     } catch (error) {
       console.error("Error fetching tasks:", error);
+    } finally {
+      setLoading(false);
     }
   }, [TaskID]);
 
@@ -26,10 +30,10 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
     handleClose();
   };
 
-  const arrayToBlobUrl = (array, mimeType) => {
+  const arrayToBlobUrl = useCallback((array, mimeType) => {
     const blob = new Blob([Uint8Array.from(array)], { type: mimeType });
     return URL.createObjectURL(blob);
-  };
+  }, []);
 
   useEffect(() => {
     if (showModal) {
@@ -60,27 +64,89 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
             ></button>
           </div>
           <div className="modal-body">
-            {reportData.map((file, index) => (
-              <div key={index}>
-                {file.ReportType.startsWith("image/") && (
-                  <img
-                    className="mb-3"
-                    src={arrayToBlobUrl(file.ReportData.data, file.ReportType)}
-                    alt={`Report ${index}`}
-                    style={{ maxWidth: "100%" }}
-                  />
-                )}
-                {file.ReportType === "application/pdf" && (
-                  <embed
-                    className="mb-3"
-                    src={arrayToBlobUrl(file.ReportData.data, file.ReportType)}
-                    type="application/pdf"
-                    style={{ width: "100%", height: "calc(100vw / 1.414)" }}
-                  />
-                )}
-                {/* Add other conditions for different types of reports */}
+            {loading ? (
+              <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
               </div>
-            ))}
+            ) : (
+              <div
+                id="carouselExampleIndicators"
+                className="carousel slide"
+                data-bs-ride="carousel"
+              >
+                <div className="carousel-inner">
+                  {reportData.map((file, index) => (
+                    <div
+                      className={`carousel-item ${index === 0 ? "active" : ""}`}
+                      key={index}
+                    >
+                      <div className="d-flex justify-content-center align-items-center">
+                        {file.ReportType.startsWith("image/") && (
+                          <img
+                            className="mb-3"
+                            src={arrayToBlobUrl(
+                              file.ReportData.data,
+                              file.ReportType
+                            )}
+                            alt={`Report ${index}`}
+                            style={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "contain",
+                            }}
+                          />
+                        )}
+                        {file.ReportType === "application/pdf" && (
+                          <embed
+                            className="mb-3"
+                            src={arrayToBlobUrl(
+                              file.ReportData.data,
+                              file.ReportType
+                            )}
+                            type="application/pdf"
+                            style={{
+                              width: "100%",
+                              height: "calc(100vw / 1.414)",
+                            }}
+                          />
+                        )}
+                        {/* Add other conditions for different types of reports */}
+                      </div>
+                      <div className="carousel-caption">
+                        <p>{file.TextData}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  className="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    className="carousel-control-prev-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span className="visually-hidden">Previous</span>
+                </button>
+                <button
+                  className="carousel-control-next"
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide="next"
+                >
+                  <span
+                    className="carousel-control-next-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span className="visually-hidden">Next</span>
+                </button>
+              </div>
+            )}
           </div>
           <div className="modal-footer">
             <button
