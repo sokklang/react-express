@@ -44,6 +44,41 @@ const isTaskClosed = (req, res, next) => {
   }
 };
 
+const isntTaskClosed = async (req, res, next) => {
+  try {
+    const { taskid } = req.params;
+
+    const result = await new Promise((resolve, reject) => {
+      db.get(
+        "SELECT Status FROM Task WHERE TaskID = ?",
+        [taskid],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        }
+      );
+    });
+
+    if (!result) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    if (result.Status === "Done" || result.Status === "Undone") {
+      next(); // Proceed to the next middleware
+    } else if (result.Status === "Archived") {
+      return res.status(403).json({ error: "Task already Archived" });
+    } else {
+      return res.status(403).json({ error: "Invalid Task status" });
+    }
+  } catch (error) {
+    console.error("Error in isTaskClosed middleware:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const isTaskClosedReqBody = (req, res, next) => {
   try {
     const { taskId } = req.body;
@@ -90,5 +125,6 @@ const isTaskClosedReqBody = (req, res, next) => {
 
 module.exports = {
   isTaskClosed,
+  isntTaskClosed,
   isTaskClosedReqBody,
 };

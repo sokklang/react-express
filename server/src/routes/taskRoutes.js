@@ -124,4 +124,17 @@ router.delete(
   taskController.deleteReportData
 );
 
+router.put(
+  "/archivetask/:taskid",
+  taskMiddleware.isntTaskClosed,
+  middleware.checkLoggedIn,
+  taskController.ArchiveTask
+);
+
+router.get(
+  "/getarchivetask",
+  middleware.checkLoggedIn,
+  taskController.getArchiveTask
+);
+
 module.exports = router;

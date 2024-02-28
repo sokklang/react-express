@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import AddTask from "./Addtask";
 import Deletetask from "./Deletetask";
@@ -26,6 +26,7 @@ const Task = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showRequestJoinModal, setShowRequestJoinModal] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const fetchTasks = async () => {
     try {
@@ -122,8 +123,8 @@ const Task = () => {
   useEffect(() => {
     if (loggedIn) {
       fetchTasks();
-      const interval = setInterval(fetchTasks, 5000); // Polling every 5 seconds
-      return () => clearInterval(interval);
+      //const interval = setInterval(fetchTasks, 5000); // Polling every 5 seconds
+      //return () => clearInterval(interval);
     }
   }, [loggedIn]);
 
@@ -134,6 +135,52 @@ const Task = () => {
 
   return (
     <div className="container-fluid mt-5 p-3 border">
+      <div
+        className={`offcanvas offcanvas-start${showSidebar ? " show" : ""} `}
+        data-bs-theme="dark"
+        id="sidebar"
+        aria-labelledby="sidebarLabel"
+      >
+        <div className="offcanvas-header">
+          <h5 className="offcanvas-title" id="sidebarLabel">
+            Tasks Action
+          </h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setShowSidebar(false)}
+            aria-label="Close"
+          ></button>
+        </div>
+        <div className="offcanvas-body">
+          <ul className="nav flex-column">
+            <li className="nav-item ">
+              <Link className="nav-link" to="/mytask">
+                <i className="fa fa-calendar fa-fw me-2"></i>MyTask
+              </Link>
+            </li>
+            {userroletype === "Admin User" && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/assigntask">
+                  <i className="fa fa-list fa-fw me-2"></i>AssignTask
+                </Link>
+              </li>
+            )}
+            {userroletype === "Admin User" && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/approval">
+                  <i className="fa fa-check fa-fw me-2"></i>Approval
+                </Link>
+              </li>
+            )}
+            <li className="nav-item">
+              <Link className="nav-link" to="/archivetask">
+                <i className="fa fa-archive fa-fw me-2"></i>Archive Tasks
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <center>
@@ -141,6 +188,13 @@ const Task = () => {
           </center>
         </div>
         <div className="d-flex align-items-center">
+          <button
+            type="button"
+            className="btn btn-primary text-nowrap me-3"
+            onClick={() => setShowSidebar(true)}
+          >
+            <i className="fa fa-bars me-2" aria-hidden="true"></i>Options
+          </button>
           <button
             type="button"
             className="btn btn-primary text-nowrap"
@@ -318,36 +372,35 @@ const Task = () => {
                       </button>
                     </div>
                   </div>
-
-                  <Updatetask
-                    showModal={showUpdateTaskModal}
-                    updateTask={updateTask}
-                    selectUpdateTask={selectUpdateTask}
-                    successMessage={successMessage}
-                    errorMessage={errorMessage}
-                    handleClose={() => {
-                      setShowUpdateTaskModal(false);
-                      setSelectUpdateTask("");
-                      setErrorMessage("");
-                      setSuccessMessage("");
-                    }}
-                  />
-
-                  <Deletetask
-                    showModal={showDeleteTaskModal}
-                    deleteTask={deleteTask}
-                    selectDeleteTask={selectDeleteTask}
-                    handleClose={() => {
-                      setShowDeleteTaskModal(false);
-                      setSelectDeleteTask("");
-                    }}
-                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <Updatetask
+        showModal={showUpdateTaskModal}
+        updateTask={updateTask}
+        selectUpdateTask={selectUpdateTask}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        handleClose={() => {
+          setShowUpdateTaskModal(false);
+          setSelectUpdateTask("");
+          setErrorMessage("");
+          setSuccessMessage("");
+        }}
+      />
+
+      <Deletetask
+        showModal={showDeleteTaskModal}
+        deleteTask={deleteTask}
+        selectDeleteTask={selectDeleteTask}
+        handleClose={() => {
+          setShowDeleteTaskModal(false);
+          setSelectDeleteTask("");
+        }}
+      />
     </div>
   );
 };

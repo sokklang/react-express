@@ -46,7 +46,7 @@ const Closereport = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
       <div className="modal-dialog text-white text-center" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">
+            <h5 className="modal-title " style={{ color: "red" }}>
               <i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!
             </h5>
             <button

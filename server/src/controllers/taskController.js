@@ -95,7 +95,7 @@ async function getTask(req, res) {
 
     const query = `
       SELECT * FROM Task
-      WHERE CompanyID = ?
+      WHERE CompanyID = ? AND Status != 'Archived'
     `;
 
     db.all(query, [companyID], (err, rows) => {
@@ -261,7 +261,7 @@ async function getApproveTask(req, res) {
 
     const query = `
       SELECT * FROM Task
-      WHERE CompanyID = ? AND ApprovalStatus = 'Approved'
+      WHERE CompanyID = ? AND ApprovalStatus = 'Approved' AND Status = 'Starting'
     `;
 
     // Using a Promise to make the asynchronous call
@@ -744,7 +744,9 @@ async function getMyTasks(req, res) {
         SELECT Task.*, TaskAssignment.AssignedUserID
         FROM Task
         JOIN TaskAssignment ON Task.TaskID = TaskAssignment.TaskID
-        WHERE Task.TaskID IN (${taskIDs.join(",")})
+        WHERE Task.TaskID IN (${taskIDs.join(
+          ","
+        )}) AND Task.Status IN ('Starting', 'Done', 'Undone')
       `;
 
       // Execute the query to retrieve tasks associated with the user ID
@@ -934,6 +936,81 @@ function submitTaskReport(req, res) {
   }
 }
 
+async function ArchiveTask(req, res) {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  try {
+    const taskid = req.params.taskid;
+
+    // Update the task status to "Archived" in the Task table
+    const updateQuery = `UPDATE Task SET Status = 'Archived' WHERE TaskID = ?`;
+    db.run(updateQuery, [taskid], function (err) {
+      if (err) {
+        console.error("Error archiving task:", err.message);
+        res.status(500).send("Error archiving task");
+      } else {
+        console.log("Task archived successfully");
+        res.status(200).send({ message: "Task Archived Successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(400).send("Bad request");
+  }
+}
+
+async function getArchiveTask(req, res) {
+  try {
+    const companyID = req.session.user.CompanyID;
+
+    const query = `
+  SELECT Task.*, TaskAssignment.AssignedUserID
+  FROM Task
+  LEFT JOIN TaskAssignment ON Task.TaskID = TaskAssignment.TaskID
+  WHERE Task.CompanyID = ? AND Task.Status = 'Archived'
+`;
+
+    // Using a Promise to make the asynchronous call
+    const getArchiveTasks = () => {
+      return new Promise((resolve, reject) => {
+        db.all(query, [companyID], (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            const taskData = rows.map((task) => ({
+              TaskID: task.TaskID,
+              TaskTitle: task.TaskTitle,
+              TaskDescription: task.TaskDescription,
+              TaskDeadline: task.TaskDeadline,
+              PriorityID: task.PriorityID,
+              CompanyID: task.CompanyID,
+              TaskTypeID: task.TaskTypeID,
+              UserID: task.UserID,
+              UserRoleID: task.UserRoleID,
+              TaskCreationDate: task.TaskCreationDate,
+              ApprovalStatus: task.ApprovalStatus,
+              ApprovalTimestamp: task.ApprovalTimestamp,
+              ApproverUserID: task.ApproverUserID,
+              Status: task.Status,
+              DependentTaskID: task.DependentTaskID,
+              AssignedUserID: task.AssignedUserID,
+              ReportData: task.ReportData,
+              TextData: task.TextData,
+            }));
+            resolve(taskData);
+          }
+        });
+      });
+    };
+
+    // Await the Promise and send the mapped data as a response
+    const archiveTask = await getArchiveTasks();
+    res.status(200).json({ archiveTask });
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 async function notifyTask(req, res) {}
 
 module.exports = {
@@ -956,4 +1033,6 @@ module.exports = {
   removeRequestJoin,
   submitTaskReport,
   deleteReportData,
+  ArchiveTask,
+  getArchiveTask,
 };

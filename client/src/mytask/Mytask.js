@@ -9,6 +9,7 @@ import Closereport from "./Closereport";
 import Submitreport from "./Submitreport";
 import Reportdata from "./Reportdata";
 import Deletereport from "./Deletereport";
+import Archivetask from "./Archivetaskmodal";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -22,6 +23,7 @@ const Mytask = () => {
   const [showCloseReportModal, setShowCloseReportModal] = useState(false);
   const [showSubmitReportModal, setShowSubmitReportModal] = useState(false);
   const [showDeleteReportModal, setShowDeleteReportModal] = useState(false);
+  const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showReportDataModal, setShowReportDataModal] = useState(false);
   const [selectDetailTask, setSelectDetailTask] = useState("");
   const [selectTaskID, setSelectTaskID] = useState("");
@@ -204,21 +206,39 @@ const Mytask = () => {
                         ></i>
                         Remove Report
                       </button>
-                      <button
-                        className="dropdown-item btn btn-danger"
-                        type="button"
-                        style={{ color: "red" }}
-                        onClick={() => {
-                          setShowCloseReportModal(true);
-                          setSelectTaskID(task.TaskID);
-                        }}
-                      >
-                        <i
-                          className="fa fa-archive fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>{" "}
-                        Close Report
-                      </button>
+                      {task.Status === "Starting" ? (
+                        <button
+                          className="dropdown-item btn btn-danger"
+                          type="button"
+                          style={{ color: "red" }}
+                          onClick={() => {
+                            setShowCloseReportModal(true);
+                            setSelectTaskID(task.TaskID);
+                          }}
+                        >
+                          <i
+                            className="fa fa-hourglass-end fa-fw me-2"
+                            aria-hidden="true"
+                          ></i>{" "}
+                          Close Report
+                        </button>
+                      ) : (
+                        <button
+                          className="dropdown-item btn btn-info"
+                          type="button"
+                          style={{ color: "cyan" }}
+                          onClick={() => {
+                            setShowArchiveModal(true);
+                            setSelectTaskID(task.TaskID);
+                          }}
+                        >
+                          <i
+                            className="fa fa-archive fa-fw me-2"
+                            aria-hidden="true"
+                          ></i>{" "}
+                          Archive
+                        </button>
+                      )}
                     </div>
                   </div>
                 </td>
@@ -287,6 +307,16 @@ const Mytask = () => {
         TaskID={selectTaskID}
         handleClose={() => {
           setShowDeleteReportModal(false);
+          setSelectTaskID("");
+        }}
+      />
+
+      <Archivetask
+        showModal={showArchiveModal}
+        TaskID={selectTaskID}
+        FetchMyTasks={FetchMyTasks}
+        handleClose={() => {
+          setShowArchiveModal(false);
           setSelectTaskID("");
         }}
       />

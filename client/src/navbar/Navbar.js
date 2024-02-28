@@ -36,29 +36,11 @@ const Navbar = () => {
           >
             <ul className="navbar-nav">
               <li className="nav-item ">
-                <Link className="nav-link" to="/mytask">
-                  <i className="fa fa-calendar fa-fw me-1"></i>MyTask
-                </Link>
-              </li>
-              <li className="nav-item ">
                 <Link className="nav-link" to="/task">
                   <i className="fa fa-tasks fa-fw me-1"></i>Task
                 </Link>
               </li>
-              {String(UserRoleId) === "2" && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/assigntask">
-                    <i className="fa fa-list fa-fw me-1"></i>AssignTask
-                  </Link>
-                </li>
-              )}
-              {String(UserRoleId) === "2" && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/approval">
-                    <i className="fa fa-check fa-fw me-1"></i>Approval
-                  </Link>
-                </li>
-              )}
+
               {String(UserRoleId) === "2" && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/usermgmt">
@@ -99,6 +81,7 @@ const Navbar = () => {
                   <Link className="dropdown-item" to="/settings">
                     <i className="fa fa-cogs fa-fw me-2 "></i>Settings
                   </Link>
+
                   <div className="dropdown-divider"></div>
                   <button
                     className="dropdown-item btn btn-danger"
