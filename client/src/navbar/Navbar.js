@@ -36,6 +36,12 @@ const Navbar = () => {
           >
             <ul className="navbar-nav">
               <li className="nav-item ">
+                <Link className="nav-link" to="/mytask">
+                  <i className="fa fa-calendar fa-fw me-1"></i>MyTask
+                </Link>
+              </li>
+
+              <li className="nav-item ">
                 <Link className="nav-link" to="/task">
                   <i className="fa fa-tasks fa-fw me-1"></i>Task
                 </Link>

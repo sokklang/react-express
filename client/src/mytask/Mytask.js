@@ -55,209 +55,139 @@ const Mytask = () => {
     return <Navigate to="/login" />;
   }
   return (
-    <div className="container-fluid mt-5 p-3 border">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div>
-          <center>
-            <h1>MyTasks</h1>
-          </center>
-        </div>
-        <div className="d-flex align-items-center"></div>
-      </div>
+    <div className="container-fluid mt-5 p-3 border" data-bs-theme="dark">
+      <h1 className="text-center mb-3">MyTasks</h1>
 
-      <div className="border p-3">
-        <table className="table table-dark table-striped table-hover table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Deadline</th>
-              <th>Priority</th>
-              <th>Type</th>
-              <th>Status</th>
-
-              <th className="text-center">Detail</th>
-              <th className="text-center">Action</th>
-              <th className="text-center">Report</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.TaskID}>
-                <td>{task.TaskID}</td>
-                <td>{task.TaskTitle}</td>
-                <td>{task.TaskDeadline}</td>
-                <td>
-                  {task.PriorityID === 1
-                    ? "Low"
-                    : task.PriorityID === 2
-                    ? "Medium"
-                    : "High"}
-                </td>
-                <td>
-                  {task.TaskTypeID === 1
-                    ? "Small Task"
-                    : task.TaskTypeID === 2
-                    ? "Medium Task"
-                    : task.TaskTypeID === 3
-                    ? "Large Task"
-                    : "Unknown"}
-                </td>
-                <td>{task.Status}</td>
-
-                <td className="text-center">
-                  {/* Add action buttons as needed */}
-                  <div className="dropdown" data-bs-theme="dark">
+      <div className="row">
+        {tasks.map((task) => (
+          <div key={task.TaskID} className="col-lg-4 mb-3">
+            <div className="card bg-dark shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title text-primary">
+                  <i className="fa fa-tasks fa-fw me-2"></i>
+                  {task.TaskTitle}
+                </h5>
+                <p className="card-text">
+                  <strong>Deadline:</strong> {task.TaskDeadline}
+                  <br />
+                  <strong>Priority:</strong>{" "}
+                  {task.PriorityID === 1 ? (
+                    <span className="text-success">
+                      <i className="fa fa-arrow-down fa-fw me-1"></i>Low
+                    </span>
+                  ) : task.PriorityID === 2 ? (
+                    <span className="text-warning">
+                      <i className="fa fa-arrow-right fa-fw me-1"></i>Medium
+                    </span>
+                  ) : (
+                    <span className="text-danger">
+                      <i className="fa fa-arrow-up fa-fw me-1"></i>High
+                    </span>
+                  )}
+                  <br />
+                  <strong>Type:</strong>{" "}
+                  {task.TaskTypeID === 1 ? (
+                    <span className="text-info">
+                      <i className="fa fa-check fa-fw me-1"></i>Small Task
+                    </span>
+                  ) : task.TaskTypeID === 2 ? (
+                    <span className="text-info">
+                      <i className="fa fa-list fa-fw me-1"></i>Medium Task
+                    </span>
+                  ) : task.TaskTypeID === 3 ? (
+                    <span className="text-info">
+                      <i className="fa fa-list-alt fa-fw me-1"></i>Large Task
+                    </span>
+                  ) : (
+                    <span className="text-muted">
+                      <i className="fa fa-question fa-fw me-1"></i>Unknown
+                    </span>
+                  )}
+                  <br />
+                  <strong>Status:</strong> {task.Status}
+                </p>
+                <div className="text-center">
+                  <div className="btn-group mb-2">
                     <button
-                      className="btn btn-outline-info dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
+                      className="btn btn-outline-info me-2"
+                      onClick={() => {
+                        setShowDetailTaskModal(true);
+                        setSelectDetailTask(task);
+                      }}
                     >
-                      <i className="fa fa-eye fa-fw " aria-hidden="true"></i>
+                      <i className="fa fa-eye fa-fw"></i> Task
                     </button>
-                    <div
-                      className="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="dropdownMenu2"
+                    <button
+                      className="btn btn-outline-info me-2"
+                      onClick={() => {
+                        setShowUserCardModal(true);
+                        setSelectAssignedUser(JSON.parse(task.AssignedUserID));
+                      }}
                     >
-                      <button
-                        className="dropdown-item btn btn-info"
-                        type="button"
-                        style={{ color: "cyan" }}
-                        onClick={() => {
-                          setShowDetailTaskModal(true);
-                          setSelectDetailTask(task);
-                        }}
-                      >
-                        <i
-                          className="fa fa-eye fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>
-                        Detail Task
-                      </button>
-                      <button
-                        className="dropdown-item btn btn-info"
-                        type="button"
-                        style={{ color: "cyan" }}
-                        onClick={() => {
-                          setShowUserCardModal(true);
-                          setSelectAssignedUser(
-                            JSON.parse(task.AssignedUserID)
-                          );
-                        }}
-                      >
-                        <i
-                          className="fa fa-eye fa-fw me-2 "
-                          aria-hidden="true"
-                        ></i>{" "}
-                        View Assigned
-                      </button>
-                    </div>
+                      <i className="fa fa-user fa-fw"></i> View
+                    </button>
                   </div>
-                </td>
-                <td className="text-center">
-                  {/* Add action buttons as needed */}
-                  <div className="dropdown" data-bs-theme="dark">
+                  <div className="btn-group mb-2">
                     <button
-                      className="btn btn-outline-primary dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
+                      className="btn btn-outline-success me-2"
+                      onClick={() => {
+                        setShowSubmitReportModal(true);
+                        setSelectTaskID(task.TaskID);
+                      }}
                     >
-                      <i
-                        className="fa fa-ellipsis-v fa-fw"
-                        aria-hidden="true"
-                      ></i>
+                      <i className="fa fa-paper-plane fa-fw"></i> Submit Report
                     </button>
-                    <div
-                      className="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="dropdownMenu2"
+
+                    <button
+                      className="btn btn-outline-warning me-2"
+                      onClick={() => {
+                        setShowDeleteReportModal(true);
+                        setSelectTaskID(task.TaskID);
+                      }}
                     >
+                      <i className="fa fa-remove fa-fw"></i> Remove Report
+                    </button>
+                  </div>
+                  <div className="btn-group mb-2">
+                    {task.Status === "Starting" ? (
                       <button
-                        className="dropdown-item btn btn-success"
-                        type="button"
-                        style={{ color: "#00FF00" }}
+                        className="btn btn-outline-danger me-2"
                         onClick={() => {
-                          setShowSubmitReportModal(true);
+                          setShowCloseReportModal(true);
                           setSelectTaskID(task.TaskID);
                         }}
                       >
-                        <i
-                          className="fa fa-paper-plane fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>
-                        Submit Report
+                        <i className="fa fa-hourglass-end fa-fw "></i> Close
+                        Report
                       </button>
-
+                    ) : (
                       <button
-                        className="dropdown-item btn btn-warning"
-                        type="button"
-                        style={{ color: "yellow" }}
+                        className="btn btn-outline-primary me-2"
                         onClick={() => {
-                          setShowDeleteReportModal(true);
+                          setShowArchiveModal(true);
                           setSelectTaskID(task.TaskID);
                         }}
                       >
-                        <i
-                          className="fa fa-remove fa-fw me-2"
-                          aria-hidden="true"
-                        ></i>
-                        Remove Report
+                        <i className="fa fa-archive fa-fw"></i> Archive
                       </button>
-                      {task.Status === "Starting" ? (
-                        <button
-                          className="dropdown-item btn btn-danger"
-                          type="button"
-                          style={{ color: "red" }}
-                          onClick={() => {
-                            setShowCloseReportModal(true);
-                            setSelectTaskID(task.TaskID);
-                          }}
-                        >
-                          <i
-                            className="fa fa-hourglass-end fa-fw me-2"
-                            aria-hidden="true"
-                          ></i>{" "}
-                          Close Report
-                        </button>
-                      ) : (
-                        <button
-                          className="dropdown-item btn btn-info"
-                          type="button"
-                          style={{ color: "cyan" }}
-                          onClick={() => {
-                            setShowArchiveModal(true);
-                            setSelectTaskID(task.TaskID);
-                          }}
-                        >
-                          <i
-                            className="fa fa-archive fa-fw me-2"
-                            aria-hidden="true"
-                          ></i>{" "}
-                          Archive
-                        </button>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </td>
-                <td className="text-center">
-                  <button
-                    className="btn btn-outline-info me-2"
-                    onClick={() => {
-                      setShowReportDataModal(true);
-                      setSelectTaskID(task.TaskID);
-                    }}
-                  >
-                    <i className="fa fa-eye fa-fw" aria-hidden="true"></i>{" "}
-                    Detail
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <div className="btn-group mb-2">
+                    <button
+                      className="btn btn-outline-primary me-2"
+                      onClick={() => {
+                        setShowReportDataModal(true);
+                        setSelectTaskID(task.TaskID);
+                      }}
+                    >
+                      <i className="fa fa-file fa-fw"></i> Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
       <Detailtask
         showModal={showDetailTaskModal}
