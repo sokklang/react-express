@@ -109,7 +109,7 @@ const Mytask = () => {
                 <div className="text-center">
                   <div className="btn-group mb-2">
                     <button
-                      className="btn btn-outline-info me-2"
+                      className="btn btn-outline-info "
                       onClick={() => {
                         setShowDetailTaskModal(true);
                         setSelectDetailTask(task);
@@ -129,13 +129,22 @@ const Mytask = () => {
                   </div>
                   <div className="btn-group mb-2">
                     <button
-                      className="btn btn-outline-success me-2"
+                      className="btn btn-outline-success "
                       onClick={() => {
                         setShowSubmitReportModal(true);
                         setSelectTaskID(task.TaskID);
                       }}
                     >
                       <i className="fa fa-paper-plane fa-fw"></i> Submit Report
+                    </button>
+                    <button
+                      className="btn btn-outline-primary "
+                      onClick={() => {
+                        setShowReportDataModal(true);
+                        setSelectTaskID(task.TaskID);
+                      }}
+                    >
+                      <i className="fa fa-file fa-fw"></i> Report
                     </button>
 
                     <button
@@ -162,7 +171,7 @@ const Mytask = () => {
                       </button>
                     ) : (
                       <button
-                        className="btn btn-outline-primary me-2"
+                        className="btn btn-outline-secondary me-2"
                         onClick={() => {
                           setShowArchiveModal(true);
                           setSelectTaskID(task.TaskID);
@@ -171,17 +180,6 @@ const Mytask = () => {
                         <i className="fa fa-archive fa-fw"></i> Archive
                       </button>
                     )}
-                  </div>
-                  <div className="btn-group mb-2">
-                    <button
-                      className="btn btn-outline-primary me-2"
-                      onClick={() => {
-                        setShowReportDataModal(true);
-                        setSelectTaskID(task.TaskID);
-                      }}
-                    >
-                      <i className="fa fa-file fa-fw"></i> Report
-                    </button>
                   </div>
                 </div>
               </div>
