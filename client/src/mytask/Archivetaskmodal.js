@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
 
 const Archivetask = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -44,8 +43,8 @@ const Archivetask = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
         className="modal-dialog modal-xl text-white text-center"
         role="document"
       >
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-secondary">
+          <div className="modal-header border-bottom border-secondary">
             <h5 className="modal-title">
               <i className="fa fa-archive fa-fw me-2"></i>Archive Task
             </h5>
@@ -67,7 +66,7 @@ const Archivetask = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
               </div>
             ) : null}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-secondary">
             <button
               type="button"
               className="btn btn-secondary"
@@ -77,7 +76,7 @@ const Archivetask = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-outline-secondary"
               onClick={handleArchiveTask}
             >
               Archive

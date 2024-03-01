@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 const Deletereport = ({ showModal, handleClose, TaskID }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -94,8 +96,8 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
         className="modal-dialog modal-xl text-white text-center"
         role="document"
       >
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-warning">
+          <div className="modal-header border-bottom border-warning">
             <h5 className="modal-title">
               <i className="fa fa-remove fa-fw me-2"></i>Remove Report
             </h5>
@@ -143,7 +145,7 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
               </div>
             ) : null}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-warning">
             <button
               type="button"
               className="btn btn-secondary"
@@ -153,7 +155,7 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
             </button>
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn btn-warning"
               onClick={handleDeleteReport}
             >
               Remove

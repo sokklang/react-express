@@ -32,9 +32,9 @@ const Deletetask = ({
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog text-white text-center" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog text-danger text-center" role="document">
+        <div className="modal-content border border-danger">
+          <div className="modal-header border-bottom border-danger">
             <h5 className="modal-title">
               <i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!
             </h5>
@@ -54,7 +54,7 @@ const Deletetask = ({
               </div>
             ) : null}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-danger">
             <button
               type="button"
               className="btn btn-secondary"

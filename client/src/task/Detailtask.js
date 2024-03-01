@@ -88,9 +88,12 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog text-white text-center" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div
+        className="modal-dialog modal-lg text-white text-center"
+        role="document"
+      >
+        <div className="modal-content border border-info">
+          <div className="modal-header border-bottom border-info">
             <h5 className="modal-title">
               <i className="fa fa-info fa-fw"></i>Task Title :{" "}
               {selectDetailTask.TaskTitle}
@@ -187,15 +190,15 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
                 <p>{selectDetailTask.DependentTaskID}</p>
               </div>
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={onClose}
-              >
-                Close
-              </button>
-            </div>
+          </div>
+          <div className="modal-footer border-top border-info">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={onClose}
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>

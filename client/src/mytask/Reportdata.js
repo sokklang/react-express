@@ -51,8 +51,8 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
         className="modal-dialog modal-xl text-white text-center"
         role="document"
       >
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-info">
+          <div className="modal-header border-bottom border-info ">
             <h5 className="modal-title">
               <i className="fa fa-info fa-fw me-2"></i>Report
             </h5>
@@ -63,7 +63,7 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body">
+          <div className="modal-body ">
             {loading ? (
               <div className="d-flex justify-content-center">
                 <div className="spinner-border" role="status">
@@ -148,10 +148,10 @@ const Reportdata = ({ showModal, handleClose, TaskID }) => {
               </div>
             )}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-info">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary "
               onClick={onClose}
             >
               Cancel

@@ -54,9 +54,9 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
               <i className="fa fa-plus fa-fw me-2"></i>Add Task
             </h5>
@@ -161,7 +161,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                 </div>
               ) : null}
 
-              <div className="modal-footer">
+              <div className="modal-footer border-top border-primary">
                 <button
                   type="button"
                   className="btn btn-secondary"

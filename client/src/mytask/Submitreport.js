@@ -111,8 +111,8 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
         className="modal-dialog modal-xl text-white text-center"
         role="document"
       >
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-success">
+          <div className="modal-header border-bottom border-success">
             <h5 className="modal-title">
               <i className="fa fa-file fa-fw me-2"></i>Task Report
             </h5>
@@ -217,7 +217,7 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
               </div>
             ) : null}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-success">
             <button
               type="button"
               className="btn btn-secondary"
@@ -227,7 +227,7 @@ const Submitreport = ({ showModal, handleClose, TaskID }) => {
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-success"
               onClick={handleSubmitReport}
             >
               Submit

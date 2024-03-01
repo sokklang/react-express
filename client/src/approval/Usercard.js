@@ -46,9 +46,9 @@ const Usercard = ({ user, showModal, handleClose }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog modal-xl modal-dialog-centered ">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog modal-xl modal-dialog-centered">
+        <div className="modal-content border border-info">
+          <div className="modal-header border-bottom border-info">
             <h5 className="modal-title text-white">
               <i className="fa fa-user-plus fa-fw me-2"></i>Assigned User
             </h5>
@@ -111,16 +111,15 @@ const Usercard = ({ user, showModal, handleClose }) => {
                 </div>
               ))}
             </div>
-
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleClose}
-              >
-                Close
-              </button>
-            </div>
+          </div>
+          <div className="modal-footer border-top border-info">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleClose}
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>

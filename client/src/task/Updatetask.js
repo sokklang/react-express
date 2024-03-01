@@ -46,9 +46,9 @@ const Updatetask = ({
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog modal-lg modal-dialog-centered">
+        <div className="modal-content border border-warning">
+          <div className="modal-header border-bottom border-warning">
             <h5 className="modal-title text-white">
               <i className="fa fa-edit fa-fw me-2"></i>Update Task
             </h5>
@@ -147,7 +147,7 @@ const Updatetask = ({
                 </div>
               ) : null}
 
-              <div className="modal-footer">
+              <div className="modal-footer border-top border-warning">
                 <button
                   type="button"
                   className="btn btn-secondary"
@@ -155,8 +155,8 @@ const Updatetask = ({
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Submit
+                <button type="submit" className="btn btn-warning">
+                  Update
                 </button>
               </div>
             </form>
