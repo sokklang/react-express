@@ -116,9 +116,9 @@ const Assigntask = () => {
                       aria-labelledby="dropdownMenu2"
                     >
                       <button
-                        className="dropdown-item btn btn-success"
+                        className="dropdown-item btn btn-primary"
                         type="button"
-                        style={{ color: "#00FF00" }}
+                        style={{ color: "#0d6efd" }}
                         onClick={() => {
                           setShowAssignUserModal(true);
                           setSelectAssignTask(task.TaskID);

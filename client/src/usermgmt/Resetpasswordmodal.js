@@ -56,9 +56,9 @@ const Resetpasswordmodal = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title text-white">
+        <div className="modal-content border border-danger">
+          <div className="modal-header border-bottom border-danger">
+            <h5 className="modal-title text-warning">
               <i className="fa fa-key fa-fw me-2"></i>Reset Password
             </h5>
             <button
@@ -67,8 +67,8 @@ const Resetpasswordmodal = ({
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleResetPassword}>
+          <form onSubmit={handleResetPassword}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formNewPassword" className="form-label">
                   New Password
@@ -143,24 +143,24 @@ const Resetpasswordmodal = ({
                   {successMessage}
                 </div>
               ) : null}
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={handleEdit}
-                >
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-danger">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="btn btn-danger"
+                //onClick={handleEdit}
+              >
+                Reset
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

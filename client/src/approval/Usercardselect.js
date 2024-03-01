@@ -95,8 +95,8 @@ const Usercardselect = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog modal-xl modal-dialog-centered ">
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-success">
+          <div className="modal-header border-bottom border-success">
             <h5 className="modal-title text-white">
               <i className="fa fa-check fa-fw me-2"></i>Approve Join
             </h5>
@@ -106,8 +106,8 @@ const Usercardselect = ({
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleApproveRequestJoin}>
+          <form onSubmit={handleApproveRequestJoin}>
+            <div className="modal-body text-white text-start">
               {/* Iterate over user profiles and display them */}
               <div
                 style={{
@@ -124,7 +124,7 @@ const Usercardselect = ({
                       flex: "0 1 calc(25% - 1em)",
                       margin: "0.5em",
                       backgroundColor: selectedUsers.includes(profile.UserID)
-                        ? "#007bff"
+                        ? "#198754"
                         : "",
                       color: selectedUsers.includes(profile.UserID)
                         ? "white"
@@ -172,21 +172,20 @@ const Usercardselect = ({
                   {errorMessage}
                 </div>
               ) : null}
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-success">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button type="submit" className="btn btn-success">
+                Approve
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -26,8 +26,8 @@ const DeleteModal = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content text-warning border border-danger">
+          <div className="modal-header border-bottom border-danger">
             <h5 className="modal-title">
               <i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!
             </h5>
@@ -50,7 +50,7 @@ const DeleteModal = ({
               </div>
             ) : null}
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-danger">
             <button
               type="button"
               className="btn btn-secondary"

@@ -176,7 +176,7 @@ const Mytask = () => {
                     </button>
 
                     <button
-                      className="btn btn-outline-warning"
+                      className="btn btn-outline-danger"
                       onClick={() => {
                         setShowDeleteReportModal(true);
                         setSelectTaskID(task.TaskID);

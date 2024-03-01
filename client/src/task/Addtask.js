@@ -66,8 +66,8 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleAddTask}>
+          <form onSubmit={handleAddTask}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formTaskTitle" className="form-label">
                   Task Title
@@ -77,6 +77,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                   className="form-control"
                   placeholder="Enter Task Title"
                   value={taskData.TaskTitle}
+                  required
                   onChange={(e) =>
                     setTaskData({ ...taskData, TaskTitle: e.target.value })
                   }
@@ -92,6 +93,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                   className="form-control"
                   placeholder="Enter Task Deadline"
                   value={taskData.TaskDeadline}
+                  required
                   onChange={(e) =>
                     setTaskData({ ...taskData, TaskDeadline: e.target.value })
                   }
@@ -140,6 +142,7 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                     className="form-control"
                     placeholder="Enter Task Description"
                     rows={5}
+                    required
                     value={taskData.TaskDescription}
                     onChange={(e) =>
                       setTaskData({
@@ -160,21 +163,20 @@ const AddTask = ({ showModal, handleClose, fetchTasks }) => {
                   {successMessage}
                 </div>
               ) : null}
-
-              <div className="modal-footer border-top border-primary">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

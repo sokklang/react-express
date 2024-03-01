@@ -47,8 +47,8 @@ const Updatetask = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog modal-lg modal-dialog-centered">
-        <div className="modal-content border border-warning">
-          <div className="modal-header border-bottom border-warning">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
               <i className="fa fa-edit fa-fw me-2"></i>Update Task
             </h5>
@@ -58,8 +58,8 @@ const Updatetask = ({
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleUpdateTask}>
+          <form onSubmit={handleUpdateTask}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formTaskDeadline" className="form-label">
                   Task Deadline
@@ -69,6 +69,7 @@ const Updatetask = ({
                   className="form-control"
                   placeholder="Enter Task Deadline"
                   value={updateTaskData.TaskDeadline}
+                  required
                   onChange={(e) =>
                     setUpdateTaskData({
                       ...updateTaskData,
@@ -126,6 +127,7 @@ const Updatetask = ({
                     placeholder="Enter Task Description (around 200 words)"
                     //style={{ height: "200px" }} // Set height to make it bigger
                     rows={5}
+                    required
                     value={updateTaskData.TaskDescription}
                     onChange={(e) =>
                       setUpdateTaskData({
@@ -146,21 +148,20 @@ const Updatetask = ({
                   {successMessage}
                 </div>
               ) : null}
-
-              <div className="modal-footer border-top border-warning">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-warning">
-                  Update
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Update
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

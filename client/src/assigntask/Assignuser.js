@@ -128,9 +128,9 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog modal-xl modal-dialog-centered ">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog modal-lg modal-dialog-centered ">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
               <i className="fa fa-user-plus fa-fw me-2"></i>Assign To
             </h5>
@@ -140,8 +140,8 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleAssignTask}>
+          <form onSubmit={handleAssignTask}>
+            <div className="modal-body text-white text-start">
               {/* Iterate over user profiles and display them */}
               <div
                 style={{
@@ -213,21 +213,20 @@ const Assignuser = ({ showModal, handleClose, selectAssignTask }) => {
                   {successMessage}
                 </div>
               )}
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Assign
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

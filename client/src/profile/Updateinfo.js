@@ -55,8 +55,8 @@ const Updateinfo = ({ showModal, handleClose }) => {
       data-bs-theme="dark"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
               <i className="fa fa-edit fa-fw me-2"></i>Update Info
             </h5>
@@ -66,8 +66,8 @@ const Updateinfo = ({ showModal, handleClose }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleUpdateInfo}>
+          <form onSubmit={handleUpdateInfo}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formEditFirstName" className="form-label">
                   First Name
@@ -78,6 +78,7 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditFirstName"
                   placeholder="Enter Firstname"
                   value={updatedFirstname}
+                  required
                   onChange={(e) =>
                     setUpdatedFirstname(e.target.value.replace(/\s/g, ""))
                   }
@@ -93,6 +94,7 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditLastName"
                   placeholder="Enter Lastname"
                   value={updatedLastname}
+                  required
                   onChange={(e) =>
                     setUpdatedLastname(e.target.value.replace(/\s/g, ""))
                   }
@@ -108,6 +110,7 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   id="formEditEmail"
                   placeholder="Enter Email"
                   value={updatedEmail}
+                  required
                   onChange={(e) =>
                     setUpdatedEmail(e.target.value.replace(/\s/g, ""))
                   }
@@ -124,24 +127,24 @@ const Updateinfo = ({ showModal, handleClose }) => {
                   {successMessage}
                 </div>
               ) : null}
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={handleEdit}
-                >
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                //onClick={handleEdit}
+              >
+                Update
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

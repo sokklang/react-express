@@ -50,10 +50,10 @@ const Updatepassword = ({ showModal, handleClose }) => {
       data-bs-theme="dark"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title text-white">
-              <i className="fa fa-key fa-fw me-2"></i>Update Password
+        <div className="modal-content text-warning boder border-danger">
+          <div className="modal-header boder-bottom border-danger">
+            <h5 className="modal-title">
+              <i className="fa fa-key fa-fw me-2"></i>Reset Password
             </h5>
             <button
               type="button"
@@ -61,8 +61,8 @@ const Updatepassword = ({ showModal, handleClose }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleUpdatePassword}>
+          <form onSubmit={handleUpdatePassword}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formNewPassword" className="form-label">
                   New Password
@@ -138,24 +138,24 @@ const Updatepassword = ({ showModal, handleClose }) => {
                   {successMessage}
                 </div>
               ) : null}
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={handleEdit}
-                >
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-danger">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="btn btn-danger"
+                //onClick={handleEdit}
+              >
+                Reset
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

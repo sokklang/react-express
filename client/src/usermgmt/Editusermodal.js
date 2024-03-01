@@ -49,11 +49,11 @@ const Editusermodal = ({
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
+      <div className="modal-dialog ">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
-              <i className="fa fa-edit fa-fw me-2"></i>Edit User
+              <i className="fa fa-edit fa-fw me-2"></i>Update User
             </h5>
             <button
               type="button"
@@ -61,8 +61,8 @@ const Editusermodal = ({
               onClick={handleClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleEdit}>
+          <form onSubmit={handleEdit}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formEditFirstName" className="form-label">
                   First Name
@@ -71,6 +71,7 @@ const Editusermodal = ({
                   type="text"
                   className="form-control"
                   placeholder="Enter Firstname"
+                  required
                   value={updatedUserData.FirstName}
                   onChange={(e) =>
                     setUpdatedUserData({
@@ -89,6 +90,7 @@ const Editusermodal = ({
                   className="form-control"
                   placeholder="Enter Lastname"
                   value={updatedUserData.LastName}
+                  required
                   onChange={(e) =>
                     setUpdatedUserData({
                       ...updatedUserData,
@@ -110,6 +112,7 @@ const Editusermodal = ({
                     className="form-control"
                     placeholder="Enter Email"
                     value={updatedUserData.Email}
+                    required
                     onChange={(e) =>
                       setUpdatedUserData({
                         ...updatedUserData,
@@ -176,24 +179,24 @@ const Editusermodal = ({
                   {successMessage}
                 </div>
               ) : null}
-              <div className="modal-footer">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={handleEdit}
-                >
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleClose}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                //onClick={handleEdit}
+              >
+                Update
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

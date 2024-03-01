@@ -43,10 +43,10 @@ const Closereport = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
       style={{ display: showModal ? "block" : "none" }}
       data-bs-theme="dark"
     >
-      <div className="modal-dialog text-white text-center " role="document">
+      <div className="modal-dialog text-warning text-center " role="document">
         <div className="modal-content border border-danger">
           <div className="modal-header border-bottom border-danger ">
-            <h5 className="modal-title " style={{ color: "red" }}>
+            <h5 className="modal-title ">
               <i className="fa fa-exclamation-triangle fa-fw me-2"></i>Warning!
             </h5>
             <button
@@ -56,7 +56,7 @@ const Closereport = ({ showModal, handleClose, TaskID, FetchMyTasks }) => {
               onClick={onClose}
             ></button>
           </div>
-          <div className="modal-body " style={{ color: "red" }}>
+          <div className="modal-body ">
             <p>Confirm Close Report TaskID : {TaskID}</p>
             <p>After CloseReport User Can NO Longer Edit Task</p>
 

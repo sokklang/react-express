@@ -249,7 +249,7 @@ const Usermgmt = () => {
                 <td>{user.IsActive === 1 ? "Active" : "Inactive"}</td>
                 <td className="text-center">
                   <button
-                    className="btn btn-success btn-sm me-2"
+                    className="btn btn-outline-info btn-sm me-2"
                     onClick={() => {
                       setShowDetailUserModal(true);
                       setSelectDetailUser(user);
@@ -259,17 +259,17 @@ const Usermgmt = () => {
                   </button>
 
                   <button
-                    className="btn btn-warning btn-sm me-2"
+                    className="btn btn-outline-primary btn-sm me-2"
                     onClick={() => {
                       setShowEditUserModal(true);
                       setSelectEditUser(user);
                     }}
                   >
-                    <i className="fa fa-pencil" aria-hidden="true"></i> Edit
+                    <i className="fa fa-pencil" aria-hidden="true"></i> Update
                   </button>
 
                   <button
-                    className="btn btn-warning btn-sm me-2"
+                    className="btn btn-outline-danger btn-sm me-2"
                     onClick={() => {
                       setShowResetPasswordModal(true);
                       setSelectResetPasswordUser(user.UserID);
@@ -279,7 +279,7 @@ const Usermgmt = () => {
                   </button>
 
                   <button
-                    className="btn btn-danger btn-sm"
+                    className="btn btn-outline-danger btn-sm"
                     onClick={() => {
                       setShowDeleteUserModal(true);
                       setSelectDeleteId(user.UserID);

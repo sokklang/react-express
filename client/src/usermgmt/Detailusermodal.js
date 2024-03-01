@@ -58,8 +58,8 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
       data-bs-theme="dark"
     >
       <div className="modal-dialog text-white text-center" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-info">
+          <div className="modal-header  border-bottom border-info">
             <h5 className="modal-title">
               <i className="fa fa-info fa-fw"></i>User Details :{" "}
               {selectDetailUser.Username}
@@ -135,7 +135,7 @@ const Detailusermodal = ({ showModal, handleClose, selectDetailUser }) => {
               </div>
             </div>
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer  border-top border-info">
             <button
               type="button"
               className="btn btn-secondary"

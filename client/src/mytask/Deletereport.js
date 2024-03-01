@@ -96,8 +96,8 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
         className="modal-dialog modal-xl text-white text-center"
         role="document"
       >
-        <div className="modal-content border border-warning">
-          <div className="modal-header border-bottom border-warning">
+        <div className="modal-content text-warning border border-danger">
+          <div className="modal-header border-bottom border-danger">
             <h5 className="modal-title">
               <i className="fa fa-remove fa-fw me-2"></i>Remove Report
             </h5>
@@ -145,7 +145,7 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
               </div>
             ) : null}
           </div>
-          <div className="modal-footer border-top border-warning">
+          <div className="modal-footer border-top border-danger">
             <button
               type="button"
               className="btn btn-secondary"
@@ -155,7 +155,7 @@ const Deletereport = ({ showModal, handleClose, TaskID }) => {
             </button>
             <button
               type="button"
-              className="btn btn-warning"
+              className="btn btn-danger"
               onClick={handleDeleteReport}
             >
               Remove

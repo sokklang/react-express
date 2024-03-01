@@ -48,8 +48,8 @@ const UserModal = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
+        <div className="modal-content border border-primary">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title text-white">
               <i className="fa fa-user-plus fa-fw me-2"></i>Add User
             </h5>
@@ -59,8 +59,8 @@ const UserModal = ({
               onClick={handleClose}
             ></button>
           </div>
-          <div className="modal-body text-white text-start">
-            <form onSubmit={handleCreate}>
+          <form onSubmit={handleCreate}>
+            <div className="modal-body text-white text-start">
               <div className="mb-3">
                 <label htmlFor="formUsername" className="form-label ">
                   Username
@@ -75,6 +75,7 @@ const UserModal = ({
                     id="formUsername"
                     placeholder="Enter Username"
                     value={username}
+                    required
                     onChange={(e) =>
                       setUsername(e.target.value.replace(/\s/g, ""))
                     }
@@ -92,6 +93,7 @@ const UserModal = ({
                     id="formFirstName"
                     placeholder="Enter Firstname"
                     value={firstname}
+                    required
                     onChange={(e) =>
                       setFirstname(e.target.value.replace(/\s/g, ""))
                     }
@@ -108,6 +110,7 @@ const UserModal = ({
                     id="formLastName"
                     placeholder="Enter Lastname"
                     value={lastname}
+                    required
                     onChange={(e) =>
                       setLastname(e.target.value.replace(/\s/g, ""))
                     }
@@ -129,6 +132,7 @@ const UserModal = ({
                     id="formPassword"
                     placeholder="Enter Password"
                     value={password}
+                    required
                     onChange={(e) =>
                       setPassword(e.target.value.replace(/\s/g, ""))
                     }
@@ -160,6 +164,7 @@ const UserModal = ({
                     id="formEmail"
                     placeholder="Enter Email"
                     value={email}
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
@@ -173,25 +178,24 @@ const UserModal = ({
                   {successMessage}
                 </div>
               ) : null}
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleClose}
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  //onClick={handleCreate}
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="modal-footer border-top border-primary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                //onClick={handleCreate}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

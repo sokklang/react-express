@@ -299,16 +299,16 @@ const Task = () => {
                         }}
                       >
                         <i
-                          className="fa fa-eye fa-fw  me-2"
+                          className="fa fa-eye fa-fw me-2"
                           aria-hidden="true"
                         ></i>
                         Detail
                       </button>
 
                       <button
-                        className="dropdown-item btn btn-warning"
+                        className="dropdown-item btn btn-primary"
                         type="button"
-                        style={{ color: "yellow" }}
+                        style={{ color: "#0d6efd" }}
                         onClick={() => {
                           setShowUpdateTaskModal(true);
                           setSelectUpdateTask(task);
@@ -317,7 +317,7 @@ const Task = () => {
                         <i
                           className="fa fa-pencil fa-fw me-2"
                           aria-hidden="true"
-                        ></i>{" "}
+                        ></i>
                         Update
                       </button>
                       {userroletype === "Standard User" &&
@@ -333,7 +333,7 @@ const Task = () => {
                             <i
                               className="fa fa fa-user-plus fa-fw me-2"
                               aria-hidden="true"
-                            ></i>{" "}
+                            ></i>
                             Request Join
                           </button>
                         )}
@@ -348,9 +348,9 @@ const Task = () => {
                             }}
                           >
                             <i
-                              className="fa fa-check me-2"
+                              className="fa fa-check fa-fw me-2"
                               aria-hidden="true"
-                            ></i>{" "}
+                            ></i>
                             Approve
                           </button>
                         )}
@@ -367,7 +367,7 @@ const Task = () => {
                         <i
                           className="fa fa-trash fa-fw me-2"
                           aria-hidden="true"
-                        ></i>{" "}
+                        ></i>
                         Delete
                       </button>
                     </div>

@@ -62,8 +62,8 @@ const Updateprofile = ({
       data-bs-theme="dark"
     >
       <div className="modal-dialog" role="document">
-        <div className="modal-content text-white">
-          <div className="modal-header">
+        <div className="modal-content border border-primary text-white">
+          <div className="modal-header border-bottom border-primary">
             <h5 className="modal-title">
               <i className="fa fa-user-circle fa-fw me-2"></i>Update Profile
             </h5>
@@ -102,7 +102,7 @@ const Updateprofile = ({
               </label>
             </div>
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer border-top border-primary">
             <button
               type="button"
               className="btn btn-secondary"
