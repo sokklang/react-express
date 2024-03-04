@@ -6,7 +6,6 @@ import Assignuser from "./Assignuser";
 import Detailtask from "../task/Detailtask";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
 import "font-awesome/css/font-awesome.min.css";
 
 const Assigntask = () => {
@@ -16,8 +15,6 @@ const Assigntask = () => {
   const [showAssignUserModal, setShowAssignUserModal] = useState(false);
   const [selectDetailTask, setSelectDetailTask] = useState("");
   const [showDetailTaskModal, setShowDetailTaskModal] = useState(false);
-  //const [errorMessage, setErrorMessage] = useState("");
-  //const [successMessage, setSuccessMessage] = useState("");
 
   const fetchApproveTasks = async () => {
     try {
@@ -48,7 +45,7 @@ const Assigntask = () => {
   }
 
   return (
-    <div className="container-fluid mt-5 p-3 border">
+    <div className="container-fluid mt-5 p-3 border" data-bs-theme="dark">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <div>
           <center>
@@ -58,113 +55,123 @@ const Assigntask = () => {
         <div className="d-flex align-items-center"></div>
       </div>
 
-      <div className="border p-3">
-        <table className="table table-dark table-striped table-hover table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Deadline</th>
-              <th>Priority</th>
-              <th>Type</th>
-              <th>Status</th>
-
-              <th className="text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.TaskID}>
-                <td>{task.TaskID}</td>
-                <td>{task.TaskTitle}</td>
-                <td>{task.TaskDeadline}</td>
-                <td>
-                  {task.PriorityID === 1
-                    ? "Low"
+      <div className="row">
+        {tasks.map((task) => (
+          <div key={task.TaskID} className="col-md-4 mb-4">
+            <div
+              className={`card bg-dark shadow-sm ${
+                task.PriorityID === 1
+                  ? "border-success"
+                  : task.PriorityID === 2
+                  ? "border-warning"
+                  : "border-danger"
+              }`}
+            >
+              <div
+                className={`card-header d-flex justify-content-between align-items-center ${
+                  task.PriorityID === 1
+                    ? "border-success"
                     : task.PriorityID === 2
-                    ? "Medium"
-                    : "High"}
-                </td>
-                <td>
-                  {task.TaskTypeID === 1
-                    ? "Small Task"
-                    : task.TaskTypeID === 2
-                    ? "Medium Task"
-                    : task.TaskTypeID === 3
-                    ? "Large Task"
-                    : "Unknown"}
-                </td>
-                <td>{task.Status}</td>
-
-                <td className="text-center">
-                  {/* Add action buttons as needed */}
-                  <div className="dropdown" data-bs-theme="dark">
-                    <button
-                      className="btn btn-secondary dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <i
-                        className="fa fa-ellipsis-v fa-fw "
-                        aria-hidden="true"
-                      ></i>
-                    </button>
-                    <div
-                      className="dropdown-menu dropdown-menu-end"
-                      aria-labelledby="dropdownMenu2"
-                    >
-                      <button
-                        className="dropdown-item btn btn-primary"
-                        type="button"
-                        style={{ color: "#0d6efd" }}
-                        onClick={() => {
-                          setShowAssignUserModal(true);
-                          setSelectAssignTask(task.TaskID);
-                        }}
-                      >
-                        <i
-                          className="fa fa-user-plus me-2"
-                          aria-hidden="true"
-                        ></i>
-                        Assign
-                      </button>
-                      <button
-                        className="dropdown-item btn btn-info"
-                        type="button"
-                        style={{ color: "cyan" }}
-                        onClick={() => {
-                          setShowDetailTaskModal(true);
-                          setSelectDetailTask(task);
-                        }}
-                      >
-                        <i className="fa fa-eye me-2" aria-hidden="true"></i>{" "}
-                        Detail
-                      </button>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Assignuser
-          showModal={showAssignUserModal}
-          selectAssignTask={selectAssignTask}
-          handleClose={() => {
-            setShowAssignUserModal(false);
-          }}
-        />
-        <Detailtask
-          showModal={showDetailTaskModal}
-          selectDetailTask={selectDetailTask}
-          handleClose={() => {
-            setShowDetailTaskModal(false);
-            setSelectDetailTask("");
-          }}
-        />
+                    ? "border-warning"
+                    : "border-danger"
+                }`}
+              >
+                <h5>
+                  {" "}
+                  <i className="fa fa-tasks fa-fw me-2"></i>
+                  {task.TaskTitle}
+                </h5>
+                <button
+                  className="btn btn-outline-info"
+                  onClick={() => {
+                    setShowDetailTaskModal(true);
+                    setSelectDetailTask(task);
+                  }}
+                >
+                  <i className="fa fa-eye fa-fw" aria-hidden="true"></i> Detail
+                </button>
+              </div>
+              <div className="card-body">
+                <p className="card-text">
+                  <strong>Deadline:</strong> {task.TaskDeadline}
+                  <br />
+                  <strong>Priority:</strong>{" "}
+                  {task.PriorityID === 1 ? (
+                    <span className="text-success">
+                      <i className="fa fa-arrow-down fa-fw me-1"></i>Low
+                    </span>
+                  ) : task.PriorityID === 2 ? (
+                    <span className="text-warning">
+                      <i className="fa fa-arrow-right fa-fw me-1"></i>Medium
+                    </span>
+                  ) : (
+                    <span className="text-danger">
+                      <i className="fa fa-arrow-up fa-fw me-1"></i>High
+                    </span>
+                  )}
+                  <br />
+                  <strong>Type:</strong>{" "}
+                  {task.TaskTypeID === 1 ? (
+                    <span className="text-success">
+                      <i className="fa fa-check fa-fw me-1"></i>Small Task
+                    </span>
+                  ) : task.TaskTypeID === 2 ? (
+                    <span className="text-warning">
+                      <i className="fa fa-list fa-fw me-1"></i>Medium Task
+                    </span>
+                  ) : task.TaskTypeID === 3 ? (
+                    <span className="text-danger">
+                      <i className="fa fa-list-alt fa-fw me-1"></i>Large Task
+                    </span>
+                  ) : (
+                    <span className="text-muted">
+                      <i className="fa fa-question fa-fw me-1"></i>Unknown
+                    </span>
+                  )}
+                  <br />
+                  <strong>Status:</strong> {task.Status}
+                </p>
+              </div>
+              <div
+                className={`card-footer d-flex justify-content-end ${
+                  task.PriorityID === 1
+                    ? "border-success"
+                    : task.PriorityID === 2
+                    ? "border-warning"
+                    : "border-danger"
+                }`}
+              >
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={() => {
+                    setShowAssignUserModal(true);
+                    setSelectAssignTask(task.TaskID);
+                  }}
+                >
+                  <i className="fa fa-user-plus fa-fw" aria-hidden="true"></i>{" "}
+                  Assign
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
+      <Assignuser
+        showModal={showAssignUserModal}
+        selectAssignTask={selectAssignTask}
+        handleClose={() => {
+          setShowAssignUserModal(false);
+        }}
+      />
+      <Detailtask
+        showModal={showDetailTaskModal}
+        selectDetailTask={selectDetailTask}
+        handleClose={() => {
+          setShowDetailTaskModal(false);
+          setSelectDetailTask("");
+        }}
+      />
     </div>
   );
 };

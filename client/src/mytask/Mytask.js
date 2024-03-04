@@ -114,9 +114,11 @@ const Mytask = () => {
 
               <div className="card-body">
                 <p className="card-text">
-                  <strong>Remaining:</strong>{" "}
-                  {calculateDaysLeft(task.TaskDeadline)}{" "}
-                  <i className="fa fa-hourglass-end fa-fw me-1"></i>Days
+                  <strong>
+                    Remaining <i className="fa fa-hourglass-end fa-fw me-1"></i>
+                    :
+                  </strong>{" "}
+                  {calculateDaysLeft(task.TaskDeadline)} Days
                   <br />
                   <strong>Priority:</strong>{" "}
                   {task.PriorityID === 1 ? (
@@ -135,15 +137,15 @@ const Mytask = () => {
                   <br />
                   <strong>Type:</strong>{" "}
                   {task.TaskTypeID === 1 ? (
-                    <span className="text-info">
+                    <span className="text-success">
                       <i className="fa fa-check fa-fw me-1"></i>Small Task
                     </span>
                   ) : task.TaskTypeID === 2 ? (
-                    <span className="text-info">
+                    <span className="text-warning">
                       <i className="fa fa-list fa-fw me-1"></i>Medium Task
                     </span>
                   ) : task.TaskTypeID === 3 ? (
-                    <span className="text-info">
+                    <span className="text-danger">
                       <i className="fa fa-list-alt fa-fw me-1"></i>Large Task
                     </span>
                   ) : (

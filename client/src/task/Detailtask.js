@@ -106,39 +106,47 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
             ></button>
           </div>
           <div className="modal-body">
+            {/* Creator Profile */}
             {profileImage ? (
-              <div>
+              <div className="mb-3">
                 <img
                   className="rounded"
                   src={profileImage}
                   alt="Profile"
                   style={{ maxWidth: "150px" }}
                 />
-                <p>Task created By: {selectDetailTask.UserID}</p>
+                <p className="text-muted">
+                  Created By: {selectDetailTask.UserID}
+                </p>
               </div>
             ) : (
-              <div>
+              <div className="mb-3">
                 <img
                   src={defaultProfileImage}
                   alt="Default Profile"
                   style={{ maxWidth: "100px" }}
                 />
-                <p>Task created By: {selectDetailTask.UserID}</p>
+                <p className="text-muted">
+                  Task created By: {selectDetailTask.UserID}
+                </p>
               </div>
             )}
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label>Task ID:</label>
+
+            {/* Task Details */}
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Task ID:</label>
                 <p>{selectDetailTask.TaskID}</p>
               </div>
-              <div className="col-md-6">
-                <label>Task Description:</label>
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Description:</label>
                 <p>{selectDetailTask.TaskDescription}</p>
               </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label>Task Priority:</label>
+
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Priority:</label>
                 <p>
                   {selectDetailTask.PriorityID === 1
                     ? "Low"
@@ -147,8 +155,8 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
                     : "High"}
                 </p>
               </div>
-              <div className="col-md-6">
-                <label>Task Type:</label>
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Task Type:</label>
                 <p>
                   {selectDetailTask.TaskTypeID === 1
                     ? "Small Task"
@@ -160,37 +168,41 @@ const Detailtask = ({ showModal, handleClose, selectDetailTask }) => {
                 </p>
               </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label>Status:</label>
+
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Status:</label>
                 <p>{selectDetailTask.Status}</p>
               </div>
-              <div className="col-md-6">
-                <label>ApprovalStatus:</label>
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Approval Status:</label>
                 <p>{selectDetailTask.ApprovalStatus}</p>
               </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label>ApproverUserID:</label>
+
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Approver ID:</label>
                 <p>{selectDetailTask.ApproverUserID}</p>
               </div>
-              <div className="col-md-6">
-                <label>ApprovalTimestamp:</label>
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Approval Timestamp:</label>
                 <p>{selectDetailTask.ApprovalTimestamp}</p>
               </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-6">
-                <label>TaskCreationDate: </label>
+
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Created on:</label>
                 <p>{convertTimestamp(selectDetailTask.TaskCreationDate)}</p>
               </div>
-              <div className="col-md-6">
-                <label>DependentTaskID: </label>
+              <div className="col-md-6 mb-3">
+                <label className="fw-bold">Dependent Task ID:</label>
                 <p>{selectDetailTask.DependentTaskID}</p>
               </div>
             </div>
           </div>
+
           <div className="modal-footer border-top border-info">
             <button
               type="button"
